@@ -30,6 +30,7 @@
   font-weight: bold;
   color: #007bff;
   text-decoration: none;
+  margin-right: 1rem ;
 }
 
 .logoIcon {
@@ -48,6 +49,7 @@
   display: none;
   flex-direction: column;
   width: 100%;
+  flex-grow: 1;
   margin: 1rem 0;
   padding: 0;
   list-style-type: none;
