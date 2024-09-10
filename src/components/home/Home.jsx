@@ -84,7 +84,7 @@ const Home = () => {
 
       <footer className={styles.homeFooter}>
         <p>
-          &copy; {new Date().getFullYear()} E-Commerce Platform. All rights
+          &copy; {new Date().getFullYear()} E-Market Platform. All rights
           reserved.
         </p>
       </footer>
