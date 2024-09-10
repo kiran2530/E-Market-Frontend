@@ -1,0 +1,118 @@
+/* Home.module.css */
+
+.homeContainer {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .homeHeader {
+    background: #f5f5f5;
+    padding: 40px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .homeTitle {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+  
+  .homeDescription {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  .homeButtons {
+    margin-top: 20px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .btnPrimary {
+    background-color: #007bff;
+  }
+  
+  .btnSecondary {
+    background-color: #6c757d;
+  }
+  
+  .homeFeatures {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  
+  .feature {
+    background: #e9ecef;
+    padding: 20px;
+    border-radius: 8px;
+    width: 45%;
+    margin: 10px 0;
+  }
+  
+  .homeFooter {
+    background: #f5f5f5;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 8px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .homeHeader {
+      padding: 30px;
+    }
+  
+    .homeTitle {
+      font-size: 2rem;
+    }
+  
+    .homeDescription {
+      font-size: 1rem;
+    }
+  
+    .homeFeatures {
+      flex-direction: column;
+    }
+  
+    .feature {
+      width: 100%;
+    }
+  
+    .btn {
+      padding: 8px 15px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .homeTitle {
+      font-size: 1.8rem;
+    }
+  
+    .homeDescription {
+      font-size: 0.9rem;
+    }
+  
+    .btn {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 0.85rem;
+    }
+  
+    .homeHeader {
+      padding: 20px;
+    }
+  }
+  
