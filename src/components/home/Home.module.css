@@ -145,13 +145,13 @@
   }
 
   .homeDescription {
-      font-size: 0.9rem;
+      font-size: 0.86rem;
   }
 
   .btn {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
+      margin: 5px;
       font-size: 0.85rem;
   }
 
