@@ -1,0 +1,96 @@
+/* Navbar.module.css */
+
+.navbar {
+    background-color: #e9ecef;
+    color: black;
+    padding: 10px 20px;
+    position: fixed;
+    width: 97%;
+  }
+  
+  .navbarContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .navLogo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: blue;
+    text-decoration: none;
+  }
+  
+  .mobileMenuButton {
+    display: none;
+    font-size: 2rem;
+    color: #676767;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 1rem;
+  }
+  
+  /* Navbar links */
+  .navLinks {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  .navLink {
+    margin: 0 15px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: #676767;
+    font-weight: 700;
+  }
+  
+  .navLink:hover {
+    color: black;
+  }
+  
+  .logoutButton {
+    background: blue;
+    font-size: 1.1rem;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  
+  .logoutButton:hover {
+    background: #d32f2f;
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .mobileMenuButton {
+      display: block;
+    }
+  
+    .navLinks {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 45px;
+      left: 0;
+      right: 0;
+      background-color: #e9ecef;
+      padding: 20px;
+      text-align: center;
+      /* align-items: start; */
+    }
+  
+    .navLinks.showMenu {
+      display: flex;
+    }
+  
+    .navLink {
+      margin: 10px 0;
+    }
+  }
+  
