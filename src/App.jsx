@@ -1,15 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './components/home/Home'
-import Navbar from './components/navbar/Navbar'
-import './App.css'
 import React from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Navbar from './components/common/navbar/Navbar'
+import Home from './components/common/home/Home'
+// import About from './About'
+// import Shop from './Shop'
+// import Cart from './Cart'
+// import Dashboard from './Dashboard'
 
-function App () {
+const App = () => {
   return (
     <Router>
-      <div className='app-container'>
+      <div className='app'>
         <Navbar />
-        <Home />
+        <Routes>
+          <Route exact path='/' element={<Home/>} />
+          {/* <Route path='/about' component={About} />
+          <Route path='/shop' component={Shop} />
+          <Route path='/cart' component={Cart} />
+          <Route path='/dashboard' component={Dashboard} /> */}
+        </Routes>
       </div>
     </Router>
   )

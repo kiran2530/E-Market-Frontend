@@ -2,7 +2,7 @@
 
 .homeContainer {
   text-align: center;
-  padding: 20px;
+  padding: 10px;
 }
 
 .homeHeader {
@@ -10,15 +10,15 @@
   justify-content: space-between;
   align-items: center;
   background: #F5F7F8;
-  padding: 40px;
+  padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  height: 80vh;
 }
 
 .textContainer {
   flex: 1;
   text-align: center;
+  margin-bottom: 2rem;
 }
 
 .homeTitle {
@@ -103,7 +103,7 @@
 /* Responsive styles */
 @media (max-width: 768px) {
   .homeContainer {
-    margin-top: 55px;
+    margin-top: 10px;
   }
   .homeHeader {
       flex-direction: column;
@@ -143,6 +143,7 @@
 @media (max-width: 480px) {
   .homeTitle {
       font-size: 1.8rem;
+      margin-top: 1.2rem;
   }
 
   .homeDescription {
