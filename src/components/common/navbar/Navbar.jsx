@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   ShoppingCart,
   Search,
@@ -20,6 +20,7 @@ const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showSignupModal, setShowSignupModal] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  let navigate = useNavigate()
 
   const handleLogin = role => {
     setIsLoggedIn(true)
@@ -32,6 +33,7 @@ const Navbar = () => {
     setIsLoggedIn(false)
     setUserRole(null)
     setIsMobileMenuOpen(false)
+    navigate('/')
   }
 
   const handleSignup = role => {
