@@ -1,3 +1,4 @@
+import './index.css'
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Navbar from './components/common/navbar/Navbar'
@@ -10,6 +11,7 @@ import MyOrders from './components/buyer/myOrders/MyOrders'
 import Profile from './components/common/profile/Profile'
 import MyProducts from './components/vendor/myProducts/MyProducts'
 import AddProduct from './components/vendor/addProduct/AddProduct'
+import Footer from './components/common/footer/Footer'
 
 const App = () => {
   return (
@@ -27,6 +29,7 @@ const App = () => {
           <Route path='/products' element={<MyProducts />} />
           <Route path='/add-product' element={<AddProduct />} />
         </Routes>
+        <Footer/>
       </div>
     </Router>
   )
