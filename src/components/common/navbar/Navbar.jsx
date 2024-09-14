@@ -157,7 +157,7 @@ const Navbar = () => {
                 <span className='sr-only'>Profile</span>
               </button>
               <button onClick={handleLogout} className={styles.iconButton}>
-                <LogOut className='mr-2 h-4 w-4 ' />
+                <LogOut />
               </button>
             </>
           ) : (
