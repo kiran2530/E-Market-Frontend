@@ -79,11 +79,6 @@ const Navbar = () => {
               Dashboard
             </Link>
           </li>
-          <li>
-            <Link to='/products' onClick={() => setIsMobileMenuOpen(false)}>
-              My Products
-            </Link>
-          </li>
         </>
       )}
     </>
@@ -140,16 +135,6 @@ const Navbar = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <ShoppingCart />
-                </Link>
-              )}
-              {userRole === 'vendor' && (
-                <Link
-                  to='/add-product'
-                  className={styles.iconButton}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <LayoutDashboard />
-                  <span className='sr-only'>Add Product</span>
                 </Link>
               )}
               <button className={styles.iconButton}>

@@ -1,8 +1,7 @@
-import { useState } from 'react'
-import { Button, Input, Label, Textarea, Select } from './CustomUIComponents'
+import React, { useState } from 'react'
 
-export default function AddProduct () {
-  const [newProduct, setNewProduct] = useState({
+const AddProduct = () => {
+  const [product, setProduct] = useState({
     name: '',
     description: '',
     price: '',
@@ -10,13 +9,15 @@ export default function AddProduct () {
     category: '',
     subcategory: '',
     image: '',
-    status: ''
+    status: 'in-stock'
   })
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('New product:', newProduct)
-    setNewProduct({
+    // Here you would typically send the product data to your backend
+    console.log('New product:', product)
+    // Reset the form
+    setProduct({
       name: '',
       description: '',
       price: '',
@@ -24,111 +25,158 @@ export default function AddProduct () {
       category: '',
       subcategory: '',
       image: '',
-      status: ''
+      status: 'in-stock'
     })
   }
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-6 max-w-md'>
-      <div>
-        <Label htmlFor='name'>Product Name</Label>
-        <Input
-          id='name'
-          value={newProduct.name}
-          onChange={e => setNewProduct({ ...newProduct, name: e.target.value })}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor='description'>Description</Label>
-        <Textarea
-          id='description'
-          value={newProduct.description}
-          onChange={e =>
-            setNewProduct({ ...newProduct, description: e.target.value })
-          }
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor='price'>Price</Label>
-        <Input
-          id='price'
-          type='number'
-          value={newProduct.price}
-          onChange={e =>
-            setNewProduct({ ...newProduct, price: e.target.value })
-          }
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor='quantity'>Quantity</Label>
-        <Input
-          id='quantity'
-          type='number'
-          value={newProduct.quantity}
-          onChange={e =>
-            setNewProduct({ ...newProduct, quantity: e.target.value })
-          }
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor='category'>Category</Label>
-        <Select
-          id='category'
-          value={newProduct.category}
-          onChange={e =>
-            setNewProduct({ ...newProduct, category: e.target.value })
-          }
-          required
-        >
-          <option value=''>Select category</option>
-          <option value='electronics'>Electronics</option>
-          <option value='clothing'>Clothing</option>
-          <option value='books'>Books</option>
-        </Select>
-      </div>
-      <div>
-        <Label htmlFor='subcategory'>Subcategory</Label>
-        <Input
-          id='subcategory'
-          value={newProduct.subcategory}
-          onChange={e =>
-            setNewProduct({ ...newProduct, subcategory: e.target.value })
-          }
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor='image'>Image URL</Label>
-        <Input
-          id='image'
-          value={newProduct.image}
-          onChange={e =>
-            setNewProduct({ ...newProduct, image: e.target.value })
-          }
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor='status'>Status</Label>
-        <Select
-          id='status'
-          value={newProduct.status}
-          onChange={e =>
-            setNewProduct({ ...newProduct, status: e.target.value })
-          }
-          required
-        >
-          <option value=''>Select status</option>
-          <option value='in-stock'>In Stock</option>
-          <option value='out-of-stock'>Out of Stock</option>
-          <option value='discontinued'>Discontinued</option>
-        </Select>
-      </div>
-      <Button type='submit'>Add Product</Button>
-    </form>
+    <div className='max-w-2xl mx-auto px-4 py-4'>
+      <h2 className='text-2xl font-bold mb-4'>Add New Product</h2>
+      <form onSubmit={handleSubmit} className='space-y-4'>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='name'
+          >
+            Name
+          </label>
+          <input
+            type='text'
+            id='name'
+            value={product.name}
+            onChange={e => setProduct({ ...product, name: e.target.value })}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            required
+          />
+        </div>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='description'
+          >
+            Description
+          </label>
+          <textarea
+            id='description'
+            value={product.description}
+            onChange={e =>
+              setProduct({ ...product, description: e.target.value })
+            }
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            required
+          />
+        </div>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='price'
+          >
+            Price
+          </label>
+          <input
+            type='number'
+            id='price'
+            value={product.price}
+            onChange={e => setProduct({ ...product, price: e.target.value })}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            required
+          />
+        </div>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='quantity'
+          >
+            Quantity
+          </label>
+          <input
+            type='number'
+            id='quantity'
+            value={product.quantity}
+            onChange={e => setProduct({ ...product, quantity: e.target.value })}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            required
+          />
+        </div>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='category'
+          >
+            Category
+          </label>
+          <input
+            type='text'
+            id='category'
+            value={product.category}
+            onChange={e => setProduct({ ...product, category: e.target.value })}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            required
+          />
+        </div>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='subcategory'
+          >
+            Subcategory
+          </label>
+          <input
+            type='text'
+            id='subcategory'
+            value={product.subcategory}
+            onChange={e =>
+              setProduct({ ...product, subcategory: e.target.value })
+            }
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            required
+          />
+        </div>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='image'
+          >
+            Image URL
+          </label>
+          <input
+            type='file'
+            id='image'
+            value={product.image}
+            onChange={e => setProduct({ ...product, image: e.target.value })}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            required
+          />
+        </div>
+        <div>
+          <label
+            className='block text-gray-700 text-sm font-bold mb-2'
+            htmlFor='status'
+          >
+            Status
+          </label>
+          <select
+            id='status'
+            value={product.status}
+            onChange={e => setProduct({ ...product, status: e.target.value })}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+          >
+            <option value='in-stock'>In Stock</option>
+            <option value='out-of-stock'>Out of Stock</option>
+            <option value='discontinued'>Discontinued</option>
+          </select>
+        </div>
+        <div>
+          <button
+            type='submit'
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+          >
+            Add Product
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }
+
+export default AddProduct

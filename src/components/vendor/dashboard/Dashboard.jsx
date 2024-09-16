@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { Routes, Route, Link, useLocation, Outlet } from 'react-router-dom'
-import { Button } from './CustomUIComponents'
+import React, { useState, useEffect } from 'react'
+import { Link, Routes, Route, useLocation } from 'react-router-dom'
 import {
   Package,
   PlusCircle,
@@ -8,111 +7,119 @@ import {
   Settings,
   Users,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react'
-import Products from './Products'
+import ProductListing from './ProductListing'
 import AddProduct from './AddProduct'
-import Analytics from './Analytics'
-import Customers from './Customers'
-import SettingsComponent from './Settings'
-import { ScrollArea } from './CustomUIComponents'
-import VendorProductCard from './VendorProductCard'
 
-export default function Dashboard () {
-  const [activeRoute, setActiveRoute] = useState('products')
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: 'Product 1',
-      price: 19.99,
-      description: 'Description for Product 1',
-      quantity: 100,
-      category: 'electronics',
-      subcategory: 'smartphones',
-      image: '/placeholder.svg?height=192&width=256',
-      status: 'in-stock'
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      price: 29.99,
-      description: 'Description for Product 2',
-      quantity: 50,
-      category: 'clothing',
-      subcategory: 't-shirts',
-      image: '/placeholder.svg?height=192&width=256',
-      status: 'in-stock'
+const Dashboard = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const location = useLocation()
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+      if (window.innerWidth >= 768) {
+        setIsSidebarOpen(true)
+      }
     }
-  ])
+
+    checkIsMobile()
+    window.addEventListener('resize', checkIsMobile)
+
+    return () => {
+      window.removeEventListener('resize', checkIsMobile)
+    }
+  }, [])
 
   const sidebarItems = [
-    { icon: Package, label: 'Products', route: 'products' },
-    { icon: PlusCircle, label: 'Add Product', route: 'add-product' },
-    { icon: BarChart2, label: 'Analytics', route: 'analytics' },
-    { icon: Users, label: 'Customers', route: 'customers' },
-    { icon: Settings, label: 'Settings', route: 'settings' }
+    { icon: Package, label: 'Products', route: '/dashboard/products' },
+    { icon: PlusCircle, label: 'Add Product', route: '/dashboard/add-product' },
+    { icon: BarChart2, label: 'Analytics', route: '/dashboard/analytics' },
+    { icon: Users, label: 'Customers', route: '/dashboard/customers' },
+    { icon: Settings, label: 'Settings', route: '/dashboard/settings' }
   ]
 
-  const handleEdit = editedProduct => {
-    setProducts(
-      products.map(p => (p.id === editedProduct.id ? editedProduct : p))
-    )
-  }
-
-  const handleDelete = productId => {
-    setProducts(products.filter(p => p.id !== productId))
-  }
-
-  const handleAddProduct = newProduct => {
-    setProducts([...products, { ...newProduct, id: products.length + 1 }])
-    setActiveRoute('products')
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen)
   }
 
   return (
-    <div className='flex h-screen bg-gray-100'>
-      <aside className='bg-white w-64 min-h-screen p-4'>
-        <nav className='mt-8'>
+    <div className='flex bg-gray-100'>
+      {isMobile && isSidebarOpen && (
+        <div
+          className='fixed inset-0 bg-black bg-opacity-50 z-40'
+          onClick={toggleSidebar}
+        ></div>
+      )}
+
+      <aside
+        className={`
+          ${isMobile ? 'fixed inset-y-0 left-0 z-50' : 'relative'} 
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          bg-white w-64 min-h-screen p-4 transition-transform duration-300 ease-in-out
+        `}
+      >
+        <div className='flex justify-between items-center mb-8'>
+          <h2 className='text-xl font-bold'>Vendor Dashboard</h2>
+          {isMobile && (
+            <button onClick={toggleSidebar} className='p-2'>
+              <X size={24} />
+            </button>
+          )}
+        </div>
+        <nav>
           {sidebarItems.map((item, index) => (
-            <Button
+            <Link
+              to={item.route}
               key={index}
-              variant={activeRoute === item.route ? 'secondary' : 'ghost'}
-              className='w-full justify-start mb-2'
-              onClick={() => setActiveRoute(item.route)}
+              onClick={isMobile ? toggleSidebar : undefined}
+              className={`flex items-center p-2 mb-2 rounded ${
+                location.pathname === item.route
+                  ? 'bg-blue-100 text-blue-600'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
             >
-              <item.icon className='mr-2 h-4 w-4' />
+              <item.icon className='mr-2 h-5 w-5' />
               {item.label}
-            </Button>
+            </Link>
           ))}
         </nav>
       </aside>
-      <main className='flex-1 p-6 overflow-hidden'>
-        <ScrollArea className='h-[calc(100vh-80px)]'>
-          {activeRoute === 'products' && (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {products.map(product => (
-                <VendorProductCard
-                  key={product.id}
-                  product={product}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              ))}
-            </div>
+
+      <main className='flex-1 p-6'>
+        <button
+          className='mb-4 md:hidden p-2 bg-white rounded shadow'
+          onClick={toggleSidebar}
+        >
+          <h2><b>Dashboard</b></h2>
+          {isSidebarOpen ? (
+            <ChevronLeft className='h-6 w-6' />
+          ) : (
+            <ChevronRight className='h-6 w-6' />
           )}
-          {activeRoute === 'add-product' && (
-            <AddProduct onAddProduct={handleAddProduct} />
-          )}
-          {activeRoute === 'analytics' && (
-            <h2 className='text-2xl font-bold'>Analytics (Coming Soon)</h2>
-          )}
-          {activeRoute === 'customers' && (
-            <h2 className='text-2xl font-bold'>Customers (Coming Soon)</h2>
-          )}
-          {activeRoute === 'settings' && (
-            <h2 className='text-2xl font-bold'>Settings (Coming Soon)</h2>
-          )}
-        </ScrollArea>
+        </button>
+        <div className=''>
+          <Routes>
+            <Route path='' element={<ProductListing />} />
+            <Route path='products' element={<ProductListing />} />
+            <Route path='add-product' element={<AddProduct />} />
+            <Route
+              path='analytics'
+              element={<h2>Analytics (Coming Soon)</h2>}
+            />
+            <Route
+              path='customers'
+              element={<h2>Customers (Coming Soon)</h2>}
+            />
+            <Route path='settings' element={<h2>Settings (Coming Soon)</h2>} />
+          </Routes>
+        </div>
       </main>
     </div>
   )
 }
+
+export default Dashboard
