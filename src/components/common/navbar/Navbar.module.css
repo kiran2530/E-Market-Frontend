@@ -1,9 +1,10 @@
 .navbar {
-  background-color: #f8f9fa;
+  background-color: rgba(10, 10, 10, 0.909);
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
+  color: white;
 }
 
 .navbarContent {
@@ -65,8 +66,8 @@
 
 .navLinks a {
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
+  color: white;
+  font-weight: 400;
   transition: color 0.3s ease;
 }
 
@@ -97,22 +98,28 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-right: 0.5rem;
+  color: black;
 }
 
 .searchButton {
   background: none;
-  border: none;
+  border: 2px solid white;
+  border-radius: 10px;
   cursor: pointer;
   padding: 0.5rem;
 }
 
+.searchButton:hover {
+  background-color: #007bff;
+}
+
 .cartIcon, .iconButton {
-  color: #333;
+  color: white;
   transition: color 0.3s ease;
   padding: 0 5px;
   margin-bottom: 0.5rem;
   margin-right: 1rem;
-  border: 1px solid black;
+  border: 1px solid white;
 }
 
 .cartIcon:hover, .iconButton:hover {

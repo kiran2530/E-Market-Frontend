@@ -9,8 +9,6 @@ import Cart from './components/buyer/cart/Cart'
 import Dashboard from './components/vendor/dashboard/Dashboard'
 import MyOrders from './components/buyer/myOrders/MyOrders'
 import Profile from './components/common/profile/Profile'
-import MyProducts from './components/vendor/myProducts/MyProducts'
-import AddProduct from './components/vendor/addProduct/AddProduct'
 import Footer from './components/common/footer/Footer'
 
 const App = () => {
@@ -26,10 +24,8 @@ const App = () => {
           <Route path='/profile' element={<Profile />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/products' element={<MyProducts />} />
-          <Route path='/add-product' element={<AddProduct />} />
         </Routes>
-        <Footer/>
+        <Footer />
       </div>
     </Router>
   )
