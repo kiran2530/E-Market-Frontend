@@ -126,7 +126,7 @@ const Navbar = () => {
                 className={styles.searchInput}
               />
               <button className={styles.searchButton}>
-                <Search className='h-4 w-4' />
+                <Search className='mr-1 h-4 w-4' />
                 <span className='sr-only'>Search</span>
               </button>
             </div>

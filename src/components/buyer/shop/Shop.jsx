@@ -263,7 +263,7 @@ const Shop = () => {
   }
 
   return (
-    <div className='container mx-auto px-4 py-8'>
+    <div className='container mx-auto px-10 sm:px-2 py-8'>
       <div className='flex flex-col md:flex-row justify-between items-start mb-8 relative'>
         <div className='w-full md:w-64 mb-4 md:mb-0'>
           <div className='relative'>
@@ -448,7 +448,7 @@ const Shop = () => {
         </div>
       </div>
       <motion.div
-        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'
+        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8'
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
