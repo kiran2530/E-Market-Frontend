@@ -1,4 +1,6 @@
-
+.navbar {
+  position: absolute;
+}
 .navbarContent {
   display: flex;
   flex-wrap: wrap;
@@ -139,11 +141,11 @@
 
 .modal {
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  height: 90vh;
+  background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -151,15 +153,25 @@
 
 .modalContent {
   background-color: white;
-  background-image: url(https://img.freepik.com/free-vector/network-mesh-wire-digital-technology-background_1017-27428.jpg?w=1060&t=st=1728150757~exp=1728151357~hmac=e44d65d029fa09ce15a7a77bd17903b554c9486bd8bfc06ac92d573080aa56a4);
+  height: 400px;
+  width: 640px;
+  background-image: url(https://img.freepik.com/free-photo/blue-toned-set-paper-sheets-with-copy-space_23-2148320447.jpg?t=st=1728154447~exp=1728158047~hmac=5ad4277eb090f56569d83b873a309ba16bd0bea9d5b4caf76d0e38b241b49938&w=740);
   background-size: contain;
   padding: 2rem;
   border-radius: 8px;
+  border: 1px solid black;
   text-align: center;
+}
+
+.modalContent h1 {
+  margin-top: 6rem;
+  font-size: xx-large;
+  font-weight: 800;
 }
 
 .modalButton {
   margin: 0.5rem;
+  margin-top: 2.5rem;
   padding: 0.5rem 1rem;
   background-color: #007bff;
   color: white;
@@ -225,4 +237,5 @@
     margin-bottom: 0;
     margin-left: 0.5rem;
   }
+
 }

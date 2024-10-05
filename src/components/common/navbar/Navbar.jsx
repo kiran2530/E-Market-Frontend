@@ -85,7 +85,7 @@ const Navbar = () => {
   )
 
   return (
-    <nav className="sticky top-0 z-50 shadow-md text-black bg-white bg-opacity-30 backdrop-blur-md">
+    <nav className='sticky top-0 z-50 shadow-md text-black bg-white bg-opacity-30 backdrop-blur-md'>
       <div className={styles.navbarContent}>
         <div className={styles.logoAndToggle}>
           <Link to='/' className={styles.logo}>
@@ -148,13 +148,19 @@ const Navbar = () => {
           ) : (
             <>
               <button
-                onClick={() => setShowLoginModal(true)}
+                onClick={() => {
+                  setShowLoginModal(true)
+                  setIsMobileMenuOpen(false)
+                }}
                 className={styles.textButton}
               >
                 <LogIn className='mr-2 h-4 w-4' /> Login
               </button>
               <button
-                onClick={() => setShowSignupModal(true)}
+                onClick={() => {
+                  setShowSignupModal(true)
+                  setIsMobileMenuOpen(false)
+                }}
                 className={styles.textButton}
               >
                 <UserPlus className='mr-2 h-4 w-4' /> Sign Up
@@ -167,7 +173,7 @@ const Navbar = () => {
       {showLoginModal && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
-            <h2>Login as:</h2>
+            <h1 >Login as:</h1>
             <button
               onClick={() => handleLogin('buyer')}
               className={styles.modalButton}
@@ -207,7 +213,9 @@ const Navbar = () => {
               Vendor
             </button>
             <button
-              onClick={() => setShowSignupModal(false)}
+              onClick={() => {
+                setShowSignupModal(false)
+              }}
               className={styles.modalCloseButton}
             >
               Close
