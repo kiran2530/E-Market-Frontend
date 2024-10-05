@@ -5,7 +5,7 @@ const About = () => {
     <div style={styles.container}>
       <h1 style={styles.heading}>About us</h1>
       <p style={styles.text}>
-        This page is not fully designed yet. Stay tuned for updates!
+        This page is not fully designed yet. Stay tuned for updates! Please try Latter!
       </p>
     </div>
   )
