@@ -3,9 +3,9 @@ import { motion } from 'framer-motion'
 import { Star, ShoppingCart, Heart, MapPin, Clock } from 'lucide-react'
 
 const ProductCard = ({ product }) => {
-  const isChickenImage = product.image.includes(
-    'chicken-chefkok-whole-deheus-kidzz.png'
-  )
+  // const isChickenImage = product.image.includes(
+  //   'chicken-chefkok-whole-deheus-kidzz.png'
+  // )
 
   return (
     <motion.div
@@ -14,11 +14,9 @@ const ProductCard = ({ product }) => {
     >
       <div className='relative pb-[75%] bg-gray-100'>
         <img
-          src={product.image}
+          src={product.image.imageUrl}
           alt={product.name}
-          className={`absolute top-0 left-0 w-full h-full ${
-            isChickenImage ? 'object-contain p-4' : 'object-cover'
-          }`}
+          className={`absolute top-0 left-0 w-full h-full object-contain`}
         />
         <motion.button
           className='absolute top-2 right-2 p-2 bg-white rounded-full text-gray-600 hover:text-red-500'

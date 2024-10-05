@@ -29,8 +29,10 @@ const Shop = () => {
   const [districts, setDistricts] = useState([])
   const [villages, setVillages] = useState([])
 
+  const [products, setProducts] = useState([])
+
   // Mock product data
-  const products = [
+  const Initialproducts = [
     {
       id: 1,
       name: 'Organic Apples',
@@ -291,6 +293,9 @@ const Shop = () => {
   ]
 
   useEffect(() => {
+    console.log('fetching')
+
+    fetchProducts()
     fetchStates()
   }, [])
 
@@ -306,6 +311,20 @@ const Shop = () => {
     }
   }, [selectedDistrict])
 
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(
+        'https://e-market-backend-s5ap.onrender.com/api/product/buyer/products'
+      )
+      const data = await response.json()
+      setProducts(data)
+      console.log(products)
+    } catch (error) {
+      console.error('Error fetching product')
+      setProducts(Initialproducts)
+    }
+  }
+
   const fetchStates = async () => {
     try {
       // Replace with actual API call
@@ -313,7 +332,7 @@ const Shop = () => {
       const data = await response.json()
       setStates(data)
     } catch (error) {
-      console.error('Error fetching states:', error)
+      console.log('Error fetching states:')
       // Fallback to some default states
       setStates([
         'Maharashtra',
@@ -337,7 +356,7 @@ const Shop = () => {
       const data = await response.json()
       setDistricts(data)
     } catch (error) {
-      console.error('Error fetching districts:', error)
+      console.log('Error fetching districts:')
       // Fallback to some default districts
       setDistricts(['District 1', 'District 2', 'District 3'])
     }
@@ -346,13 +365,15 @@ const Shop = () => {
   const fetchVillages = async (state, district) => {
     try {
       // Replace with actual API call
+
       const response = await fetch(
         `https://api.example.com/villages?state=${state}&district=${district}`
       )
       const data = await response.json()
       setVillages(data)
+
     } catch (error) {
-      console.error('Error fetching villages:', error)
+      console.log('Error fetching villages:')
       // Fallback to some default villages
       setVillages(['Village 1', 'Village 2', 'Village 3'])
     }
