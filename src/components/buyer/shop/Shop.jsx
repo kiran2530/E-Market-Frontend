@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Filter, ChevronDown, Check } from 'lucide-react'
 import ProductCard from './ProductCard'
+import Loader from '../../common/loader/Loader'
 
 const Shop = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -29,7 +30,11 @@ const Shop = () => {
   const [districts, setDistricts] = useState([])
   const [villages, setVillages] = useState([])
 
+  // states for product
   const [products, setProducts] = useState([])
+
+  // state for loader
+  const [isLoading, setLoading] = useState(false)
 
   // Mock product data
   const Initialproducts = [
@@ -313,15 +318,17 @@ const Shop = () => {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true)
       const response = await fetch(
         'https://e-market-backend-s5ap.onrender.com/api/product/buyer/products'
       )
       const data = await response.json()
       setProducts(data)
-      console.log(products)
     } catch (error) {
       console.error('Error fetching product')
       setProducts(Initialproducts)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -371,7 +378,6 @@ const Shop = () => {
       )
       const data = await response.json()
       setVillages(data)
-
     } catch (error) {
       console.log('Error fetching villages:')
       // Fallback to some default villages
@@ -587,17 +593,22 @@ const Shop = () => {
           </AnimatePresence>
         </div>
       </div>
-      <motion.div
-        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8'
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {filteredProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </motion.div>
-      {filteredProducts.length === 0 && (
+
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <motion.div
+          className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8'
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {filteredProducts.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </motion.div>
+      )}
+      {filteredProducts.length === 0 && !isLoading && (
         <p className='text-center text-gray-600 mt-8'>
           No products found. Try adjusting your search or filters.
         </p>

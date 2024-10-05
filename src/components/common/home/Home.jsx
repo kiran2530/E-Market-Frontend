@@ -275,7 +275,7 @@ const Home = () => {
       {/* Powerful Features Section */}
       <section
         id='features'
-        className='py-20 px-4 sm:px-20 lg:px-30 max-w-8xl mx-auto bg-gray-100'
+        className='py-20 px-4 sm:px-20 lg:px-30 max-w-8xl mx-auto bg-gray-200'
       >
         <div className='text-center mb-16'>
           <h2 className='text-3xl font-bold text-gray-900 mb-4'>

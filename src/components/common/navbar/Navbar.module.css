@@ -139,19 +139,20 @@
 
 .modal {
   position: absolute;
-  top: 0;
+  top: 100%;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1001;
 }
 
 .modalContent {
   background-color: white;
+  background-image: url(https://img.freepik.com/free-vector/network-mesh-wire-digital-technology-background_1017-27428.jpg?w=1060&t=st=1728150757~exp=1728151357~hmac=e44d65d029fa09ce15a7a77bd17903b554c9486bd8bfc06ac92d573080aa56a4);
+  background-size: contain;
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
