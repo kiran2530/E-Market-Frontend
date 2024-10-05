@@ -171,10 +171,10 @@ const Home = () => {
   return (
     <div className='bg-gradient-to-b from-blue-100 to-blue-100 min-h-screen'>
       {/* Hero Section */}
-      <section className='py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto'>
-        <div className='text-center'>
+      <section className="h-auto py-20 px-4 sm:px-6 lg:px-8 max-w-8xl mx-auto bg-[url('https://img.freepik.com/premium-photo/pair-scissors-with-scissor-background_943617-75822.jpg?w=1380')] bg-cover bg-center">
+        <div className='text-center xl:mb-10'>
           <motion.h1
-            className='text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-6'
+            className='text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 xl:mb-10'
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -191,14 +191,14 @@ const Home = () => {
             experience for both buyers and vendors.
           </motion.p>
           <motion.div
-            className='flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4'
+            className='flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 xl:mt-20'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <a
               href='#features'
-              className='bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300'
+              className='bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-900 transition duration-300'
             >
               Explore Features
             </a>
