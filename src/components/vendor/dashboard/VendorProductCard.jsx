@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Edit, Trash2 } from 'lucide-react'
-import ProductCard from '../../buyer/shop/ProductCard'
+import ProductCard from './ProductCard'
 
 const VendorProductCard = ({ product, onEdit, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)

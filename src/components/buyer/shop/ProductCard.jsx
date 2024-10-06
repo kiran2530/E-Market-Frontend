@@ -30,37 +30,39 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
       <div className='p-4'>
-        <h3 className='text-lg font-semibold text-gray-800 mb-2 truncate'>
-          {product.name}
-        </h3>
-        <div className='flex items-center mb-2'>
-          <div className='flex items-center'>
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                size={14}
-                className={
-                  i < product.rating
-                    ? 'text-yellow-400 fill-current'
-                    : 'text-gray-300'
-                }
-              />
-            ))}
+        <div className='flex justify-between'>
+          <h3 className='text-lg font-semibold text-gray-800 mb-2 truncate'>
+            {product.name}
+          </h3>
+          <div className='flex items-center mb-2'>
+            <div className='flex items-center'>
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={14}
+                  className={
+                    i != product.rating
+                      ? 'text-yellow-400 fill-current'
+                      : 'text-gray-300'
+                  }
+                />
+              ))}
+            </div>
+            {/* <span className='text-xs text-gray-600 ml-2'>
+              ({product.reviews} reviews)
+            </span> */}
           </div>
-          <span className='text-xs text-gray-600 ml-2'>
-            ({product.reviews} reviews)
-          </span>
         </div>
         <p className='text-gray-600 text-xs mb-3 line-clamp-2'>
           {product.description}
         </p>
-        <div className='flex items-center text-xs text-gray-500 mb-1'>
+        {/* <div className='flex items-center text-xs text-gray-500 mb-1'>
           <MapPin size={12} className='mr-1' />
           {product.village}, {product.district}, {product.state}
-        </div>
+        </div> */}
         <div className='flex items-center text-xs text-gray-500 mb-3'>
           <Clock size={12} className='mr-1' />
-          Harvesting status: {product.harvestingStatus}
+          {product.status}
         </div>
         <div className='flex items-center justify-between'>
           <span className='text-lg font-bold text-gray-800'>
@@ -72,7 +74,7 @@ const ProductCard = ({ product }) => {
             whileTap={{ scale: 0.95 }}
           >
             <ShoppingCart size={16} className='mr-1' />
-            Add to Cart
+            Cart
           </motion.button>
         </div>
       </div>
