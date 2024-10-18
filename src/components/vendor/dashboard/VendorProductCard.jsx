@@ -23,7 +23,7 @@ const VendorProductCard = ({ product, onEdit, onDelete }) => {
           Edit
         </button>
         <button
-          onClick={() => onDelete(product.id)}
+          onClick={() => onDelete(product._id)}
           className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600'
         >
           <Trash2 size={18} className='inline mr-2' />

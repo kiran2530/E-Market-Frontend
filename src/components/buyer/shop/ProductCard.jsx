@@ -54,7 +54,7 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
         <p className='text-gray-600 text-xs mb-3 line-clamp-2'>
-          {product.description}
+        {product.country}, {product.city}, {product.state}
         </p>
         {/* <div className='flex items-center text-xs text-gray-500 mb-1'>
           <MapPin size={12} className='mr-1' />

@@ -43,6 +43,7 @@ const Shop = () => {
     'Fruits',
     'Vegetables',
     'Dairy',
+    'Crops',
     'Meat',
     'Sweeteners',
     'Grains'
@@ -111,22 +112,6 @@ const Shop = () => {
     } catch (error) {
       console.log('Error fetching districts:', error)
       setDistricts([])
-    }
-  }
-
-  const fetchVillages = async (state, district) => {
-    try {
-      // Replace with actual API call
-
-      const response = await fetch(
-        `https://api.example.com/villages?state=${state}&district=${district}`
-      )
-      const data = await response.json()
-      setVillages(data)
-    } catch (error) {
-      console.log('Error fetching villages:')
-      // Fallback to some default villages
-      setVillages(['Village 1', 'Village 2', 'Village 3'])
     }
   }
 

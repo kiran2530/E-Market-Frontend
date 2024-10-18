@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import stateData from '../../../data/states.json';
-import cityData from '../../../data/districts.json';
+import stateData from '../../../data/states.json'
+import cityData from '../../../data/districts.json'
 
 export default function AddProductForm () {
   const [isLoading, setIsLoading] = useState(false)
@@ -9,8 +9,8 @@ export default function AddProductForm () {
 
   // Dummy data for dropdowns
   const countries = ['India']
-  const states = stateData.states;
-  const cities = cityData;
+  const states = stateData.states
+  const cities = cityData
 
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedState, setSelectedState] = useState('')
@@ -29,8 +29,7 @@ export default function AddProductForm () {
         {
           method: 'POST',
           headers: {
-            authToken:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZW5kb3JJZCI6IjY2ZTI3N2JiYWYzMWJlYWE3YzEyMDVkMiIsImlhdCI6MTcyNjExNzkyOX0.toi_3-n4m9iLRf2JUK98AtlFT1slyJPR4d1ef0JlMn4'
+            authToken: localStorage.getItem('authToken')
           },
           body: formData
         }
@@ -134,10 +133,10 @@ export default function AddProductForm () {
                 className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               >
                 <option value=''>Select category</option>
-                <option value='electronics'>Electronics</option>
-                <option value='clothing'>Clothing</option>
-                <option value='books'>Books</option>
-                <option value='home'>Home & Garden</option>
+                <option value='electronics'>Crops</option>
+                <option value='clothing'>Fruits</option>
+                <option value='books'>Flowers</option>
+                <option value='home'>Vegetables</option>
                 <option value='beauty'>Beauty & Personal Care</option>
               </select>
             </motion.div>
@@ -155,10 +154,10 @@ export default function AddProductForm () {
                 className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               >
                 <option value=''>Select subcategory</option>
-                <option value='smartphones'>Smartphones</option>
-                <option value='laptops'>Laptops</option>
+                <option value='smartphones'>Organic</option>
+                <option value='laptops'>With Out Chemical</option>
                 <option value='accessories'>Accessories</option>
-                <option value='tshirts'>T-Shirts</option>
+                <option value='tshirts'>Fresh</option>
                 <option value='fiction'>Fiction</option>
                 <option value='nonfiction'>Non-Fiction</option>
               </select>
@@ -178,6 +177,9 @@ export default function AddProductForm () {
               >
                 <option value='active'>Active</option>
                 <option value='inactive'>Inactive</option>
+                <option value='ready'>Ready</option>
+                <option value='available'>Available</option>
+                <option value='notAvailable'>Not Available</option>
               </select>
             </motion.div>
           </div>

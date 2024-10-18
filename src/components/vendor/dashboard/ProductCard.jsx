@@ -49,7 +49,7 @@ const ProductCard = ({ product }) => {
         </p>
         <div className='flex items-center text-xs text-gray-500 mb-1'>
           <MapPin size={12} className='mr-1' />
-          {product.village}, {product.district}, {product.state}
+          {product.country}, {product.city}, {product.state}
         </div>
         <div className='flex items-center text-xs text-gray-500 mb-3'>
           <Clock size={12} className='mr-1' />

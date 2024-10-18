@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   ShoppingCart,
@@ -6,13 +6,13 @@ import {
   User,
   LogIn,
   UserPlus,
-  Package,
-  LayoutDashboard,
   LogOut,
   Menu,
   X
 } from 'lucide-react'
 import styles from './Navbar.module.css'
+import LoginModal from './LoginModal' // import the LoginModal component
+import SignupModal from './SignupModal' // import the SignupModal component
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -20,7 +20,20 @@ const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showSignupModal, setShowSignupModal] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   let navigate = useNavigate()
+
+  useEffect(() => {
+    console.log('fetching')
+    checkLogin()
+  }, [])
+
+  const checkLogin = () => {
+    if (localStorage.getItem('authToken')) {
+      setIsLoggedIn(true)
+      setUserRole(localStorage.getItem('role'))
+    }
+  }
 
   const handleLogin = role => {
     setIsLoggedIn(true)
@@ -29,67 +42,30 @@ const Navbar = () => {
     setIsMobileMenuOpen(false)
   }
 
+  const handleSignup = role => {
+    console.log(`Signed up as ${role}`)
+    setShowSignupModal(false)
+    setIsMobileMenuOpen(false)
+  }
+
   const handleLogout = () => {
     setIsLoggedIn(false)
     setUserRole(null)
     setIsMobileMenuOpen(false)
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('role')
     navigate('/')
-  }
-
-  const handleSignup = role => {
-    console.log(`Signing up as ${role}`)
-    setShowSignupModal(false)
-    setIsMobileMenuOpen(false)
   }
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
 
-  const NavLinks = () => (
-    <>
-      <li>
-        <Link to='/' onClick={() => setIsMobileMenuOpen(false)}>
-          Home
-        </Link>
-      </li>
-      <li>
-        <Link to='/about' onClick={() => setIsMobileMenuOpen(false)}>
-          About
-        </Link>
-      </li>
-      {isLoggedIn && userRole === 'buyer' && (
-        <>
-          <li>
-            <Link to='/shop' onClick={() => setIsMobileMenuOpen(false)}>
-              Shop
-            </Link>
-          </li>
-          <li>
-            <Link to='/orders' onClick={() => setIsMobileMenuOpen(false)}>
-              My Orders
-            </Link>
-          </li>
-        </>
-      )}
-      {isLoggedIn && userRole === 'vendor' && (
-        <>
-          <li>
-            <Link to='/dashboard' onClick={() => setIsMobileMenuOpen(false)}>
-              Dashboard
-            </Link>
-          </li>
-        </>
-      )}
-    </>
-  )
-
   return (
     <nav className='sticky top-0 z-50 shadow-md text-black bg-white bg-opacity-30 backdrop-blur-md'>
       <div className={styles.navbarContent}>
         <div className={styles.logoAndToggle}>
           <Link to='/' className={styles.logo}>
-            <Package className={styles.logoIcon} />
             <span>E-Market</span>
           </Link>
           <button
@@ -105,7 +81,27 @@ const Navbar = () => {
             isMobileMenuOpen ? styles.mobileMenuOpen : ''
           }`}
         >
-          <NavLinks />
+          <li>
+            <Link to='/'>Home</Link>
+          </li>
+          <li>
+            <Link to='/about'>About</Link>
+          </li>
+          {isLoggedIn && userRole === 'buyer' && (
+            <>
+              <li>
+                <Link to='/shop'>Shop</Link>
+              </li>
+              <li>
+                <Link to='/orders'>My Orders</Link>
+              </li>
+            </>
+          )}
+          {isLoggedIn && userRole === 'vendor' && (
+            <li>
+              <Link to='/dashboard'>Dashboard</Link>
+            </li>
+          )}
         </ul>
 
         <div
@@ -113,33 +109,15 @@ const Navbar = () => {
             isMobileMenuOpen ? styles.mobileMenuOpen : ''
           }`}
         >
-          {isLoggedIn && userRole === 'buyer' && (
-            <div className={styles.searchBar}>
-              <input
-                type='text'
-                placeholder='Search products...'
-                className={styles.searchInput}
-              />
-              <button className={styles.searchButton}>
-                <Search className='mr-1 h-4 w-4' />
-                <span className='sr-only'>Search</span>
-              </button>
-            </div>
-          )}
           {isLoggedIn ? (
             <>
               {userRole === 'buyer' && (
-                <Link
-                  to='/cart'
-                  className={styles.cartIcon}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                <Link to='/cart' className={styles.cartIcon}>
                   <ShoppingCart />
                 </Link>
               )}
               <button className={styles.iconButton}>
                 <User />
-                <span className='sr-only'>Profile</span>
               </button>
               <button onClick={handleLogout} className={styles.iconButton}>
                 <LogOut />
@@ -148,19 +126,13 @@ const Navbar = () => {
           ) : (
             <>
               <button
-                onClick={() => {
-                  setShowLoginModal(true)
-                  setIsMobileMenuOpen(false)
-                }}
+                onClick={() => setShowLoginModal(true)}
                 className={styles.textButton}
               >
                 <LogIn className='mr-2 h-4 w-4' /> Login
               </button>
               <button
-                onClick={() => {
-                  setShowSignupModal(true)
-                  setIsMobileMenuOpen(false)
-                }}
+                onClick={() => setShowSignupModal(true)}
                 className={styles.textButton}
               >
                 <UserPlus className='mr-2 h-4 w-4' /> Sign Up
@@ -171,57 +143,17 @@ const Navbar = () => {
       </div>
 
       {showLoginModal && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h1 >Login as:</h1>
-            <button
-              onClick={() => handleLogin('buyer')}
-              className={styles.modalButton}
-            >
-              Buyer
-            </button>
-            <button
-              onClick={() => handleLogin('vendor')}
-              className={styles.modalButton}
-            >
-              Vendor
-            </button>
-            <button
-              onClick={() => setShowLoginModal(false)}
-              className={styles.modalCloseButton}
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          onLogin={handleLogin}
+        />
       )}
 
       {showSignupModal && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2>Sign up as:</h2>
-            <button
-              onClick={() => handleSignup('buyer')}
-              className={styles.modalButton}
-            >
-              Buyer
-            </button>
-            <button
-              onClick={() => handleSignup('vendor')}
-              className={styles.modalButton}
-            >
-              Vendor
-            </button>
-            <button
-              onClick={() => {
-                setShowSignupModal(false)
-              }}
-              className={styles.modalCloseButton}
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <SignupModal
+          onClose={() => setShowSignupModal(false)}
+          onSignup={handleSignup}
+        />
       )}
     </nav>
   )
