@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Filter, ChevronDown, Check } from 'lucide-react'
 import ProductCard from './ProductCard'
 import Loader from '../../common/loader/Loader'
+import stateData from '../../../data/states.json'
+import districtData from '../../../data/districts.json'
 
 const Shop = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -36,248 +38,6 @@ const Shop = () => {
   // state for loader
   const [isLoading, setLoading] = useState(false)
 
-  // Mock product data
-  const Initialproducts = [
-    {
-      id: 1,
-      name: 'Organic Apples',
-      price: 2.99,
-      rating: 4,
-      reviews: 120,
-      description: 'Fresh, locally grown organic apples.',
-      image:
-        'https://5.imimg.com/data5/UM/DM/MY-43685925/organic-apple-1000x1000.jpg',
-      category: 'Fruits',
-      state: 'Maharashtra',
-      district: 'Pune',
-      village: 'Khed',
-      harvestingStatus: 'Ready'
-    },
-    {
-      id: 2,
-      name: 'Free-range Eggs',
-      price: 4.99,
-      rating: 5,
-      reviews: 85,
-      description: 'Farm-fresh free-range eggs.',
-      image:
-        'https://www.cookandbutcher.co.uk/wp-content/uploads/2021/02/6-eggs-resized-min.jpg',
-      category: 'Dairy',
-      state: 'Gujarat',
-      district: 'Ahmedabad',
-      village: 'Sanand',
-      harvestingStatus: 'Daily'
-    },
-    {
-      id: 3,
-      name: 'Chicken',
-      price: 12.99,
-      rating: 4,
-      reviews: 200,
-      description: 'Chicken from local ranches.',
-      image:
-        'https://www.deheuskidzz.com/siteassets/poultry/chicken-chefkok-whole-deheus-kidzz.png?mode=crop&width=593',
-      category: 'Meat',
-      state: 'Punjab',
-      district: 'Ludhiana',
-      village: 'Khanna',
-      harvestingStatus: 'Available'
-    },
-    {
-      id: 4,
-      name: 'Organic Kale',
-      price: 3.99,
-      rating: 4,
-      reviews: 150,
-      description: 'Nutrient-rich organic kale.',
-      image: 'https://urbanagrifarms.com/wp-content/uploads/2021/01/kale1.jpeg',
-      category: 'Vegetables',
-      state: 'Karnataka',
-      district: 'Bangalore Rural',
-      village: 'Doddaballapur',
-      harvestingStatus: 'Fresh Pick'
-    },
-    {
-      id: 5,
-      name: 'Artisanal Cheese',
-      price: 8.99,
-      rating: 5,
-      reviews: 75,
-      description: 'Handcrafted artisanal cheese.',
-      image:
-        'https://www.bigbasket.com/media/uploads/p/l/40240135_2-akshayakalpa-organic-artisan-cheese-slices-pure-without-preservatives.jpg',
-      category: 'Dairy',
-      state: 'Tamil Nadu',
-      district: 'Nilgiris',
-      village: 'Ooty',
-      harvestingStatus: 'Aged'
-    },
-    {
-      id: 6,
-      name: 'Honey',
-      price: 6.99,
-      rating: 4,
-      reviews: 95,
-      description: 'Raw, unfiltered local honey.',
-      image:
-        'https://www.harniva.com/assets/backend/admin/plugins/source/hakkimizda/kalitelibal.png',
-      category: 'Sweeteners',
-      state: 'Uttarakhand',
-      district: 'Dehradun',
-      village: 'Chakrata',
-      harvestingStatus: 'Seasonal'
-    },
-    {
-      id: 7,
-      name: 'Fresh Tomatoes',
-      price: 3.49,
-      rating: 4,
-      reviews: 110,
-      description: 'Juicy, ripe tomatoes from local gardens.',
-      image:
-        'https://organicbazar.net/cdn/shop/products/Cherry-Tomato-1.jpg?v=1694167567',
-      category: 'Vegetables',
-      state: 'West Bengal',
-      district: 'Hooghly',
-      village: 'Singur',
-      harvestingStatus: 'Fresh Pick'
-    },
-    {
-      id: 8,
-      name: 'Basmati Rice',
-      price: 5.99,
-      rating: 5,
-      reviews: 88,
-      description: 'Premium long-grain basmati rice.',
-      image:
-        'https://etimg.etb2bimg.com/thumb/msid-113339369,imgsize-123986,width-1200,height=765,overlay-etretail/food-entertainment/grocery/govt-scraps-minimum-export-price-thresholds-on-onion-basmati-rice.jpg',
-      category: 'Grains',
-      state: 'Haryana',
-      district: 'Karnal',
-      village: 'Taraori',
-      harvestingStatus: 'Available'
-    },
-    {
-      id: 9,
-      name: 'Organic Apples',
-      price: 2.99,
-      rating: 4,
-      reviews: 120,
-      description: 'Fresh, locally grown organic apples.',
-      image:
-        'https://5.imimg.com/data5/UM/DM/MY-43685925/organic-apple-1000x1000.jpg',
-      category: 'Fruits',
-      state: 'Maharashtra',
-      district: 'Pune',
-      village: 'Khed',
-      harvestingStatus: 'Ready'
-    },
-    {
-      id: 10,
-      name: 'Free-range Eggs',
-      price: 4.99,
-      rating: 5,
-      reviews: 85,
-      description: 'Farm-fresh free-range eggs.',
-      image:
-        'https://www.cookandbutcher.co.uk/wp-content/uploads/2021/02/6-eggs-resized-min.jpg',
-      category: 'Dairy',
-      state: 'Gujarat',
-      district: 'Ahmedabad',
-      village: 'Sanand',
-      harvestingStatus: 'Daily'
-    },
-    {
-      id: 11,
-      name: 'Chicken',
-      price: 12.99,
-      rating: 4,
-      reviews: 200,
-      description: 'Chicken from local ranches.',
-      image:
-        'https://www.deheuskidzz.com/siteassets/poultry/chicken-chefkok-whole-deheus-kidzz.png?mode=crop&width=593',
-      category: 'Meat',
-      state: 'Punjab',
-      district: 'Ludhiana',
-      village: 'Khanna',
-      harvestingStatus: 'Available'
-    },
-    {
-      id: 12,
-      name: 'Organic Kale',
-      price: 3.99,
-      rating: 4,
-      reviews: 150,
-      description: 'Nutrient-rich organic kale.',
-      image: 'https://urbanagrifarms.com/wp-content/uploads/2021/01/kale1.jpeg',
-      category: 'Vegetables',
-      state: 'Karnataka',
-      district: 'Bangalore Rural',
-      village: 'Doddaballapur',
-      harvestingStatus: 'Fresh Pick'
-    },
-    {
-      id: 13,
-      name: 'Artisanal Cheese',
-      price: 8.99,
-      rating: 5,
-      reviews: 75,
-      description: 'Handcrafted artisanal cheese.',
-      image:
-        'https://www.bigbasket.com/media/uploads/p/l/40240135_2-akshayakalpa-organic-artisan-cheese-slices-pure-without-preservatives.jpg',
-      category: 'Dairy',
-      state: 'Tamil Nadu',
-      district: 'Nilgiris',
-      village: 'Ooty',
-      harvestingStatus: 'Aged'
-    },
-    {
-      id: 14,
-      name: 'Honey',
-      price: 6.99,
-      rating: 4,
-      reviews: 95,
-      description: 'Raw, unfiltered local honey.',
-      image:
-        'https://www.harniva.com/assets/backend/admin/plugins/source/hakkimizda/kalitelibal.png',
-      category: 'Sweeteners',
-      state: 'Uttarakhand',
-      district: 'Dehradun',
-      village: 'Chakrata',
-      harvestingStatus: 'Seasonal'
-    },
-    {
-      id: 15,
-      name: 'Fresh Tomatoes',
-      price: 3.49,
-      rating: 4,
-      reviews: 110,
-      description: 'Juicy, ripe tomatoes from local gardens.',
-      image:
-        'https://organicbazar.net/cdn/shop/products/Cherry-Tomato-1.jpg?v=1694167567',
-      category: 'Vegetables',
-      state: 'West Bengal',
-      district: 'Hooghly',
-      village: 'Singur',
-      harvestingStatus: 'Fresh Pick'
-    },
-    {
-      id: 16,
-      name: 'Basmati Rice',
-      price: 5.99,
-      rating: 5,
-      reviews: 88,
-      description: 'Premium long-grain basmati rice.',
-      image:
-        'https://etimg.etb2bimg.com/thumb/msid-113339369,imgsize-123986,width-1200,height=765,overlay-etretail/food-entertainment/grocery/govt-scraps-minimum-export-price-thresholds-on-onion-basmati-rice.jpg',
-      category: 'Grains',
-      state: 'Haryana',
-      district: 'Karnal',
-      village: 'Taraori',
-      harvestingStatus: 'Available'
-    }
-  ]
-
   const categories = [
     'All',
     'Fruits',
@@ -299,22 +59,25 @@ const Shop = () => {
 
   useEffect(() => {
     console.log('fetching')
-
     fetchProducts()
     fetchStates()
   }, [])
 
   useEffect(() => {
-    if (selectedState) {
-      fetchDistricts(selectedState)
+    if (tempState) {
+      fetchDistricts(tempState)
+    } else {
+      setDistricts([])
     }
-  }, [selectedState])
+  }, [tempState])
 
   useEffect(() => {
-    if (selectedDistrict) {
-      fetchVillages(selectedState, selectedDistrict)
+    if (tempDistrict) {
+      fetchVillages(tempState, tempDistrict)
+    } else {
+      setVillages([])
     }
-  }, [selectedDistrict])
+  }, [tempState, tempDistrict])
 
   const fetchProducts = async () => {
     try {
@@ -325,8 +88,8 @@ const Shop = () => {
       const data = await response.json()
       setProducts(data)
     } catch (error) {
-      console.error('Error fetching product')
-      setProducts(Initialproducts)
+      console.error('Error fetching product:', error)
+      setProducts([])
     } finally {
       setLoading(false)
     }
@@ -334,38 +97,20 @@ const Shop = () => {
 
   const fetchStates = async () => {
     try {
-      // Replace with actual API call
-      const response = await fetch('https://api.example.com/states')
-      const data = await response.json()
-      setStates(data)
+      setStates(stateData.states || [])
     } catch (error) {
-      console.log('Error fetching states:')
-      // Fallback to some default states
-      setStates([
-        'Maharashtra',
-        'Gujarat',
-        'Punjab',
-        'Karnataka',
-        'Tamil Nadu',
-        'Uttarakhand',
-        'West Bengal',
-        'Haryana'
-      ])
+      console.log('Error fetching states:', error)
+      setStates([])
     }
   }
 
-  const fetchDistricts = async state => {
+  const fetchDistricts = state => {
     try {
-      // Replace with actual API call
-      const response = await fetch(
-        `https://api.example.com/districts?state=${state}`
-      )
-      const data = await response.json()
-      setDistricts(data)
+      const stateDistricts = districtData[state] || []
+      setDistricts(stateDistricts)
     } catch (error) {
-      console.log('Error fetching districts:')
-      // Fallback to some default districts
-      setDistricts(['District 1', 'District 2', 'District 3'])
+      console.log('Error fetching districts:', error)
+      setDistricts([])
     }
   }
 
@@ -389,8 +134,7 @@ const Shop = () => {
     product =>
       (selectedCategory === 'All' || product.category === selectedCategory) &&
       (selectedState === '' || product.state === selectedState) &&
-      (selectedDistrict === '' || product.district === selectedDistrict) &&
-      (selectedVillage === '' || product.village === selectedVillage) &&
+      (selectedDistrict === '' || product.city === selectedDistrict) &&
       (selectedHarvestingStatus === 'All' ||
         product.harvestingStatus === selectedHarvestingStatus) &&
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -406,6 +150,7 @@ const Shop = () => {
     setSelectedVillage(tempVillage)
     setSelectedHarvestingStatus(tempHarvestingStatus)
     setIsFilterOpen(false)
+    console.log(products)
   }
 
   return (
@@ -516,7 +261,6 @@ const Shop = () => {
                           onChange={e => {
                             setTempState(e.target.value)
                             setTempDistrict('')
-                            setTempVillage('')
                           }}
                         >
                           <option value=''>Select State</option>
@@ -536,7 +280,6 @@ const Shop = () => {
                           value={tempDistrict}
                           onChange={e => {
                             setTempDistrict(e.target.value)
-                            setTempVillage('')
                           }}
                           disabled={!tempState}
                         >
@@ -544,24 +287,6 @@ const Shop = () => {
                           {districts.map(district => (
                             <option key={district} value={district}>
                               {district}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
-                          Village
-                        </label>
-                        <select
-                          className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                          value={tempVillage}
-                          onChange={e => setTempVillage(e.target.value)}
-                          disabled={!tempDistrict}
-                        >
-                          <option value=''>Select Village</option>
-                          {villages.map(village => (
-                            <option key={village} value={village}>
-                              {village}
                             </option>
                           ))}
                         </select>
