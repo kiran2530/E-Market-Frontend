@@ -7,6 +7,7 @@ const LoginModal = ({ onClose, onLogin }) => {
   //  create an state for hold the details of the login user
   const [role, setRole] = useState('')
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '' })
+  const [isLoading, setIsLoading] = useState(false)
 
   // ---------------------- Functions ------------------------
 
@@ -17,6 +18,7 @@ const LoginModal = ({ onClose, onLogin }) => {
 
   // handleLogin function handle the login functionality.
   const handleLogin = async userRole => {
+    setIsLoading(true)
     let url = ''
     if (userRole === 'vendor') {
       url = 'https://e-market-backend-s5ap.onrender.com/api/auth/vendor/login'
@@ -51,6 +53,8 @@ const LoginModal = ({ onClose, onLogin }) => {
       }
     } catch (err) {
       console.log('Internal server error')
+    } finally {
+      setIsLoading(false)
     }
   }
   return (
@@ -81,7 +85,11 @@ const LoginModal = ({ onClose, onLogin }) => {
             />
           </div>
           <button
-            className={styles.modalButton}
+            className={
+              !isLoading
+                ? styles.modalButton
+                : 'bg-red-400 py-2 rounded my-2 cursor-wait'
+            }
             onClick={() => {
               setRole('buyer')
               handleLogin('buyer')
@@ -90,11 +98,16 @@ const LoginModal = ({ onClose, onLogin }) => {
             Login as Buyer
           </button>
           <button
-            className={styles.modalButton}
+            className={
+              !isLoading
+                ? styles.modalButton
+                : 'bg-red-400 py-2 rounded my-2 cursor-wait'
+            }
             onClick={() => {
               setRole('vendor')
               handleLogin('vendor')
             }}
+            disabled={isLoading}
           >
             Login as Vendor
           </button>

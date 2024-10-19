@@ -80,6 +80,7 @@ const Navbar = () => {
           className={`${styles.navLinks} ${
             isMobileMenuOpen ? styles.mobileMenuOpen : ''
           }`}
+          onClick={toggleMobileMenu}
         >
           <li>
             <Link to='/'>Home</Link>

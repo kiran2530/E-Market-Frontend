@@ -23,6 +23,7 @@
   .inputGroup {
     margin-bottom: 1rem;
   }
+
   form {
     display: flex;
     flex-direction: column;
@@ -33,7 +34,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+
   .modalButton {
     width: 100%;
     padding: 0.5rem;

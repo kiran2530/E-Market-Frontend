@@ -169,7 +169,7 @@ const Home = () => {
   ]
 
   return (
-    <div className='bg-gradient-to-b from-blue-100 to-blue-100 min-h-screen'>
+    <div className='min-h-screen'>
       {/* Hero Section */}
       <section className="h-auto py-20 px-4 sm:px-6 lg:px-8 max-w-8xl mx-auto bg-[url('https://img.freepik.com/premium-photo/pair-scissors-with-scissor-background_943617-75822.jpg?w=1380')] bg-cover bg-center">
         <div className='text-center xl:mb-10'>
@@ -208,12 +208,12 @@ const Home = () => {
             >
               Start Shopping
             </Link>
-            <Link
+            {/* <Link
               href='/'
               className='bg-green-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300'
             >
               Become a Vendor
-            </Link>
+            </Link> */}
           </motion.div>
         </div>
       </section>
