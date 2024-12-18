@@ -64,7 +64,7 @@ const fadeInUp = {
 
 export default function About () {
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 py-16 px-4 sm:px-6 lg:px-8'>
+    <div className='min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 py-6 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-7xl mx-auto'>
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
@@ -72,7 +72,7 @@ export default function About () {
           transition={{ duration: 0.5 }}
           className='text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-12'
         >
-          About e-market
+          E-Market
         </motion.h1>
 
         <motion.section {...fadeInUp} className='mb-16'>
