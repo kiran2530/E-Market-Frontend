@@ -30,7 +30,7 @@ const Shop = () => {
   // States for location data
   const [states, setStates] = useState([])
   const [districts, setDistricts] = useState([])
-  const [villages, setVillages] = useState([])
+  // const [villages, setVillages] = useState([])
 
   // states for product
   const [products, setProducts] = useState([])
@@ -72,13 +72,13 @@ const Shop = () => {
     }
   }, [tempState])
 
-  useEffect(() => {
-    if (tempDistrict) {
-      fetchVillages(tempState, tempDistrict)
-    } else {
-      setVillages([])
-    }
-  }, [tempState, tempDistrict])
+  // useEffect(() => {
+  //   if (tempDistrict) {
+  //     fetchVillages(tempState, tempDistrict)
+  //   } else {
+  //     setVillages([])
+  //   }
+  // }, [tempState, tempDistrict])
 
   const fetchProducts = async () => {
     try {
@@ -135,7 +135,6 @@ const Shop = () => {
     setSelectedVillage(tempVillage)
     setSelectedHarvestingStatus(tempHarvestingStatus)
     setIsFilterOpen(false)
-    console.log(products)
   }
 
   return (
@@ -317,7 +316,7 @@ const Shop = () => {
             transition={{ duration: 0.5 }}
           >
             {filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product._id} product={product} />
             ))}
           </motion.div>
           {filteredProducts.length === 0 && !isLoading && (
