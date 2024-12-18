@@ -1,6 +1,17 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { ShoppingCart, Code, Users, Zap, Shield, Clock } from 'lucide-react'
+import {
+  Zap,
+  Users,
+  Shield,
+  Clock,
+  TrendingUp,
+  BarChart,
+  Code,
+  Globe,
+  Leaf,
+  DollarSign
+} from 'lucide-react'
 
 const teamMembers = [
   {
@@ -11,13 +22,14 @@ const teamMembers = [
   },
   {
     name: 'Vaishnavi Desai',
-    role: 'Backend Developer',
+    role: 'Database Engineer',
     image: '/placeholder.svg?height=200&width=200'
   },
   {
     name: 'Soniya Desai',
     role: 'UI/UX Designer',
-    image: '/placeholder.svg?height=200&width=200'
+    image:
+      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734512300/1734512134184_wtl6gr.jpg'
   },
   {
     name: 'Sanket Patil',
@@ -53,6 +65,38 @@ const companyValues = [
     icon: Clock,
     title: 'Efficiency',
     description: 'Streamlining processes for faster, smoother transactions'
+  },
+  {
+    icon: TrendingUp,
+    title: 'Market Prediction',
+    description:
+      'Leveraging AI to provide accurate market forecasts and insights'
+  },
+  {
+    icon: BarChart,
+    title: 'Stock Analysis',
+    description: 'Empowering users with real-time stock trends and analytics'
+  },
+  {
+    icon: Code,
+    title: 'Technical Excellence',
+    description: 'Building scalable, robust, and future-ready solutions'
+  },
+  {
+    icon: Globe,
+    title: 'Global Reach',
+    description: 'Connecting vendors and buyers across the world seamlessly'
+  },
+  {
+    icon: Leaf,
+    title: 'Sustainability',
+    description: 'Promoting eco-friendly practices for a greener tomorrow'
+  },
+  {
+    icon: DollarSign,
+    title: 'Affordable Solutions',
+    description:
+      'Providing cost-effective tools to help small businesses thrive'
   }
 ]
 
