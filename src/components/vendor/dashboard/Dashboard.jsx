@@ -8,10 +8,13 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  Home
 } from 'lucide-react'
 import ProductListing from './ProductListing'
 import AddProduct from './AddProduct'
+import VendorHome from './VendorHome'
+import Analytics from './Analytics'
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -35,6 +38,7 @@ const Dashboard = () => {
   }, [])
 
   const sidebarItems = [
+    { icon: Home, label: 'Home', route: '/dashboard/' },
     { icon: Package, label: 'Products', route: '/dashboard/products' },
     { icon: PlusCircle, label: 'Add Product', route: '/dashboard/add-product' },
     { icon: BarChart2, label: 'Analytics', route: '/dashboard/analytics' },
@@ -94,21 +98,26 @@ const Dashboard = () => {
           className='mb-4 md:hidden p-2 bg-white rounded shadow'
           onClick={toggleSidebar}
         >
-          <h2><b>Dashboard</b></h2>
+          <h2></h2>
           {isSidebarOpen ? (
-            <ChevronLeft className='h-6 w-6' />
+            <h1>
+              <ChevronLeft className='h-6 w-6' />
+            </h1>
           ) : (
-            <ChevronRight className='h-6 w-6' />
+            <h1 className='flex'>
+              <p><b>Menu</b></p>
+              <ChevronRight className='h-6 w-6' />
+            </h1>
           )}
         </button>
         <div className=''>
           <Routes>
-            <Route path='' element={<ProductListing />} />
+            <Route path='' element={<VendorHome />} />
             <Route path='products' element={<ProductListing />} />
             <Route path='add-product' element={<AddProduct />} />
             <Route
               path='analytics'
-              element={<h2>Analytics (Coming Soon)</h2>}
+              element={<Analytics/>}
             />
             <Route
               path='customers'

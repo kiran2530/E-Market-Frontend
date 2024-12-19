@@ -84,26 +84,25 @@ const Navbar = () => {
           className={`${styles.navLinks} ${
             isMobileMenuOpen ? styles.mobileMenuOpen : ''
           }`}
-          onClick={toggleMobileMenu}
         >
-          <li>
+          <li onClick={toggleMobileMenu}>
             <Link to='/'>Home</Link>
           </li>
-          <li>
+          <li onClick={toggleMobileMenu}>
             <Link to='/about'>About</Link>
           </li>
           {isLoggedIn && userRole === 'buyer' && (
             <>
-              <li>
+              <li onClick={toggleMobileMenu}>
                 <Link to='/shop'>Shop</Link>
               </li>
-              <li>
+              <li onClick={toggleMobileMenu}>
                 <Link to='/orders'>My Orders</Link>
               </li>
             </>
           )}
           {isLoggedIn && userRole === 'vendor' && (
-            <li>
+            <li onClick={toggleMobileMenu}>
               <Link to='/dashboard'>Dashboard</Link>
             </li>
           )}
@@ -117,13 +116,21 @@ const Navbar = () => {
           {isLoggedIn ? (
             <>
               {userRole === 'buyer' && (
-                <Link to='/cart' className={styles.cartIcon}>
+                <Link
+                  to='/cart'
+                  className={styles.cartIcon}
+                  onClick={toggleMobileMenu}
+                >
                   <ShoppingCart />
                 </Link>
               )}
-              <button className={styles.iconButton}>
+              <Link
+                to='/profile'
+                className={styles.iconButton}
+                onClick={toggleMobileMenu}
+              >
                 <User />
-              </button>
+              </Link>
               <button onClick={handleLogout} className={styles.iconButton}>
                 <LogOut />
               </button>
