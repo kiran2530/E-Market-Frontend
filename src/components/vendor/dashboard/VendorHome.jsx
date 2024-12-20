@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
 import {
   BarChartIcon,
   DollarSign,
@@ -23,7 +22,7 @@ import {
   Cell
 } from 'recharts'
 
-const VendorHome = ({ vendorName = 'John Doe' }) => {
+const VendorHome = data => {
   const [selectedPeriod, setSelectedPeriod] = React.useState('weekly')
 
   // Mock data for demonstration
@@ -79,7 +78,7 @@ const VendorHome = ({ vendorName = 'John Doe' }) => {
       {/* Header Section */}
       <div className='flex flex-col lg:flex-row justify-between items-center mb-8 space-y-4 lg:space-y-0'>
         <h1 className='text-2xl sm:text-3xl font-bold text-gray-800'>
-          Welcome back, {vendorName}!
+          Welcome back, {data.vendorData.name}!
         </h1>
         <div className='flex space-x-2'>
           {['daily', 'weekly', 'monthly'].map(period => (

@@ -16,10 +16,51 @@ import AddProduct from './AddProduct'
 import VendorHome from './VendorHome'
 import Analytics from './Analytics'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+
 const Dashboard = () => {
+  const [vendorData, setVendorData] = useState({})
+  const [loading, setLoading] = useState(true)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const location = useLocation()
+
+  useEffect(() => {
+    fetchVendorData()
+  }, [])
+
+  const fetchVendorData = async () => {
+    // Get the vendor's auth token from localStorage
+    const authToken = localStorage.getItem('authToken')
+
+    if (!authToken) {
+      // Handle the case where the token is not available
+      console.error('No auth token found')
+      return
+    }
+
+    try {
+      // Make the API call with the token in the Authorization header
+      const response = await fetch(`${backendUrl}/api/auth/vendor/details`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        }
+      })
+
+      const result = await response.json()
+      if (!result.success) {
+        // Handle any errors with the request
+        throw new Error('Failed to fetch data')
+      }
+      setVendorData(result.vendorDetails)
+    } catch (error) {
+      console.error('Error fetching vendor data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -114,7 +155,7 @@ const Dashboard = () => {
         </button>
         <div className=''>
           <Routes>
-            <Route path='' element={<VendorHome />} />
+            <Route path='' element={<VendorHome vendorData={vendorData} />} />
             <Route path='products' element={<ProductListing />} />
             <Route path='add-product' element={<AddProduct />} />
             <Route path='analytics' element={<Analytics />} />
