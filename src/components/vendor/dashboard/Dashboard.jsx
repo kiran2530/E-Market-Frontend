@@ -105,7 +105,9 @@ const Dashboard = () => {
             </h1>
           ) : (
             <h1 className='flex'>
-              <p><b>Menu</b></p>
+              <p>
+                <b>Menu</b>
+              </p>
               <ChevronRight className='h-6 w-6' />
             </h1>
           )}
@@ -115,10 +117,7 @@ const Dashboard = () => {
             <Route path='' element={<VendorHome />} />
             <Route path='products' element={<ProductListing />} />
             <Route path='add-product' element={<AddProduct />} />
-            <Route
-              path='analytics'
-              element={<Analytics/>}
-            />
+            <Route path='analytics' element={<Analytics />} />
             <Route
               path='customers'
               element={<h2>Customers (Coming Soon)</h2>}

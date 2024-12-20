@@ -5,6 +5,7 @@ import ProductCard from './ProductCard'
 import Loader from '../../common/loader/Loader'
 import stateData from '../../../data/states.json'
 import districtData from '../../../data/districts.json'
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Shop = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -84,7 +85,7 @@ const Shop = () => {
     try {
       setLoading(true)
       const response = await fetch(
-        'https://e-market-backend-s5ap.onrender.com/api/product/buyer/products'
+        `${backendUrl}/api/product/buyer/products`
       )
       const data = await response.json()
       setProducts(data)

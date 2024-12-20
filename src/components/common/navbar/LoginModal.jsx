@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styles from './Modal.module.css'
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const LoginModal = ({ onClose, onLogin }) => {
   // --------- Veriables, state and hooks declarations --------
@@ -21,10 +22,10 @@ const LoginModal = ({ onClose, onLogin }) => {
     setIsLoading(true)
     let url = ''
     if (userRole === 'vendor') {
-      url = 'https://e-market-backend-s5ap.onrender.com/api/auth/vendor/login'
+      url = `${backendUrl}/api/auth/vendor/login`
     }
     if (userRole === 'buyer') {
-      url = 'https://e-market-backend-s5ap.onrender.com/api/auth/buyer/login'
+      url = `${backendUrl}/api/auth/buyer/login`
     }
 
     try {

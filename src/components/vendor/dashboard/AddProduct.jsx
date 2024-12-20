@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import stateData from '../../../data/states.json'
 import cityData from '../../../data/districts.json'
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function AddProductForm () {
   const [isLoading, setIsLoading] = useState(false)
@@ -25,7 +26,7 @@ export default function AddProductForm () {
 
     try {
       const response = await fetch(
-        'https://e-market-backend-s5ap.onrender.com/api/product/vendor/create',
+        `${backendUrl}/api/product/vendor/create`,
         {
           method: 'POST',
           headers: {
