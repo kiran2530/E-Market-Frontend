@@ -93,7 +93,7 @@ const Dashboard = () => {
         </nav>
       </aside>
 
-      <main className='flex-1 p-6'>
+      <main className='flex-1 sm:p-6 p-2'>
         <button
           className='mb-4 md:hidden p-2 bg-white rounded shadow'
           onClick={toggleSidebar}
