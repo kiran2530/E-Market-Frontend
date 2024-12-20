@@ -18,30 +18,35 @@ const teamMembers = [
     name: 'Kiran Nikam',
     role: 'Team Leader || Full Stack Developer',
     image:
-      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734503011/kiranProfile_mgw9sr.png'
+      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734503011/kiranProfile_mgw9sr.png',
+    portfolio: 'https://kirannikam.onrender.com/'
   },
   {
     name: 'Vaishnavi Desai',
     role: 'Database Engineer',
-    image: '/placeholder.svg?height=200&width=200'
+    image: '/placeholder.svg?height=200&width=200',
+    portfolio: 'https://vaishnavidesai.com/'
   },
   {
     name: 'Soniya Desai',
     role: 'UI/UX Designer',
     image:
-      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734512300/1734512134184_wtl6gr.jpg'
+      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734512300/1734512134184_wtl6gr.jpg',
+    portfolio: 'https://soniyadesai.com/'
   },
   {
     name: 'Sanket Patil',
     role: 'Frontend Developer',
     image:
-      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734506278/WhatsApp_Image_2024-12-18_at_12.32.24_PM_rudwwe.jpg'
+      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734506278/WhatsApp_Image_2024-12-18_at_12.32.24_PM_rudwwe.jpg',
+    portfolio: 'https://sanketpatil.onrender.com/'
   },
   {
     name: 'Akhilesh Patil',
     role: 'Frontend Developer',
     image:
-      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734506246/WhatsApp_Image_2024-12-18_at_12.41.21_PM_qmsgsc.jpg'
+      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734506246/WhatsApp_Image_2024-12-18_at_12.41.21_PM_qmsgsc.jpg',
+    portfolio: 'https://akhileshpatil.onrender.com/'
   }
 ]
 
@@ -176,13 +181,14 @@ export default function About () {
                   alt={member.name}
                   className='w-full h-48 object-contain'
                 />
-                <div className='p-4 text-center'>
+                <div className='pt-2 text-center'>
                   <h3 className='text-xl font-semibold text-gray-800 dark:text-white'>
                     {member.name}
                   </h3>
-                  <p className='text-sm text-blue-600 dark:text-gray-300'>
+                  <p className='text-sm text-blue-600 dark:text-gray-300 mb-1'>
                     {member.role}
                   </p>
+                  <a href={member.portfolio} target='_blank' className='bg-gray-200 text-black py-1 px-2 rounded text-xs'>Portfolio</a>
                 </div>
               </motion.div>
             ))}
