@@ -50,7 +50,7 @@ const Analytics = () => {
       {
         label: selectedMetric.charAt(0).toUpperCase() + selectedMetric.slice(1),
         data: mockData[selectedMetric],
-        borderColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgb(53, 162, 235)',
         tension: 0.1
       }
     ]
@@ -62,7 +62,7 @@ const Analytics = () => {
       {
         label: 'Orders',
         data: mockData.orders,
-        backgroundColor: 'rgba(53, 162, 235, 0.5)'
+        backgroundColor: 'rgba(53, 162, 235, 1)'
       }
     ]
   }
@@ -91,14 +91,14 @@ const Analytics = () => {
   const metricButtons = ['revenue', 'orders', 'products']
 
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen px-4 pb-6'>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className='max-w-7xl mx-auto bg-white rounded-lg shadow-xl sm:p-8 py-4 px-2'
+        className='max-w-7xl mx-auto bg-gray-100  sm:p-8 py-4 px-2'
       >
-        <h1 className='text-3xl font-bold mb-8 text-center text-gray-800'>
+        <h1 className='text-3xl font-bold mb-6 text-center text-gray-800'>
           Seller Analytics Dashboard
         </h1>
 
@@ -120,7 +120,7 @@ const Analytics = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <div className='grid grid-cols-3 gap-4 sm:gap-8 sm:mb-8 sm:px-10 px-4'>
+              <div className='grid grid-cols-3 gap-4 sm:gap-8 sm:mb-8 sm:px-10 px-4 mb-4'>
                 {metricButtons.map(metric => (
                   <motion.button
                     key={metric}
@@ -141,7 +141,7 @@ const Analytics = () => {
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className='bg-gray-100 p-6 rounded-lg shadow-lg border border-black'
+                  className='bg-white p-6 rounded-lg shadow-lg border border-black'
                 >
                   <h2 className='text-xl font-semibold mb-4'>
                     Weekly{' '}
@@ -157,7 +157,7 @@ const Analytics = () => {
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className='bg-gray-100 p-6 rounded-lg shadow-lg border border-black'
+                  className='bg-white p-6 rounded-lg shadow-lg border border-black'
                 >
                   <h2 className='text-xl font-semibold mb-4'>Weekly Orders</h2>
                   <div className='h-80'>
@@ -169,7 +169,7 @@ const Analytics = () => {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className='bg-gray-100 p-6 rounded-lg shadow-lg md:col-span-2 border border-black'
+                  className='bg-white p-6 rounded-lg shadow-lg md:col-span-2 border border-black'
                 >
                   <h2 className='text-xl font-semibold mb-4'>
                     Product Categories

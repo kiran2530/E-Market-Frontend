@@ -74,7 +74,7 @@ const VendorHome = data => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
   return (
-    <div className='sm:p-6 lg:p-8 max-w-7xl mx-auto font-sans bg-gray-100'>
+    <div className='px-4 pb-6 sm:p-6 lg:p-8 max-w-7xl mx-auto font-sans bg-gray-100'>
       {/* Header Section */}
       <div className='flex flex-col lg:flex-row justify-between items-center mb-8 space-y-4 lg:space-y-0'>
         <h1 className='text-2xl sm:text-3xl font-bold text-gray-800'>

@@ -60,12 +60,12 @@ export default function AddProductForm () {
   }
 
   return (
-    <div className='min-h-screen flex items-center justify-center'>
+    <div className='px-4 pb-6 min-h-screen flex items-center justify-center'>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className='bg-gray-300 bg-opacity-90 backdrop-blur-md rounded-lg shadow-xl p-8 w-full max-w-4xl'
+        className='bg-white bg-opacity-90 backdrop-blur-md rounded-lg shadow-xl p-8 w-full max-w-4xl'
       >
         <h2 className='text-3xl font-bold text-center mb-6 text-gray-800'>
           Add New Product
@@ -84,7 +84,7 @@ export default function AddProductForm () {
                 id='name'
                 name='name'
                 required
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               />
             </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
@@ -101,7 +101,7 @@ export default function AddProductForm () {
                 required
                 min='0'
                 step='0.01'
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               />
             </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
@@ -117,7 +117,7 @@ export default function AddProductForm () {
                 name='quantity'
                 required
                 min='0'
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               />
             </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
@@ -131,7 +131,7 @@ export default function AddProductForm () {
                 id='category'
                 name='category'
                 required
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               >
                 <option value=''>Select category</option>
                 <option value='electronics'>Crops</option>
@@ -152,7 +152,7 @@ export default function AddProductForm () {
                 id='subCategory'
                 name='subCategory'
                 required
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               >
                 <option value=''>Select subcategory</option>
                 <option value='smartphones'>Organic</option>
@@ -174,7 +174,7 @@ export default function AddProductForm () {
                 id='status'
                 name='status'
                 required
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               >
                 <option value='active'>Active</option>
                 <option value='inactive'>Inactive</option>
@@ -196,7 +196,7 @@ export default function AddProductForm () {
               name='description'
               rows={4}
               required
-              className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out px-4 py-2'
+              className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out px-4 py-2'
             ></textarea>
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
@@ -218,7 +218,7 @@ export default function AddProductForm () {
                 file:text-sm file:font-semibold
                 file:bg-violet-50 file:text-violet-700
                 hover:file:bg-violet-100
-                transition duration-150 ease-in-out h-12'
+                transition duration-150 ease-in-out h-12 border border-dashed border-black rounded-full'
             />
           </motion.div>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
@@ -233,7 +233,7 @@ export default function AddProductForm () {
                 id='country'
                 name='country'
                 required
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
                 onChange={e => setSelectedCountry(e.target.value)}
                 value={selectedCountry}
               >
@@ -256,7 +256,7 @@ export default function AddProductForm () {
                 id='state'
                 name='state'
                 required
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
                 onChange={e => setSelectedState(e.target.value)}
                 value={selectedState}
               >
@@ -280,7 +280,7 @@ export default function AddProductForm () {
                 id='city'
                 name='city'
                 required
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               >
                 <option value=''>Select city</option>
                 {selectedState &&
