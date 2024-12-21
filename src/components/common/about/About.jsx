@@ -39,7 +39,7 @@ const teamMembers = [
     role: 'Frontend Developer',
     image:
       'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734506278/WhatsApp_Image_2024-12-18_at_12.32.24_PM_rudwwe.jpg',
-    portfolio: 'https://sanketpatil.onrender.com/'
+    portfolio: 'https://sanket-28.github.io/Portfolio.github.io/'
   },
   {
     name: 'Akhilesh Patil',
@@ -188,7 +188,13 @@ export default function About () {
                   <p className='text-sm text-blue-600 dark:text-gray-300 mb-1'>
                     {member.role}
                   </p>
-                  <a href={member.portfolio} target='_blank' className='bg-gray-200 text-black py-1 px-2 rounded text-xs'>Portfolio</a>
+                  <a
+                    href={member.portfolio}
+                    target='_blank'
+                    className='bg-gray-200 text-black py-1 px-2 rounded text-xs'
+                  >
+                    Portfolio
+                  </a>
                 </div>
               </motion.div>
             ))}

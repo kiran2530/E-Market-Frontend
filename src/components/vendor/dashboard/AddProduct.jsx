@@ -212,13 +212,13 @@ export default function AddProductForm () {
               name='image'
               accept='image/*'
               required
-              className='mt-1 block w-full text-sm text-gray-500
+              className='mt-1 block w-full text-sm text-black
                 file:mr-4 file:py-2 file:px-4
                 file:rounded-full file:border-0
                 file:text-sm file:font-semibold
-                file:bg-violet-50 file:text-violet-700
-                hover:file:bg-violet-100
-                transition duration-150 ease-in-out h-12 border border-dashed border-black rounded-full'
+                file:bg-violet-100 file:text-violet-700
+                hover:file:bg-violet-200
+                transition duration-150 ease-in-out h-12 border border-dashed border-black rounded-full p-1'
             />
           </motion.div>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>

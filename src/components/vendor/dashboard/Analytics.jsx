@@ -141,7 +141,7 @@ const Analytics = () => {
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className='bg-white p-6 rounded-lg shadow-lg border border-black'
+                  className='bg-white p-4 rounded-lg shadow-lg border border-black'
                 >
                   <h2 className='text-xl font-semibold mb-4'>
                     Weekly{' '}
@@ -157,7 +157,7 @@ const Analytics = () => {
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className='bg-white p-6 rounded-lg shadow-lg border border-black'
+                  className='bg-white p-4 rounded-lg shadow-lg border border-black'
                 >
                   <h2 className='text-xl font-semibold mb-4'>Weekly Orders</h2>
                   <div className='h-80'>
@@ -169,7 +169,7 @@ const Analytics = () => {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className='bg-white p-6 rounded-lg shadow-lg md:col-span-2 border border-black'
+                  className='bg-white p-4 rounded-lg shadow-lg md:col-span-2 border border-black'
                 >
                   <h2 className='text-xl font-semibold mb-4'>
                     Product Categories
@@ -184,7 +184,7 @@ const Analytics = () => {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className='mt-8 bg-white p-6 rounded-lg shadow-lg '
+                className='mt-8 bg-white p-4 rounded-lg shadow-lg '
               >
                 <h2 className='text-xl font-semibold mb-4'>Quick Stats</h2>
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>

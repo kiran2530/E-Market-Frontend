@@ -131,7 +131,7 @@ const VendorHome = data => {
 
       {/* Chart Section */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8'>
-        <div className='bg-white p-6 rounded-lg shadow-md'>
+        <div className='bg-white p-4 rounded-lg shadow-md'>
           <h2 className='text-lg sm:text-xl font-semibold mb-4'>
             Sales Overview
           </h2>
@@ -145,9 +145,10 @@ const VendorHome = data => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className='bg-white p-6 rounded-lg shadow-md relative'>
+        <div className='bg-white p-4 rounded-lg shadow-md relative'>
           <h2 className='text-lg sm:text-xl font-semibold mb-4'>
-            Category Distribution
+            Category <br />
+            Distribution
           </h2>
           <ResponsiveContainer width='100%' height={300}>
             <PieChart>
