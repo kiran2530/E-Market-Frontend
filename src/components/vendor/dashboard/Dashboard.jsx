@@ -59,7 +59,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Error fetching vendor data:', error)
     } finally {
-      // setLoading(false)
+      setLoading(false)
     }
   }
 
