@@ -21,8 +21,9 @@ import {
   Pie,
   Cell
 } from 'recharts'
+import SkeletonLoader from '../../loader/SkeletoLoader'
 
-const VendorHome = data => {
+const VendorHome = ({ vendorData, loading }) => {
   const [selectedPeriod, setSelectedPeriod] = React.useState('weekly')
 
   // Mock data for demonstration
@@ -78,7 +79,7 @@ const VendorHome = data => {
       {/* Header Section */}
       <div className='flex flex-col lg:flex-row justify-between items-center mb-8 space-y-4 lg:space-y-0'>
         <h1 className='text-2xl sm:text-3xl font-bold text-gray-800'>
-          Welcome back, {data.vendorData.name}!
+          Welcome back, {vendorData.name}!
         </h1>
         <div className='flex space-x-2'>
           {['daily', 'weekly', 'monthly'].map(period => (
@@ -135,53 +136,70 @@ const VendorHome = data => {
           <h2 className='text-lg sm:text-xl font-semibold mb-4'>
             Sales Overview
           </h2>
-          <ResponsiveContainer width='100%' height={300}>
-            <BarChart data={salesChartData}>
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='name' />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey='sales' fill='#4CAF50' />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className='h-64 sm:h-80'>
+            {loading ? (
+              <SkeletonLoader className='w-full h-full' />
+            ) : (
+              <ResponsiveContainer width='100%' height='100%'>
+                <BarChart data={salesChartData}>
+                  <CartesianGrid strokeDasharray='3 3' />
+                  <XAxis dataKey='name' />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey='sales' fill='#4CAF50' />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </div>
         </div>
         <div className='bg-white p-4 rounded-lg shadow-md relative'>
-          <h2 className='text-lg sm:text-xl font-semibold mb-4'>
-            Category <br />
-            Distribution
+          <h2 className='sm:text-xl font-semibold mb-4'>
+            Category Distribution
           </h2>
-          <ResponsiveContainer width='100%' height={300}>
-            <PieChart>
-              <Pie
-                data={categoryData}
-                cx='50%'
-                cy='50%'
-                labelLine={false}
-                outerRadius={100}
-                fill='#8884d8'
-                dataKey='value'
-              >
-                {categoryData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className='absolute top-4 right-4'>
-            {categoryData.map((entry, index) => (
-              <div key={entry.name} className='flex items-center mb-2'>
-                <div
-                  className='w-4 h-4 rounded-full'
-                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                ></div>
-                <span className='ml-2 text-sm text-gray-700'>{entry.name}</span>
-              </div>
-            ))}
+          <div className='h-64 sm:h-80'>
+            {loading ? (
+              <SkeletonLoader className='w-full h-full' />
+            ) : (
+              <ResponsiveContainer width='100%' height='100%'>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx='50%'
+                    cy='50%'
+                    labelLine={false}
+                    outerRadius={100}
+                    fill='#8884d8'
+                    dataKey='value'
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </div>
+          {loading ? (
+            ''
+          ) : (
+            <div className='absolute top-2 right-4'>
+              {categoryData.map((entry, index) => (
+                <div key={entry.name} className='flex items-center mb-1'>
+                  <div
+                    className='w-4 h-4 rounded-full'
+                    style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                  ></div>
+                  <span className='ml-1 text-xs text-gray-700'>
+                    {entry.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -191,35 +209,39 @@ const VendorHome = data => {
           <h2 className='text-lg sm:text-xl font-semibold mb-4'>
             Recent Orders
           </h2>
-          <div className='overflow-x-auto'>
-            <table className='w-full'>
-              <thead>
-                <tr className='bg-gray-100'>
-                  <th className='p-3 text-left'>Order ID</th>
-                  <th className='p-3 text-left'>Customer</th>
-                  <th className='p-3 text-left'>Total</th>
-                  <th className='p-3 text-left'>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map(order => (
-                  <tr key={order.id} className='border-b'>
-                    <td className='p-3'>{order.id}</td>
-                    <td className='p-3'>{order.customer}</td>
-                    <td className='p-3'>${order.total.toFixed(2)}</td>
-                    <td className='p-3'>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                          order.status
-                        )}`}
-                      >
-                        {order.status}
-                      </span>
-                    </td>
+          <div className={`overflow-x-auto ${loading ? 'h-64' : ''}`}>
+            {loading ? (
+              <SkeletonLoader className='w-full h-full' />
+            ) : (
+              <table className='w-full'>
+                <thead>
+                  <tr className='bg-gray-100'>
+                    <th className='p-3 text-left'>Order ID</th>
+                    <th className='p-3 text-left'>Customer</th>
+                    <th className='p-3 text-left'>Total</th>
+                    <th className='p-3 text-left'>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {recentOrders.map(order => (
+                    <tr key={order.id} className='border-b'>
+                      <td className='p-3'>{order.id}</td>
+                      <td className='p-3'>{order.customer}</td>
+                      <td className='p-3'>${order.total.toFixed(2)}</td>
+                      <td className='p-3'>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                            order.status
+                          )}`}
+                        >
+                          {order.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
 
@@ -227,25 +249,29 @@ const VendorHome = data => {
           <h2 className='text-lg sm:text-xl font-semibold mb-4'>
             Top Selling Products
           </h2>
-          <div className='overflow-x-auto'>
-            <table className='w-full'>
-              <thead>
-                <tr className='bg-gray-100'>
-                  <th className='p-3 text-left'>Product</th>
-                  <th className='p-3 text-left'>Sales</th>
-                  <th className='p-3 text-left'>Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topProducts.map(product => (
-                  <tr key={product.id} className='border-b'>
-                    <td className='p-3'>{product.name}</td>
-                    <td className='p-3'>{product.sales}</td>
-                    <td className='p-3'>${product.revenue.toFixed(2)}</td>
+          <div className={`overflow-x-auto ${loading ? 'h-64' : ''}`}>
+            {loading ? (
+              <SkeletonLoader className='w-full h-full' />
+            ) : (
+              <table className='w-full'>
+                <thead>
+                  <tr className='bg-gray-100'>
+                    <th className='p-3 text-left'>Product</th>
+                    <th className='p-3 text-left'>Sales</th>
+                    <th className='p-3 text-left'>Revenue</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {topProducts.map(product => (
+                    <tr key={product.id} className='border-b'>
+                      <td className='p-3'>{product.name}</td>
+                      <td className='p-3'>{product.sales}</td>
+                      <td className='p-3'>${product.revenue.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

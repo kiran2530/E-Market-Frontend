@@ -31,6 +31,7 @@ const Dashboard = () => {
 
   const fetchVendorData = async () => {
     // Get the vendor's auth token from localStorage
+    setLoading(true)
     const authToken = localStorage.getItem('authToken')
 
     if (!authToken) {
@@ -58,7 +59,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Error fetching vendor data:', error)
     } finally {
-      setLoading(false)
+      // setLoading(false)
     }
   }
 
@@ -155,7 +156,10 @@ const Dashboard = () => {
         </button>
         <div className=''>
           <Routes>
-            <Route path='' element={<VendorHome vendorData={vendorData} />} />
+            <Route
+              path=''
+              element={<VendorHome vendorData={vendorData} loading={loading} />}
+            />
             <Route path='products' element={<ProductListing />} />
             <Route path='add-product' element={<AddProduct />} />
             <Route path='analytics' element={<Analytics />} />
