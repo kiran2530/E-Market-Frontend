@@ -95,7 +95,7 @@ const Analytics = () => {
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 1 }}
         className='max-w-7xl mx-auto bg-gray-100  sm:p-8 py-4 px-2'
       >
         <h1 className='text-3xl font-bold mb-6 text-center text-gray-800'>
@@ -103,22 +103,12 @@ const Analytics = () => {
         </h1>
 
         <AnimatePresence>
-          {isLoading ? (
-            <motion.div
-              key='loading'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className='flex justify-center items-center h-20'
-            >
-              <div className='animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900'></div>
-            </motion.div>
-          ) : (
+          {
             <motion.div
               key='content'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 1 }}
             >
               <div className='grid grid-cols-3 gap-4 sm:gap-8 sm:mb-8 sm:px-10 px-4 mb-4'>
                 {metricButtons.map(metric => (
@@ -215,7 +205,7 @@ const Analytics = () => {
                 </div>
               </motion.div>
             </motion.div>
-          )}
+          }
         </AnimatePresence>
       </motion.div>
     </div>

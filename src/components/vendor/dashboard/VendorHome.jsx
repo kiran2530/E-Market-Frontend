@@ -100,34 +100,45 @@ const VendorHome = ({ vendorData, loading }) => {
 
       {/* Info Cards */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
-        <InfoCard
-          icon={<DollarSign size={24} />}
-          title='Total Sales'
-          value={`$${salesData.totalSales.toLocaleString()}`}
-          trend={8.2}
-          color='#4CAF50'
-        />
-        <InfoCard
-          icon={<ShoppingCart size={24} />}
-          title='Orders Pending'
-          value={salesData.ordersPending}
-          trend={-2.5}
-          color='#FFC107'
-        />
-        <InfoCard
-          icon={<Package size={24} />}
-          title='Products Listed'
-          value={salesData.productsListed}
-          trend={5.1}
-          color='#2196F3'
-        />
-        <InfoCard
-          icon={<BarChartIcon size={24} />}
-          title='Avg. Rating'
-          value={salesData.averageRating.toFixed(1)}
-          trend={0.3}
-          color='#9C27B0'
-        />
+        {loading ? (
+          <>
+            <SkeletonLoader className='h-32' />
+            <SkeletonLoader className='h-32' />
+            <SkeletonLoader className='h-32' />
+            <SkeletonLoader className='h-32' />
+          </>
+        ) : (
+          <>
+            <InfoCard
+              icon={<DollarSign size={24} />}
+              title='Total Sales'
+              value={`$${salesData.totalSales.toLocaleString()}`}
+              trend={8.2}
+              color='#4CAF50'
+            />
+            <InfoCard
+              icon={<ShoppingCart size={24} />}
+              title='Orders Pending'
+              value={salesData.ordersPending}
+              trend={-2.5}
+              color='#FFC107'
+            />
+            <InfoCard
+              icon={<Package size={24} />}
+              title='Products Listed'
+              value={salesData.productsListed}
+              trend={5.1}
+              color='#2196F3'
+            />
+            <InfoCard
+              icon={<BarChartIcon size={24} />}
+              title='Avg. Rating'
+              value={salesData.averageRating.toFixed(1)}
+              trend={0.3}
+              color='#9C27B0'
+            />
+          </>
+        )}
       </div>
 
       {/* Chart Section */}
