@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import styles from './Modal.module.css'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 import alertContext from '../../../context/alert/alertContext'
+import { X } from 'lucide-react'
 
 const LoginModal = ({ onClose, onLogin }) => {
   // --------- Veriables, state and hooks declarations --------
@@ -23,6 +24,10 @@ const LoginModal = ({ onClose, onLogin }) => {
 
   // handleLogin function handle the login functionality.
   const handleLogin = async userRole => {
+    if (loginDetails.email === '' || loginDetails.password === '') {
+      showAlert("Enter Correct Email I'd & Password", 'warning')
+      return
+    }
     setIsLoading(true)
     let url = ''
     if (userRole === 'vendor') {
@@ -66,9 +71,21 @@ const LoginModal = ({ onClose, onLogin }) => {
   return (
     <div className={styles.modal}>
       <div className={styles.modalContent}>
-        <h2>Login</h2>
+        <h1 className='text-3xl mb-4 text-center font-bold'>LOGIN</h1>
+
+        <button
+          onClick={onClose}
+          className='absolute p-1 rounded-full bg-gray-200 hover:bg-gray-400 focus:outline-none top-2 right-2'
+          aria-label='Close'
+        >
+          <X className='w-6 h-6 text-red-600' />
+        </button>
+
         <form onSubmit={e => e.preventDefault()}>
           <div className={styles.inputGroup}>
+            <label htmlFor='' className='text-lg font-semibold'>
+              Email
+            </label>
             <input
               type='text'
               placeholder='Email'
@@ -80,6 +97,9 @@ const LoginModal = ({ onClose, onLogin }) => {
             />
           </div>
           <div className={styles.inputGroup}>
+            <label htmlFor='' className='text-lg font-semibold'>
+              Password
+            </label>
             <input
               type='password'
               placeholder='Password'
@@ -90,36 +110,35 @@ const LoginModal = ({ onClose, onLogin }) => {
               required
             />
           </div>
-          <button
-            className={
-              !isLoading
-                ? styles.modalButton
-                : 'bg-red-400 py-2 rounded my-2 cursor-wait'
-            }
-            onClick={() => {
-              setRole('buyer')
-              handleLogin('buyer')
-            }}
-          >
-            Login as Buyer
-          </button>
-          <button
-            className={
-              !isLoading
-                ? styles.modalButton
-                : 'bg-red-400 py-2 rounded my-2 cursor-wait'
-            }
-            onClick={() => {
-              setRole('vendor')
-              handleLogin('vendor')
-            }}
-            disabled={isLoading}
-          >
-            Login as Vendor
-          </button>
-          <button onClick={onClose} className={styles.modalCloseButton}>
-            Close
-          </button>
+          <div className='flex' >
+            <button
+              className={
+                !isLoading
+                  ? styles.modalButton
+                  : 'bg-red-400 py-2 rounded my-2 cursor-wait'
+              }
+              onClick={() => {
+                setRole('buyer')
+                handleLogin('buyer')
+              }}
+            >
+              Login as Buyer
+            </button>
+            <button
+              className={
+                !isLoading
+                  ? styles.modalButton
+                  : 'bg-red-400 py-2 rounded my-2 cursor-wait'
+              }
+              onClick={() => {
+                setRole('vendor')
+                handleLogin('vendor')
+              }}
+              disabled={isLoading}
+            >
+              Login as Vendor
+            </button>
+          </div>
         </form>
       </div>
     </div>

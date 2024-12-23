@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import styles from './Modal.module.css'
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import alertContext from '../../../context/alert/alertContext'
 
 const SignupModal = ({ onClose, onSignup }) => {
   // --------- Veriables, state and hooks declarations --------
@@ -19,7 +20,7 @@ const SignupModal = ({ onClose, onSignup }) => {
   //   let navigate = useNavigate()
 
   // use alertCotext using useContext hook to show alert message
-  //   const { showAlert } = useContext(alertContext)
+    const { showAlert } = useContext(alertContext)
 
   // ---------------------- Functions ------------------------
   // onchange function handles inputs and set the userDetails state

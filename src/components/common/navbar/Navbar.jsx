@@ -21,8 +21,8 @@ const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showSignupModal, setShowSignupModal] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-// use alertCotext using useContext hook to show alert message
-const { showAlert } = useContext(alertContext)
+  // use alertCotext using useContext hook to show alert message
+  const { showAlert } = useContext(alertContext)
 
   let navigate = useNavigate()
 
@@ -42,6 +42,8 @@ const { showAlert } = useContext(alertContext)
     setUserRole(role)
     setShowLoginModal(false)
     setIsMobileMenuOpen(false)
+    if (role == 'buyer') navigate('/shop')
+    else if (role == 'vendor') navigate('/dashboard')
   }
 
   const handleSignup = role => {

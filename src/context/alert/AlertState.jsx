@@ -6,15 +6,15 @@ const alertState = props => {
 
   const [alert, setAlert] = useState()
 
-  const showAlert = (massage, type) => {
+  const showAlert = (message, type) => {
     setAlert({
-      massage: massage,
+      message: message,
       type: type
     })
 
     setTimeout(() => {
       setAlert(null)
-    }, 1500)
+    }, 2000)
   }
 
   return (
