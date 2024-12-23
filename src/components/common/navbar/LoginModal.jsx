@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import styles from './Modal.module.css'
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+import alertContext from '../../../context/alert/alertContext'
 
 const LoginModal = ({ onClose, onLogin }) => {
   // --------- Veriables, state and hooks declarations --------
@@ -9,6 +10,9 @@ const LoginModal = ({ onClose, onLogin }) => {
   const [role, setRole] = useState('')
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
+
+  // use alertCotext using useContext hook to show alert message
+  const { showAlert } = useContext(alertContext)
 
   // ---------------------- Functions ------------------------
 
@@ -46,14 +50,15 @@ const LoginModal = ({ onClose, onLogin }) => {
         localStorage.setItem('authToken', tokenData.authToken)
         localStorage.setItem('role', tokenData.role)
         // console.log('Login Successfully')
-        console.log(tokenData)
+        showAlert('Login Successfully', 'success')
         setLoginDetails({})
         onLogin(userRole)
       } else {
         console.log(tokenData.message)
+        showAlert(tokenData.message, 'danger')
       }
     } catch (err) {
-      console.log('Internal server error')
+      showAlert('Internal server error', 'danger')
     } finally {
       setIsLoading(false)
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   ShoppingCart,
@@ -13,6 +13,7 @@ import {
 import styles from './Navbar.module.css'
 import LoginModal from './LoginModal' // import the LoginModal component
 import SignupModal from './SignupModal' // import the SignupModal component
+import alertContext from '../../../context/alert/alertContext'
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -20,11 +21,12 @@ const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showSignupModal, setShowSignupModal] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+// use alertCotext using useContext hook to show alert message
+const { showAlert } = useContext(alertContext)
 
   let navigate = useNavigate()
 
   useEffect(() => {
-    console.log('fetching')
     checkLogin()
   }, [])
 
@@ -55,6 +57,7 @@ const Navbar = () => {
     localStorage.removeItem('authToken')
     localStorage.removeItem('role')
     navigate('/')
+    showAlert('Logout Successfully', 'success')
   }
 
   const toggleMobileMenu = () => {

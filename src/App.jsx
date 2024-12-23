@@ -10,24 +10,29 @@ import Dashboard from './components/vendor/dashboard/Dashboard'
 import MyOrders from './components/buyer/myOrders/MyOrders'
 import Profile from './components/common/profile/Profile'
 import Footer from './components/common/footer/Footer'
+import AlertState from './context/alert/AlertState'
+import Alert from './components/common/alert/Alert'
 
 const App = () => {
   return (
-    <Router>
-      <div className='app'>
-        <Navbar />
-        <Routes>
-          <Route exact path='/' element={<Home />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/shop' element={<Shop />} />
-          <Route path='/orders' element={<MyOrders />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/dashboard/*' element={<Dashboard />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <AlertState>
+      <Router>
+        <div className='app'>
+          <Navbar />
+          <Alert />
+          <Routes>
+            <Route exact path='/' element={<Home />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/shop' element={<Shop />} />
+            <Route path='/orders' element={<MyOrders />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/dashboard/*' element={<Dashboard />} />
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
+    </AlertState>
   )
 }
 
