@@ -163,6 +163,7 @@ const Navbar = () => {
         <LoginModal
           onClose={() => setShowLoginModal(false)}
           onLogin={handleLogin}
+          setShowSignupModal={setShowSignupModal}
         />
       )}
 
@@ -170,6 +171,7 @@ const Navbar = () => {
         <SignupModal
           onClose={() => setShowSignupModal(false)}
           onSignup={handleSignup}
+          setShowLoginModal={setShowLoginModal}
         />
       )}
     </nav>

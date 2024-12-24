@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Filter, ChevronDown, Check } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import Loader from '../../common/loader/Loader'
 import stateData from '../../../data/states.json'
 import districtData from '../../../data/districts.json'
+import alertContext from '../../../context/alert/alertContext'
+
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Shop = () => {
@@ -39,6 +42,12 @@ const Shop = () => {
   // state for loader
   const [isLoading, setLoading] = useState(false)
 
+  let navigate = useNavigate()
+
+  // use alertCotext using useContext hook to show alert message
+  const { showAlert } = useContext(alertContext)
+
+  // Data for options
   const categories = [
     'All',
     'Fruits',
@@ -60,7 +69,7 @@ const Shop = () => {
   ]
 
   useEffect(() => {
-    console.log('fetching')
+    checkLogin()
     fetchProducts()
     fetchStates()
   }, [])
@@ -80,6 +89,13 @@ const Shop = () => {
   //     setVillages([])
   //   }
   // }, [tempState, tempDistrict])
+
+  const checkLogin = () => {
+    if (!localStorage.getItem('authToken')) {
+      navigate('/')
+      showAlert('Please Login First', 'danger')
+    }
+  }
 
   const fetchProducts = async () => {
     try {

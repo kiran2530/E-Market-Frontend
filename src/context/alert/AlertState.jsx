@@ -4,7 +4,7 @@ import alertContext from './alertContext'
 const alertState = props => {
   // the alert structure is alert = {massage: "", type:""}
 
-  const [alert, setAlert] = useState()
+  const [alert, setAlert] = useState(null)
 
   const showAlert = (message, type) => {
     setAlert({

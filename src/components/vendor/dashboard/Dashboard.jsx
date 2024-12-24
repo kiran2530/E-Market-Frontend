@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, Routes, Route, useLocation } from 'react-router-dom'
+import { Link, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import {
   Package,
   PlusCircle,
@@ -25,9 +25,18 @@ const Dashboard = () => {
   const [isMobile, setIsMobile] = useState(false)
   const location = useLocation()
 
+  let navigate = useNavigate()
+
   useEffect(() => {
+    checkLogin()
     fetchVendorData()
   }, [])
+
+  const checkLogin = () => {
+    if (!localStorage.getItem('authToken')) {
+      navigate('/')
+    }
+  }
 
   const fetchVendorData = async () => {
     // Get the vendor's auth token from localStorage
