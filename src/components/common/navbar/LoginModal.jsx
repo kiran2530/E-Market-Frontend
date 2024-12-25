@@ -24,9 +24,9 @@ const LoginModal = ({ onClose, onLogin, setShowSignupModal }) => {
   }
 
   // fuction for checking mail
-  function isEmail(input) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(input);
+  function isEmail (input) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(input)
   }
 
   // handleLogin function handle the login functionality.
@@ -80,9 +80,9 @@ const LoginModal = ({ onClose, onLogin, setShowSignupModal }) => {
         role === 'buyer' ? 'bg-blue-500' : 'bg-green-500'
       } bg-opacity-80 flex justify-center items-center`}
     >
-      <div className='bg-white px-10 py-6 min-w-80 max-w-lg sm:max-w-xl relative rounded-2xl'>
+      <div className='bg-white px-10 py-6 min-w-[340px] max-w-lg sm:max-w-xl relative rounded-2xl'>
         <h1
-          className={`mt-4 mx-10 sm:mx-14 text-2xl text-center font-bold ${
+          className={`mt-4 w-full text-2xl text-center font-bold ${
             role === 'buyer'
               ? 'text-blue-700 rounded-full bg-gray-200 px-4 py-1'
               : 'text-green-700 rounded-full bg-gray-200 px-4 py-1'
@@ -96,7 +96,7 @@ const LoginModal = ({ onClose, onLogin, setShowSignupModal }) => {
               role === 'buyer'
                 ? 'text-green-600 hover:text-green-700 border-b border-transparent hover:border-b hover:border-green-500'
                 : 'text-blue-500 hover:text-blue-600 border-b border-transparent hover:border-b hover:border-blue-500'
-            } text-xs sm:text-sm`}
+            } text-xs`}
             onClick={() => {
               if (role === 'buyer') setRole('vendor')
               else setRole('buyer')
@@ -156,7 +156,7 @@ const LoginModal = ({ onClose, onLogin, setShowSignupModal }) => {
               Forgot Password?
             </a>
           </div>
-          <div className='flex mt-4'>
+          <div className='flex mt-8'>
             <button
               className={`text-lg font-semibold text-white p-2 w-full rounded-full ${
                 role === 'buyer' ? 'bg-blue-600' : 'bg-green-600'
@@ -181,7 +181,7 @@ const LoginModal = ({ onClose, onLogin, setShowSignupModal }) => {
             </button>
           </div>
         </form>
-        <div className='w-full border-t border-black mt-4'></div>
+        <div className='w-full border-t border-black mt-2'></div>
         <div className='flex justify-center pt-1'>
           <button
             className={`${

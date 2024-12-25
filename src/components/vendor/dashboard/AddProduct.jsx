@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { motion } from 'framer-motion'
 import stateData from '../../../data/states.json'
 import cityData from '../../../data/districts.json'
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import alertContext from '../../../context/alert/alertContext'
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 export default function AddProductForm () {
   const [isLoading, setIsLoading] = useState(false)
-  const [message, setMessage] = useState('')
 
   // Dummy data for dropdowns
   const countries = ['India']
@@ -16,44 +17,38 @@ export default function AddProductForm () {
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedState, setSelectedState] = useState('')
 
+  // use alertCotext using useContext hook to show alert message
+  const { showAlert } = useContext(alertContext)
+
   const handleSubmit = async e => {
     e.preventDefault()
     setIsLoading(true)
-    setMessage('')
 
     const form = e.currentTarget
     const formData = new FormData(form)
 
     try {
-      const response = await fetch(
-        `${backendUrl}/api/product/vendor/create`,
-        {
-          method: 'POST',
-          headers: {
-            authToken: localStorage.getItem('authToken')
-          },
-          body: formData
-        }
-      )
+      const response = await fetch(`${backendUrl}/api/product/vendor/create`, {
+        method: 'POST',
+        headers: {
+          authToken: localStorage.getItem('authToken')
+        },
+        body: formData
+      })
 
       const data = await response.json()
       console.log('Response:', data)
 
       if (data.success) {
-        setMessage(data.message || 'Product added successfully')
         form.reset()
         setSelectedCountry('')
         setSelectedState('')
+        showAlert(data.message, 'success')
       } else {
-        throw new Error(data.message || 'Failed to add product')
+        showAlert(data.message, 'danger')
       }
     } catch (error) {
-      console.error('Error adding product:', error)
-      setMessage(
-        error instanceof Error
-          ? error.message
-          : 'Failed to add product. Please try again.'
-      )
+      showAlert(data.message || 'Error adding Product', 'danger')
     } finally {
       setIsLoading(false)
     }
@@ -67,8 +62,8 @@ export default function AddProductForm () {
         transition={{ duration: 0.5 }}
         className='bg-white bg-opacity-90 backdrop-blur-md rounded-lg shadow-xl p-8 w-full max-w-4xl'
       >
-        <h2 className='text-3xl font-bold text-center mb-6 text-gray-800'>
-          Add New Product
+        <h2 className='text-3xl font-bold text-center mb-5 text-black bg-gray-100 p-2 rounded-full'>
+          Add Product
         </h2>
         <form onSubmit={handleSubmit} className='space-y-6'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
@@ -134,11 +129,12 @@ export default function AddProductForm () {
                 className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               >
                 <option value=''>Select category</option>
-                <option value='electronics'>Crops</option>
-                <option value='clothing'>Fruits</option>
-                <option value='books'>Flowers</option>
-                <option value='home'>Vegetables</option>
-                <option value='beauty'>Beauty & Personal Care</option>
+                <option value='Crops'>Crops</option>
+                <option value='Fruits'>Fruits</option>
+                <option value='Flowers'>Flowers</option>
+                <option value='Vegetables'>Vegetables</option>
+                <option value='Meat'>Meat</option>
+                <option value='Grains'>Grains</option>
               </select>
             </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
@@ -297,25 +293,23 @@ export default function AddProductForm () {
             whileTap={{ scale: 0.95 }}
             type='submit'
             disabled={isLoading}
-            className='w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition duration-150 ease-in-out'
+            className='w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition duration-150 ease-in-out flex justify-center'
           >
-            {isLoading ? 'Adding Product...' : 'Add Product'}
+            {isLoading ? (
+              <motion.div
+                className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: 'linear'
+                }}
+              />
+            ) : (
+              'Add Product'
+            )}
           </motion.button>
         </form>
-        {message && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className={`mt-4 text-center ${
-              message.includes('successfully')
-                ? 'text-green-600'
-                : 'text-red-600'
-            }`}
-          >
-            {message}
-          </motion.div>
-        )}
       </motion.div>
     </div>
   )

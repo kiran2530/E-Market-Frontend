@@ -98,9 +98,9 @@ const SignupModal = ({ onClose, onSignup, setShowLoginModal }) => {
         role === 'buyer' ? 'bg-blue-500' : 'bg-green-500'
       } bg-opacity-80 flex justify-center items-center`}
     >
-      <div className='bg-white px-10 py-6 min-w-80 max-w-lg sm:max-w-xl relative rounded-2xl'>
+      <div className='bg-white px-10 py-6 min-w-[340px] max-w-lg sm:max-w-xl relative rounded-2xl'>
         <h1
-          className={`mt-4 mx-10 sm:mx-14 text-2xl text-center font-bold ${
+          className={`mt-4 w-full px-10 text-2xl text-center font-bold ${
             role === 'buyer'
               ? 'text-blue-700 rounded-full bg-gray-200 px-4 py-1'
               : 'text-green-700 rounded-full bg-gray-200 px-4 py-1'
@@ -202,7 +202,7 @@ const SignupModal = ({ onClose, onSignup, setShowLoginModal }) => {
             />{' '}
             Show Password
           </div>
-          <div className='flex mt-4'>
+          <div className='flex mt-6'>
             <button
               className={`text-lg font-semibold text-white p-2 w-full rounded-full ${
                 role === 'buyer' ? 'bg-blue-600' : 'bg-green-600'
@@ -228,7 +228,7 @@ const SignupModal = ({ onClose, onSignup, setShowLoginModal }) => {
           </div>
         </form>
 
-        <div className='w-full border-t border-black mt-4'></div>
+        <div className='w-full border-t border-black mt-2'></div>
 
         <div className='flex justify-center pt-1'>
           <button

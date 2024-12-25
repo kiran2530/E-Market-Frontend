@@ -8,7 +8,7 @@ import stateData from '../../../data/states.json'
 import districtData from '../../../data/districts.json'
 import alertContext from '../../../context/alert/alertContext'
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 const Shop = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -50,12 +50,10 @@ const Shop = () => {
   // Data for options
   const categories = [
     'All',
-    'Fruits',
-    'Vegetables',
-    'Dairy',
     'Crops',
+    'Fruits',
+    'Flowers',
     'Meat',
-    'Sweeteners',
     'Grains'
   ]
   const harvestingStatuses = [
@@ -94,15 +92,18 @@ const Shop = () => {
     if (!localStorage.getItem('authToken')) {
       navigate('/')
       showAlert('Please Login First', 'danger')
+      return
+    }
+    if (localStorage.getItem('role') !== 'buyer') {
+      navigate('/')
+      showAlert('You are not a Buyer. Please login as Buyer!', 'danger')
     }
   }
 
   const fetchProducts = async () => {
     try {
       setLoading(true)
-      const response = await fetch(
-        `${backendUrl}/api/product/buyer/products`
-      )
+      const response = await fetch(`${backendUrl}/api/product/buyer/products`)
       const data = await response.json()
       setProducts(data)
     } catch (error) {

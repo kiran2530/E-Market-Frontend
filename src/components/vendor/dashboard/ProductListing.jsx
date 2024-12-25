@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import VendorProductCard from './VendorProductCard'
 import Loader from '../../common/loader/Loader'
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 const ProductListing = () => {
   const [products, setProducts] = useState([])
@@ -30,7 +30,7 @@ const ProductListing = () => {
       const data = await response.json()
 
       if (data.success) {
-        setProducts(data.product)
+        setProducts(data.product.reverse())
       }
     } catch (error) {
       console.error('Error fetching product:', error)
