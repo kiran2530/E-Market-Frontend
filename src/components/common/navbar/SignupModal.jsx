@@ -86,7 +86,7 @@ const SignupModal = ({ onClose, onSignup, setShowLoginModal }) => {
         showAlert(tokenData.message, 'warning')
       }
     } catch (err) {
-      showAlert(tokenData.message, 'danger')
+      showAlert('Internal server error', 'danger')
     } finally {
       setIsLoading(false)
     }
