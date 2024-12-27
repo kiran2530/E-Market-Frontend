@@ -9,14 +9,14 @@ const ProductCard = ({ product }) => {
 
   return (
     <motion.div
-      className='bg-white rounded-lg shadow-md overflow-hidden'
+      className='bg-white overflow-hidden border-2 border-gray-300'
       whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
     >
       <div className='relative pb-[75%] bg-gray-100'>
         <img
           src={product.image.imageUrl}
           alt={product.name}
-          className={`absolute top-0 left-0 w-full h-full object-contain`}
+          className={`absolute top-0 left-0 w-full h-full object-cover p-1`}
         />
         <motion.button
           className='absolute top-2 right-2 p-2 bg-white rounded-full text-gray-600 hover:text-red-500'
