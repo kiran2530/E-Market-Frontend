@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
   return (
     <motion.div
       className='bg-white overflow-hidden border-2 border-gray-300'
-      whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+      whileHover={{ y: -1, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
     >
       <div className='relative pb-[75%] bg-gray-100'>
         <img
@@ -23,18 +23,18 @@ const ProductCard = ({ product }) => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          <Heart size={20} />
+          <Heart size={18} />
         </motion.button>
-        <div className='absolute bottom-2 left-2 bg-white px-2 py-1 rounded-full text-sm font-semibold text-gray-700'>
+        <div className='absolute bottom-2 left-2 bg-white px-2 py-1 rounded-full text-xs font-semibold text-gray-700'>
           {product.category}
         </div>
       </div>
-      <div className='p-4'>
+      <div className='px-2 pb-2'>
         <div className='flex justify-between'>
-          <h3 className='text-lg font-semibold text-gray-800 mb-2 truncate'>
+          <h3 className='text-lg font-semibold text-gray-800 truncate'>
             {product.name}
           </h3>
-          <div className='flex items-center mb-2'>
+          <div className='flex items-center'>
             <div className='flex items-center'>
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -53,20 +53,17 @@ const ProductCard = ({ product }) => {
             </span> */}
           </div>
         </div>
-        <p className='text-gray-600 text-xs mb-3 line-clamp-2'>
-        {product.country}, {product.city}, {product.state}
-        </p>
-        {/* <div className='flex items-center text-xs text-gray-500 mb-1'>
+        <p className='flex items-center text-gray-600 text-xs mb-1 line-clamp-2'>
           <MapPin size={12} className='mr-1' />
-          {product.village}, {product.district}, {product.state}
-        </div> */}
-        <div className='flex items-center text-xs text-gray-500 mb-3'>
+          {product.city}, {product.state}
+        </p>
+        <div className='flex items-center text-xs text-gray-500 mb-1'>
           <Clock size={12} className='mr-1' />
           {product.status}
         </div>
         <div className='flex items-center justify-between'>
           <span className='text-lg font-bold text-gray-800'>
-            ${product.price.toFixed(2)}
+            ₹ {product.price.toFixed(2)} 
           </span>
           <motion.button
             className='flex items-center justify-center bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 text-sm'

@@ -48,14 +48,7 @@ const Shop = () => {
   const { showAlert } = useContext(alertContext)
 
   // Data for options
-  const categories = [
-    'All',
-    'Crops',
-    'Fruits',
-    'Flowers',
-    'Meat',
-    'Grains'
-  ]
+  const categories = ['All', 'Crops', 'Fruits', 'Flowers', 'Meat', 'Grains']
   const harvestingStatuses = [
     'All',
     'Ready',
@@ -160,9 +153,10 @@ const Shop = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className='container mx-auto px-1 sm:px-2 py-8'>
-          <div className='flex flex-col md:flex-row justify-between items-start mb-8 relative'>
-            <div className='w-full md:w-64 mb-4 md:mb-0'>
+        <>
+          {' '}
+          <div className='flex justify-between items-start z-10 w-full fixed pl-2 pr-3 py-1 bg-white bg-opacity-30 backdrop-blur-md'>
+            <div className='w-56 sm:w-72'>
               <div className='relative'>
                 <input
                   type='text'
@@ -177,7 +171,7 @@ const Shop = () => {
                 />
               </div>
             </div>
-            <div className='w-full md:w-auto relative'>
+            <div className='w-auto relative'>
               <motion.button
                 className='flex items-center justify-between w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300'
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -326,23 +320,24 @@ const Shop = () => {
               </AnimatePresence>
             </div>
           </div>
-
-          <motion.div
-            className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2'
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {filteredProducts.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </motion.div>
-          {filteredProducts.length === 0 && !isLoading && (
-            <p className='text-center text-gray-600 mt-8'>
-              No products found. Try adjusting your search or filters.
-            </p>
-          )}
-        </div>
+          <div className='px-1 sm:px-2 py-2 mt-12'>
+            <motion.div
+              className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2'
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {filteredProducts.map(product => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </motion.div>
+            {filteredProducts.length === 0 && !isLoading && (
+              <p className='text-center text-gray-600 mt-8'>
+                No products found. Try adjusting your search or filters.
+              </p>
+            )}
+          </div>
+        </>
       )}
     </>
   )
