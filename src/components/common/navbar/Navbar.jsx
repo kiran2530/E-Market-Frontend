@@ -75,7 +75,7 @@ const Navbar = () => {
       <div className={styles.navbarContent}>
         <div className={styles.logoAndToggle}>
           <Link to='/' className={styles.logo}>
-            <span>E-Market</span>
+            <span><img src='/images/companyLogo.png' alt='' className='w-16' /></span>
           </Link>
           <button
             className={styles.mobileMenuToggle}
@@ -90,9 +90,6 @@ const Navbar = () => {
             isMobileMenuOpen ? styles.mobileMenuOpen : ''
           }`}
         >
-          <li onClick={toggleMobileMenu}>
-            <Link to='/'>Home</Link>
-          </li>
           <li onClick={toggleMobileMenu}>
             <Link to='/about'>About</Link>
           </li>

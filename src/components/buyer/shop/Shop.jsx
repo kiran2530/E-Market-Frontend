@@ -98,7 +98,7 @@ const Shop = () => {
       setLoading(true)
       const response = await fetch(`${backendUrl}/api/product/buyer/products`)
       const data = await response.json()
-      setProducts(data)
+      setProducts(data.reverse())
     } catch (error) {
       console.error('Error fetching product:', error)
       setProducts([])
