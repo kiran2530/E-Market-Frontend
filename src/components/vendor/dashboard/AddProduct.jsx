@@ -28,6 +28,8 @@ export default function AddProductForm () {
     const formData = new FormData(form)
 
     try {
+      console.log(formData)
+
       const response = await fetch(`${backendUrl}/api/product/vendor/create`, {
         method: 'POST',
         headers: {
@@ -82,38 +84,92 @@ export default function AddProductForm () {
                 className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
               />
             </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
-              <label
-                htmlFor='price'
-                className='block text-sm font-medium text-gray-700'
-              >
-                Price
-              </label>
-              <input
-                type='number'
-                id='price'
-                name='price'
-                required
-                min='0'
-                step='0.01'
-                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
-              />
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className=' flex gap-2 justify-center items-center'
+            >
+              <div>
+                <label
+                  htmlFor='price'
+                  className=' text-sm font-medium text-gray-700'
+                >
+                  Price
+                </label>
+                <input
+                  type='number'
+                  id='price'
+                  name='price'
+                  required
+                  min='0'
+                  step='0.01'
+                  className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-1'
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor='priceCategory'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Price Category
+                </label>
+                <select
+                  id='priceCategory'
+                  name='priceCategory'
+                  required
+                  className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-1'
+                >
+                  <option value=''>Select Price Category</option>
+                  <option value='Item'>Per Item</option>
+                  <option value='Kg'>Per Kg</option>
+                  <option value='100Kg'>Per Quintal(100Kg)</option>
+                  <option value='L'>Per Liter</option>
+                  <option value='Box'>Per Box</option>
+                  <option value='Dozen'>Per Dozen</option>
+                </select>
+              </div>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
-              <label
-                htmlFor='quantity'
-                className='block text-sm font-medium text-gray-700'
-              >
-                Quantity
-              </label>
-              <input
-                type='number'
-                id='quantity'
-                name='quantity'
-                required
-                min='0'
-                className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
-              />
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className=' flex gap-2 justify-center items-center'
+            >
+              <div>
+                <label
+                  htmlFor='quantity'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Quantity
+                </label>
+                <input
+                  type='number'
+                  id='quantity'
+                  name='quantity'
+                  required
+                  min='0'
+                  className='mt-1 block w-full rounded-md border border-black shadow-sm focus:ring focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-1'
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor='quantityCategory'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Price Category
+                </label>
+                <select
+                  id='quantityCategory'
+                  name='quantityCategory'
+                  required
+                  className='mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-1'
+                >
+                  <option value=''>Select Quantity Category</option>
+                  <option value='Item'>Item</option>
+                  <option value='Kg'>Kg</option>
+                  <option value='100Kg'>Quintal(100Kg)</option>
+                  <option value='L'>Liter</option>
+                  <option value='Box'>Box</option>
+                  <option value='Dozen'>Dozen</option>
+                </select>
+              </div>
             </motion.div>
             <motion.div whileHover={{ scale: 1.02 }} className='space-y-2'>
               <label
@@ -200,7 +256,7 @@ export default function AddProductForm () {
               htmlFor='image'
               className='block text-sm font-medium text-gray-700'
             >
-              Product Image
+              Product Image (Upload image in 3:2 ratio for better view)
             </label>
             <input
               type='file'

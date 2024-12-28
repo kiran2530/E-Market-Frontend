@@ -9,7 +9,6 @@ const ProductListing = () => {
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
-    console.log('fetching')
     fetchProducts()
   }, [])
 
@@ -55,9 +54,9 @@ const ProductListing = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className='container mx-auto px-4 sm:px-2 '>
+        <div className='mx-auto sm:px-2'>
           <h2 className='text-2xl font-bold mb-4'>Your Products</h2>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2'>
             {products.map(product => (
               <VendorProductCard
                 key={product.id}
@@ -67,6 +66,9 @@ const ProductListing = () => {
               />
             ))}
           </div>
+          {products.length === 0 && (
+            <>You Don't Have Any product. Sell your Product on E-Market</>
+          )}
         </div>
       )}
     </>

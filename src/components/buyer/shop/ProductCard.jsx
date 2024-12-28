@@ -62,9 +62,18 @@ const ProductCard = ({ product }) => {
           {product.status}
         </div>
         <div className='flex items-center justify-between'>
-          <span className='text-lg font-bold text-gray-800'>
-            ₹ {product.price.toFixed(2)} 
-          </span>
+          <div>
+            <span className='text-lg font-bold text-gray-800'>
+              ₹{' '}
+              {product.price % 1 === 0
+                ? product.price
+                : product.price.toFixed(2)}
+              /
+            </span>
+            <span className='text-sm font-bold text-gray-800'>
+              {product.priceCategory}
+            </span>
+          </div>
           <motion.button
             className='flex items-center justify-center bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 text-sm'
             whileHover={{ scale: 1.05 }}

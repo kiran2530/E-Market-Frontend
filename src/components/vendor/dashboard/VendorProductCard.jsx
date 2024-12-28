@@ -12,21 +12,21 @@ const VendorProductCard = ({ product, onEdit, onDelete }) => {
   }
 
   return (
-    <div className='bg-white rounded-lg shadow-md p-4'>
+    <div className='bg-white border-2 border-gray-300 shadow-md'>
       <ProductCard product={product} />
-      <div className='flex justify-between mt-6'>
+      <div className='flex justify-between px-2 mb-2'>
         <button
           onClick={() => setIsModalOpen(true)}
-          className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
+          className='bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm flex items-center'
         >
-          <Edit size={18} className='inline mr-2' />
+          <Edit size={16} className='mr-1' />
           Edit
         </button>
         <button
           onClick={() => onDelete(product._id)}
-          className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600'
+          className='bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-sm flex items-center'
         >
-          <Trash2 size={18} className='inline mr-2' />
+          <Trash2 size={18} className='mr-1' />
           Delete
         </button>
       </div>
