@@ -71,7 +71,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className='sticky top-0 z-50 shadow-md text-black bg-white bg-opacity-30 backdrop-blur-md'>
+    <nav className='sticky top-0 z-50 shadow-md text-black bg-white bg-opacity-30 backdrop-blur-md pt-1'>
       <div className={styles.navbarContent}>
         <div className={styles.logoAndToggle}>
           <Link to='/' className={styles.logo}>

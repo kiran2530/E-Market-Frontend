@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   BarChartIcon,
   DollarSign,
@@ -23,17 +23,23 @@ import {
 } from 'recharts'
 import SkeletonLoader from '../../loader/SkeletoLoader'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+
 const VendorHome = ({ vendorData, loading }) => {
-  const [selectedPeriod, setSelectedPeriod] = React.useState('weekly')
+  const [selectedPeriod, setSelectedPeriod] = useState('weekly')
+  const [salesData, setSalesData] = useState({
+    totalSale: { totalCount: 0, percentage: 100 },
+    ordersPending: { totalCount: 0, percentage: 100 },
+    productsList: { totalCount: 0, percentage: 100 },
+    averageRating: 0
+  })
+  const [isSalesDataFetching, setIsSalesDataFetching] = useState(false)
 
-  // Mock data for demonstration
-  const salesData = {
-    totalSales: 15780,
-    ordersPending: 23,
-    productsListed: 45,
-    averageRating: 4.7
-  }
+  useEffect(() => {
+    fetchDashboardData()
+  }, [selectedPeriod])
 
+  /*
   const recentOrders = [
     { id: '1001', customer: 'Alice Johnson', total: 129.99, status: 'Shipped' },
     { id: '1002', customer: 'Bob Smith', total: 79.5, status: 'Processing' },
@@ -54,6 +60,7 @@ const VendorHome = ({ vendorData, loading }) => {
     { id: '4', name: 'Bluetooth Speaker', sales: 75, revenue: 1499.99 },
     { id: '5', name: 'Fitness Tracker', sales: 95, revenue: 1399.99 }
   ]
+  */
 
   const salesChartData = [
     { name: 'Mon', sales: 1000 },
@@ -73,6 +80,43 @@ const VendorHome = ({ vendorData, loading }) => {
   ]
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
+
+  const fetchDashboardData = async () => {
+    setIsSalesDataFetching(true)
+    // Get the vendor's auth token from localStorage
+    const authToken = localStorage.getItem('authToken')
+
+    if (!authToken) {
+      // Handle the case where the token is not available
+      console.error('No auth token found')
+      return
+    }
+
+    try {
+      // Make the API call with the token in the Authorization header
+      const response = await fetch(`${backendUrl}/api/dashboard`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+          period: selectedPeriod
+        })
+      })
+
+      const result = await response.json()
+      if (!result.success) {
+        // Handle any errors with the request
+        throw new Error('Failed to fetch data')
+      }
+      setSalesData(result.salesData)
+    } catch (error) {
+      console.error('Error fetching Dashboard data:', error)
+    } finally {
+      setIsSalesDataFetching(false)
+    }
+  }
 
   return (
     <div className='px-4 pb-6 sm:p-6 lg:p-8 max-w-7xl mx-auto font-sans bg-gray-100'>
@@ -100,7 +144,7 @@ const VendorHome = ({ vendorData, loading }) => {
 
       {/* Info Cards */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
-        {loading ? (
+        {isSalesDataFetching ? (
           <>
             <SkeletonLoader className='h-32' />
             <SkeletonLoader className='h-32' />
@@ -112,29 +156,29 @@ const VendorHome = ({ vendorData, loading }) => {
             <InfoCard
               icon={<DollarSign size={24} />}
               title='Total Sales'
-              value={`$${salesData.totalSales.toLocaleString()}`}
-              trend={8.2}
+              value={salesData.totalSale.totalCount}
+              trend={salesData.totalSale.percentage.toFixed(2)}
               color='#4CAF50'
             />
             <InfoCard
               icon={<ShoppingCart size={24} />}
               title='Orders Pending'
-              value={salesData.ordersPending}
-              trend={-2.5}
+              value={salesData.ordersPending.totalCount}
+              trend={salesData.ordersPending.percentage.toFixed(2)}
               color='#FFC107'
             />
             <InfoCard
               icon={<Package size={24} />}
               title='Products Listed'
-              value={salesData.productsListed}
-              trend={5.1}
+              value={salesData.productsList.totalCount}
+              trend={salesData.productsList.percentage.toFixed(2)}
               color='#2196F3'
             />
             <InfoCard
               icon={<BarChartIcon size={24} />}
               title='Avg. Rating'
               value={salesData.averageRating.toFixed(1)}
-              trend={0.3}
+              // trend={0.3}
               color='#9C27B0'
             />
           </>
@@ -148,7 +192,7 @@ const VendorHome = ({ vendorData, loading }) => {
             Sales Overview
           </h2>
           <div className='h-64 sm:h-80'>
-            {loading ? (
+            {isSalesDataFetching ? (
               <SkeletonLoader className='w-full h-full' />
             ) : (
               <ResponsiveContainer width='100%' height='100%'>
@@ -168,7 +212,7 @@ const VendorHome = ({ vendorData, loading }) => {
             Category Distribution
           </h2>
           <div className='h-64 sm:h-80'>
-            {loading ? (
+            {isSalesDataFetching ? (
               <SkeletonLoader className='w-full h-full' />
             ) : (
               <ResponsiveContainer width='100%' height='100%'>
@@ -194,7 +238,7 @@ const VendorHome = ({ vendorData, loading }) => {
               </ResponsiveContainer>
             )}
           </div>
-          {loading ? (
+          {isSalesDataFetching ? (
             ''
           ) : (
             <div className='absolute top-2 right-4'>
@@ -215,7 +259,7 @@ const VendorHome = ({ vendorData, loading }) => {
       </div>
 
       {/* Recent Orders & Top Products */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+      {/* <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
         <div className='bg-white p-6 rounded-lg shadow-md'>
           <h2 className='text-lg sm:text-xl font-semibold mb-4'>
             Recent Orders
@@ -285,7 +329,7 @@ const VendorHome = ({ vendorData, loading }) => {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -298,14 +342,16 @@ const InfoCard = ({ icon, title, value, trend, color }) => (
     <div>
       <h3 className='text-sm text-gray-600 mb-1'>{title}</h3>
       <p className='text-lg sm:text-2xl font-bold text-gray-800'>{value}</p>
-      <div
-        className={`flex items-center mt-2 ${
-          trend >= 0 ? 'text-green-600' : 'text-red-600'
-        }`}
-      >
-        {trend >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-        <span className='ml-1 text-sm font-medium'>{Math.abs(trend)}%</span>
-      </div>
+      {trend && (
+        <div
+          className={`flex items-center mt-2 ${
+            trend >= 0 ? 'text-green-600' : 'text-red-600'
+          }`}
+        >
+          {trend >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+          <span className='ml-1 text-sm font-medium'>{Math.abs(trend)}%</span>
+        </div>
+      )}
     </div>
   </div>
 )
