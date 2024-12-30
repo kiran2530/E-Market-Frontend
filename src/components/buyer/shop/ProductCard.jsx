@@ -1,16 +1,20 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Star, ShoppingCart, Heart, MapPin, Clock } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const ProductCard = ({ product }) => {
-  // const isChickenImage = product.image.includes(
-  //   'chicken-chefkok-whole-deheus-kidzz.png'
-  // )
+  const navigate = useNavigate()
+
+  const handleProductClick = () => {
+    window.open(`/product/${product._id}`, '_blank')
+  }
 
   return (
     <motion.div
-      className='bg-white overflow-hidden border-2 border-gray-300'
+      className='bg-white overflow-hidden border-2 border-gray-300 cursor-pointer'
       whileHover={{ y: -1, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+      onClick={handleProductClick}
     >
       <div className='relative pb-[75%] bg-gray-100'>
         <img
@@ -22,6 +26,10 @@ const ProductCard = ({ product }) => {
           className='absolute top-2 right-2 p-2 bg-white rounded-full text-gray-600 hover:text-red-500'
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          onClick={e => {
+            e.stopPropagation()
+            // Add to wishlist logic here
+          }}
         >
           <Heart size={18} />
         </motion.button>
@@ -41,16 +49,13 @@ const ProductCard = ({ product }) => {
                   key={i}
                   size={14}
                   className={
-                    i != product.rating
+                    i < product.rating
                       ? 'text-yellow-400 fill-current'
                       : 'text-gray-300'
                   }
                 />
               ))}
             </div>
-            {/* <span className='text-xs text-gray-600 ml-2'>
-              ({product.reviews} reviews)
-            </span> */}
           </div>
         </div>
         <p className='flex items-center text-gray-600 text-xs mb-1 line-clamp-2'>
@@ -73,11 +78,22 @@ const ProductCard = ({ product }) => {
             <span className='text-sm font-bold text-gray-800'>
               {product.priceCategory}
             </span>
+            <div className='text-xs text-gray-500 '>
+              ₹
+              <span className='text-xs text-gray-500 line-through ml-1'>
+                {(product.price * 1.2).toFixed(2)}
+              </span>
+              <span className='text-green-500 ml-1 text-xs'>20% off</span>
+            </div>
           </div>
           <motion.button
             className='flex items-center justify-center bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 text-sm'
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={e => {
+              e.stopPropagation()
+              // Add to cart logic here
+            }}
           >
             <ShoppingCart size={16} className='mr-1' />
             Cart

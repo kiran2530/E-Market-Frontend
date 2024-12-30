@@ -12,6 +12,7 @@ import Profile from './components/common/profile/Profile'
 import Footer from './components/common/footer/Footer'
 import AlertState from './context/alert/AlertState'
 import Alert from './components/common/alert/Alert'
+import ProductDetailsPage from './components/buyer/shop/ProductDetailsCard'
 
 const App = () => {
   return (
@@ -24,6 +25,10 @@ const App = () => {
             <Route exact path='/' element={<Home />} />
             <Route path='/about' element={<About />} />
             <Route path='/shop' element={<Shop />} />
+            <Route
+              path='/product/:productId'
+              element={<ProductDetailsPage />}
+            />
             <Route path='/orders' element={<MyOrders />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/cart' element={<Cart />} />
