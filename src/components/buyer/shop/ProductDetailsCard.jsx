@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
   Star,
   ShoppingCart,
@@ -12,9 +12,11 @@ import {
   Calendar,
   DollarSign,
   Package,
-  Tag
+  Tag,
+  X
 } from 'lucide-react'
 import Loader from '../../common/loader/Loader'
+import alertContext from '../../../context/alert/alertContext'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -47,6 +49,11 @@ const ProductDetailsCard = () => {
 
   const { productId } = useParams()
 
+  const navigate = useNavigate()
+
+  // use alertCotext using useContext hook to show alert message
+  const { showAlert } = useContext(alertContext)
+
   useEffect(() => {
     fetchProducts()
   }, [])
@@ -59,9 +66,8 @@ const ProductDetailsCard = () => {
       )
       const data = await response.json()
       setProduct(data)
-      console.log(data)
     } catch (error) {
-      console.error('Error fetching product:', error)
+      showAlert('Error fetching product', 'danger')
       setProduct()
     } finally {
       setLoading(false)
@@ -69,8 +75,6 @@ const ProductDetailsCard = () => {
   }
 
   const handleAddToCart = async (productId, quantity) => {
-    console.log('fetching')
-
     setIsAddCard(true)
     try {
       const response = await fetch(`${backendUrl}/api/cart/add`, {
@@ -88,10 +92,9 @@ const ProductDetailsCard = () => {
 
       const data = await response.json()
       console.log(data)
-      alert('Item added to cart')
+      showAlert('Item added to cart', 'success')
     } catch (error) {
-      console.error(error.message)
-      alert('Failed to add item to cart')
+      showAlert('Failed to add item to cart', 'danger')
     } finally {
       setIsAddCard(false)
     }
@@ -124,7 +127,16 @@ const ProductDetailsCard = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className='bg-white shadow-lg rounded-lg overflow-hidden max-w-7xl mx-auto my-8 p-4 sm:p-6 lg:p-8'>
+        <div className='bg-white shadow-lg rounded-lg overflow-hidden max-w-7xl mx-auto my-8 p-4 sm:p-6 lg:p-8 relative'>
+          {/* <button
+            onClick={() => {
+              navigate('/shop')
+            }}
+            className='absolute p-1 rounded-full bg-gray-200 hover:bg-red-600 focus:outline-none top-4 right-4 z-10'
+            aria-label='Close'
+          >
+            <X className='w-6 h-6 text-red-600 hover:text-gray-200' />
+          </button> */}
           <div className='md:flex md:space-x-6'>
             {/* Product Image */}
             <motion.div
@@ -218,8 +230,22 @@ const ProductDetailsCard = () => {
                   }}
                   disabled={isAddCart}
                 >
-                  <ShoppingCart size={20} className='mr-2' />
-                  Add to Cart
+                  {isAddCart ? (
+                    <motion.div
+                      className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: 'linear'
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <ShoppingCart size={20} className='mr-2' />
+                      Add to Cart
+                    </>
+                  )}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}

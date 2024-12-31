@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react'
+import alertContext from '../../../context/alert/alertContext'
+import { useNavigate } from 'react-router-dom'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-const CartItem = ({ item, updateQuantity, removeItem }) => {
+const CartItem = ({ item, updateQuantity, removeItem, isRemoveCard }) => {
   return (
     <motion.div
       layout
@@ -59,9 +61,22 @@ const CartItem = ({ item, updateQuantity, removeItem }) => {
         whileHover={{ scale: 1.1, color: '#EF4444' }}
         whileTap={{ scale: 0.9 }}
         className='p-2 text-gray-500 hover:text-red-500 transition-colors duration-200'
-        onClick={() => removeItem(item._id)}
+        onClick={() => removeItem(item._id, item.productId._id)}
+        disabled={isRemoveCard}
       >
-        <Trash2 className='h-5 w-5' />
+        {isRemoveCard ? (
+          <motion.div
+            className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+            animate={{ rotate: 360 }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+          />
+        ) : (
+          <Trash2 className='h-5 w-5' />
+        )}
       </motion.button>
     </motion.div>
   )
@@ -70,6 +85,12 @@ const CartItem = ({ item, updateQuantity, removeItem }) => {
 const Cart = () => {
   const [cartItems, setCartItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [isRemoveCard, setIsRemoveCard] = useState(false)
+
+  const navigate = useNavigate()
+
+  // use alertCotext using useContext hook to show alert message
+  const { showAlert } = useContext(alertContext)
 
   useEffect(() => {
     fetchCartItems()
@@ -91,10 +112,9 @@ const Cart = () => {
       }
 
       const data = await response.json()
-      console.log(data.cart)
       setCartItems(data.cart)
     } catch (error) {
-      console.error('Error fetching cart items:', error)
+      showAlert('Error fetching cart items', 'danger')
     } finally {
       setLoading(false)
     }
@@ -108,8 +128,37 @@ const Cart = () => {
     )
   }
 
-  const removeItem = itemId => {
+  const removeFromCart = async productId => {
+    setIsRemoveCard(true)
+    try {
+      const response = await fetch(`${backendUrl}/api/cart/remove`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({ productId })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to add item: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      console.log(data)
+      showAlert('Item Removed from cart', 'success')
+    } catch (error) {
+      showAlert(error.message || 'Failed to remove item from cart', 'danger')
+    } finally {
+      setIsRemoveCard(false)
+    }
+  }
+
+  const removeItem = async (itemId, productId) => {
     setCartItems(prevItems => prevItems.filter(item => item._id !== itemId))
+    console.log('productId:', productId)
+
+    await removeFromCart(productId)
   }
 
   const calculateTotal = () => {
@@ -158,6 +207,9 @@ const Cart = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className='px-6 py-2 bg-blue-600 text-white rounded-full font-semibold shadow-lg hover:bg-primary-dark transition-colors duration-200'
+          onClick={() => {
+            navigate('/shop')
+          }}
         >
           Continue Shopping
         </motion.button>
@@ -181,6 +233,7 @@ const Cart = () => {
             item={item}
             updateQuantity={updateQuantity}
             removeItem={removeItem}
+            isRemoveCard={isRemoveCard}
           />
         ))}
       </AnimatePresence>

@@ -12,6 +12,7 @@ const ProductCard = ({ product }) => {
 
   const handleProductClick = () => {
     window.open(`/product/${product._id}`, '_blank')
+    // navigate(`/product/${product._id}`)
   }
 
   return (
