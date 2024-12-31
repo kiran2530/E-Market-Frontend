@@ -22,6 +22,7 @@ const ProductDetailsCard = () => {
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState('description')
   const [isLoading, setLoading] = useState(false)
+  const [isAddCart, setIsAddCard] = useState(false)
   const [product, setProduct] = useState({
     _id: { $oid: '676bad3d54ba27a6041673d4' },
     name: 'Sample Product',
@@ -64,6 +65,35 @@ const ProductDetailsCard = () => {
       setProduct()
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleAddToCart = async (productId, quantity) => {
+    console.log('fetching')
+
+    setIsAddCard(true)
+    try {
+      const response = await fetch(`${backendUrl}/api/cart/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({ productId, quantity })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to add item: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      console.log(data)
+      alert('Item added to cart')
+    } catch (error) {
+      console.error(error.message)
+      alert('Failed to add item to cart')
+    } finally {
+      setIsAddCard(false)
     }
   }
 
@@ -181,6 +211,12 @@ const ProductDetailsCard = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className='flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-6 rounded-full font-semibold flex items-center justify-center transition duration-200'
+                  onClick={e => {
+                    e.stopPropagation()
+                    // Add to cart logic here
+                    handleAddToCart(product._id, quantity)
+                  }}
+                  disabled={isAddCart}
                 >
                   <ShoppingCart size={20} className='mr-2' />
                   Add to Cart

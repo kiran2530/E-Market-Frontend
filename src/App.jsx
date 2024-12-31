@@ -13,6 +13,7 @@ import Footer from './components/common/footer/Footer'
 import AlertState from './context/alert/AlertState'
 import Alert from './components/common/alert/Alert'
 import ProductDetailsPage from './components/buyer/shop/ProductDetailsCard'
+import NotFound from './components/NotFound'
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
             <Route path='/profile' element={<Profile />} />
             <Route path='/cart' element={<Cart />} />
             <Route path='/dashboard/*' element={<Dashboard />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />
         </div>

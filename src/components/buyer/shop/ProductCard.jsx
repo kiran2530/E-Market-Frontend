@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Star, ShoppingCart, Heart, MapPin, Clock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+
 const ProductCard = ({ product }) => {
   const navigate = useNavigate()
+
+  const [isAddCart, setIsAddCard] = useState(false)
 
   const handleProductClick = () => {
     window.open(`/product/${product._id}`, '_blank')
@@ -78,26 +82,29 @@ const ProductCard = ({ product }) => {
             <span className='text-sm font-bold text-gray-800'>
               {product.priceCategory}
             </span>
-            <div className='text-xs text-gray-500 '>
-              ₹
-              <span className='text-xs text-gray-500 line-through ml-1'>
-                {(product.price * 1.2).toFixed(2)}
-              </span>
-              <span className='text-green-500 ml-1 text-xs'>20% off</span>
-            </div>
           </div>
-          <motion.button
+          <div className='text-xs text-gray-500 '>
+            ₹
+            <span className='text-xs text-gray-500 line-through ml-1'>
+              {(product.price * 1.2).toFixed(2)}
+            </span>
+            <span className='text-green-500 ml-1 text-xs'>20% off</span>
+          </div>
+
+          {/* <motion.button
             className='flex items-center justify-center bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 text-sm'
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={e => {
               e.stopPropagation()
               // Add to cart logic here
+              handleAddToCart(product._id, quantity)
             }}
+            disabled={isAddCart}
           >
             <ShoppingCart size={16} className='mr-1' />
             Cart
-          </motion.button>
+          </motion.button> */}
         </div>
       </div>
     </motion.div>
