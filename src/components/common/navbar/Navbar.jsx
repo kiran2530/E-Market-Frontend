@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   ShoppingCart,
   Search,
@@ -10,10 +10,10 @@ import {
   Menu,
   X
 } from 'lucide-react'
-import styles from './Navbar.module.css'
 import LoginModal from './LoginModal' // import the LoginModal component
 import SignupModal from './SignupModal' // import the SignupModal component
 import alertContext from '../../../context/alert/alertContext'
+import ProfileDropdown from './ProfileDropdown'
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -25,6 +25,7 @@ const Navbar = () => {
   const { showAlert } = useContext(alertContext)
 
   let navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     checkLogin()
@@ -62,94 +63,91 @@ const Navbar = () => {
     showAlert('Logout Successfully', 'success')
   }
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
-  }
-
   return (
     <nav className='sticky top-0 z-50 shadow-md text-black bg-white bg-opacity-30 backdrop-blur-md pt-1'>
-      <div className={styles.navbarContent}>
-        <div className={styles.logoAndToggle}>
-          <Link to='/' className={styles.logo}>
-            <span><img src='/images/companyLogo.png' alt='' className='w-16' /></span>
+      <div className='flex justify-between mr-2 sm:mx-10'>
+        <ul className='flex gap-4 ml-2 p-2 items-center font-semibold'>
+          <Link to='/' className=''>
+            <span>
+              <img src='/images/companyLogo.png' alt='' className='w-16' />
+            </span>
           </Link>
-          <button
-            className={styles.mobileMenuToggle}
-            onClick={toggleMobileMenu}
-          >
-            {isMobileMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
 
-        <ul
-          className={`${styles.navLinks} ${
-            isMobileMenuOpen ? styles.mobileMenuOpen : ''
-          }`}
-        >
-          <li onClick={toggleMobileMenu}>
+          <li
+            className={`hidden sm:block ml-8 ${
+              location.pathname === '/about' ? 'text-blue-600 border-b-2' : ''
+            }`}
+          >
             <Link to='/about'>About</Link>
           </li>
           {isLoggedIn && userRole === 'buyer' && (
             <>
-              <li onClick={toggleMobileMenu}>
+              <li
+                className={`${
+                  location.pathname === '/shop'
+                    ? 'text-blue-600 border-b-2'
+                    : ''
+                }`}
+              >
                 <Link to='/shop'>Shop</Link>
-              </li>
-              <li onClick={toggleMobileMenu}>
-                <Link to='/orders'>My Orders</Link>
               </li>
             </>
           )}
           {isLoggedIn && userRole === 'vendor' && (
-            <li onClick={toggleMobileMenu}>
+            <li
+              className={`${
+                location.pathname === '/dashboard'
+                  ? 'text-blue-600 border-b-2'
+                  : ''
+              }`}
+            >
               <Link to='/dashboard'>Dashboard</Link>
             </li>
           )}
         </ul>
 
-        <div
-          className={`${styles.userControls} ${
-            isMobileMenuOpen ? styles.mobileMenuOpen : ''
-          }`}
-        >
+        <div className='flex gap-8 items-center'>
           {isLoggedIn ? (
             <>
               {userRole === 'buyer' && (
                 <Link
                   to='/cart'
-                  className={styles.cartIcon}
-                  onClick={toggleMobileMenu}
+                  className={`text-xs font-semibold flex flex-col items-center ${
+                    location.pathname === '/cart'
+                      ? 'text-blue-600 border-b-2'
+                      : ''
+                  }`}
                 >
-                  <ShoppingCart />
+                  <ShoppingCart size={20} />
+                  <span>Cart</span>
                 </Link>
               )}
-              <Link
-                to='/profile'
-                className={styles.iconButton}
-                onClick={toggleMobileMenu}
+
+              {userRole === 'buyer' && (
+                <ProfileDropdown handleLogout={handleLogout} />
+              )}
+
+              <button
+                onClick={handleLogout}
+                className='flex flex-col items-center font-semibold text-xs'
               >
-                <User />
-              </Link>
-              <button onClick={handleLogout} className={styles.iconButton}>
-                <LogOut />
+                <LogOut size={20} />
+                <span>Logout</span>
               </button>
             </>
           ) : (
             <>
               <button
                 onClick={() => setShowLoginModal(true)}
-                className={styles.textButton}
+                className='text-sm flex items-center border border-black px-1 py-2 rounded-md bg-white hover:bg-blue-500 transition-colors duration-500 ease-in-out font-semibold'
               >
-                <LogIn className='mr-2 h-4 w-4' /> Login
+                <LogIn className='mr-1 h-4 w-4' /> Login
               </button>
               <button
                 onClick={() => setShowSignupModal(true)}
-                className={styles.textButton}
+                className='text-sm flex items-center border border-black px-1 py-2 rounded-md bg-white hover:bg-blue-500 transition-colors duration-500 ease-in-out font-semibold'
               >
-                <UserPlus className='mr-2 h-4 w-4' /> Sign Up
+                <UserPlus className='mr-1 h-4 w-4' /> Sign Up
               </button>
             </>
           )}

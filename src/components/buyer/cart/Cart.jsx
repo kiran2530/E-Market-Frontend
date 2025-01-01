@@ -108,7 +108,7 @@ const Cart = () => {
       })
 
       if (!response.ok) {
-        throw new Error(`Failed to add item: ${response.statusText}`)
+        throw new Error(`Failed to fetching cart items: ${response.statusText}`)
       }
 
       const data = await response.json()
@@ -145,8 +145,8 @@ const Cart = () => {
       }
 
       const data = await response.json()
-      console.log(data)
-      showAlert('Item Removed from cart', 'success')
+
+      showAlert(data.message, 'success')
     } catch (error) {
       showAlert(error.message || 'Failed to remove item from cart', 'danger')
     } finally {
@@ -155,10 +155,9 @@ const Cart = () => {
   }
 
   const removeItem = async (itemId, productId) => {
+    const result = await removeFromCart(productId)
     setCartItems(prevItems => prevItems.filter(item => item._id !== itemId))
     console.log('productId:', productId)
-
-    await removeFromCart(productId)
   }
 
   const calculateTotal = () => {

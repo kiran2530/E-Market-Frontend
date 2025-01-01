@@ -14,6 +14,7 @@ import AlertState from './context/alert/AlertState'
 import Alert from './components/common/alert/Alert'
 import ProductDetailsPage from './components/buyer/shop/ProductDetailsCard'
 import NotFound from './components/NotFound'
+import PersonalInfo from './components/buyer/profile/PersonalInfo'
 
 const App = () => {
   return (
@@ -31,7 +32,7 @@ const App = () => {
               element={<ProductDetailsPage />}
             />
             <Route path='/orders' element={<MyOrders />} />
-            <Route path='/profile' element={<Profile />} />
+            <Route path='/profile/info' element={<PersonalInfo />} />
             <Route path='/cart' element={<Cart />} />
             <Route path='/dashboard/*' element={<Dashboard />} />
             <Route path='*' element={<NotFound />} />

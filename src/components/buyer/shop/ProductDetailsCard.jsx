@@ -92,9 +92,9 @@ const ProductDetailsCard = () => {
 
       const data = await response.json()
       console.log(data)
-      showAlert('Item added to cart', 'success')
+      showAlert(data.message, 'success')
     } catch (error) {
-      showAlert('Failed to add item to cart', 'danger')
+      showAlert(error.message || 'Failed to add item to cart', 'danger')
     } finally {
       setIsAddCard(false)
     }
