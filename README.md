@@ -1,6 +1,6 @@
 # 🌟 E-Market Frontend
 
-![React](https://img.shields.io/badge/React.js-v18-blue?logo=react) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-blue?logo=tailwindcss) ![Vite](https://img.shields.io/badge/Vite-Fast%20Build-orange?logo=vite)
+![React](https://img.shields.io/badge/React.js-v18-blue?logo=react) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-blue?logo=tailwindcss) ![Vite](https://img.shields.io/badge/Vite-Fast%20Build-orange?logo=vite) 
 
 Welcome to the **E-Market Frontend** repository, the dynamic and modern interface for the E-Market e-commerce platform. Built with **React.js** and styled using **Tailwind CSS**, this project delivers an optimized and visually appealing user experience. 
 
@@ -89,10 +89,10 @@ The application is deployed and accessible online at:
 ## 🎨 Demo Screenshots
 
 #### 🖥️ Desktop View
-![Desktop View](https://via.placeholder.com/800x400.png?text=E-Market+Desktop+View)
+![Desktop View](https://drive.google.com/file/d/1yjGb-KETp4wc2Hw07Gb7PDvYUdhMaZz1/view?usp=sharing)
 
 #### 📱 Mobile View
-![Mobile View](https://via.placeholder.com/400x800.png?text=E-Market+Mobile+View)
+![Mobile View](https://drive.google.com/file/d/1nzjtsR5NbKk5v68-mT-Msg8lmjVUYxXz/view?usp=sharing)
 
 ---
 
@@ -122,12 +122,6 @@ We welcome contributions to improve this project! Follow these steps:
    git push origin feature-name
    ```
 5. **Open a Pull Request**.
-
----
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
