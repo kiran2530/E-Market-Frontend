@@ -75,28 +75,14 @@ E-Market-Frontend/
 
 ## Deployment
 
-The application is deployed and accessible at [https://e-market-tan.vercel.app](https://e-market-tan.vercel.app).
-
-## Contributing
-
-Contributions are welcome! If you'd like to contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m 'Add new feature'`).
-4. Push to the branch (`git push origin feature-name`).
-5. Open a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+The application is deployed and accessible at ([emarket](https://e-market-frontend.onrender.com/)).
 
 ## Contact
 
 For any questions or feedback, feel free to reach out:
 
-- **GitHub**: [kiran2530](https://github.com/kiran2530)
-- **Email**: [kiran@example.com](mailto:kiran@example.com)
+- **GitHub**: [Kiran Nikam](https://github.com/kiran2530)
+- **Email**: [nikamkiran2530@gmail.com](mailto:nikamkiran2530@gmail.com)
 
 ---
 
