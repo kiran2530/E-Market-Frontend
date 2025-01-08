@@ -8,19 +8,21 @@ import {
   UserPlus,
   LogOut,
   Menu,
-  X
+  X,
+  Phone
 } from 'lucide-react'
 import LoginModal from './LoginModal' // import the LoginModal component
 import SignupModal from './SignupModal' // import the SignupModal component
 import alertContext from '../../../context/alert/alertContext'
-import ProfileDropdown from './ProfileDropdown'
+import BuyerProfileDropdown from './BuyerProfileDropdown'
+import VendorProfileDropdown from './VendorProfileDropdown'
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userRole, setUserRole] = useState(null)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showSignupModal, setShowSignupModal] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   // use alertCotext using useContext hook to show alert message
   const { showAlert } = useContext(alertContext)
 
@@ -42,7 +44,6 @@ const Navbar = () => {
     setIsLoggedIn(true)
     setUserRole(role)
     setShowLoginModal(false)
-    setIsMobileMenuOpen(false)
     if (role == 'buyer') navigate('/shop')
     else if (role == 'vendor') navigate('/dashboard')
   }
@@ -50,13 +51,11 @@ const Navbar = () => {
   const handleSignup = role => {
     console.log(`Signed up as ${role}`)
     setShowSignupModal(false)
-    setIsMobileMenuOpen(false)
   }
 
   const handleLogout = () => {
     setIsLoggedIn(false)
     setUserRole(null)
-    setIsMobileMenuOpen(false)
     localStorage.removeItem('authToken')
     localStorage.removeItem('role')
     navigate('/')
@@ -66,7 +65,7 @@ const Navbar = () => {
   return (
     <nav className='sticky top-0 z-50 shadow-md text-black bg-white bg-opacity-30 backdrop-blur-md pt-1'>
       <div className='flex justify-between mr-2 sm:mx-10'>
-        <ul className='flex gap-4 ml-2 p-2 items-center font-semibold'>
+        <ul className='flex gap-8 ml-2 p-2 items-center font-semibold'>
           <Link to='/' className=''>
             <span>
               <img src='/images/companyLogo.png' alt='' className='w-16' />
@@ -96,7 +95,7 @@ const Navbar = () => {
           {isLoggedIn && userRole === 'vendor' && (
             <li
               className={`${
-                location.pathname === '/dashboard'
+                location.pathname.includes('dashboard')
                   ? 'text-blue-600 border-b-2'
                   : ''
               }`}
@@ -112,7 +111,7 @@ const Navbar = () => {
               {userRole === 'buyer' && (
                 <Link
                   to='/cart'
-                  className={`text-xs font-semibold flex flex-col items-center ${
+                  className={`hidden sm:flex text-xs font-semibold flex-col items-center ${
                     location.pathname === '/cart'
                       ? 'text-blue-600 border-b-2'
                       : ''
@@ -124,16 +123,30 @@ const Navbar = () => {
               )}
 
               {userRole === 'buyer' && (
-                <ProfileDropdown handleLogout={handleLogout} />
+                <BuyerProfileDropdown
+                  user={{ name: 'kiran', phone: '8975952690' }}
+                  handleLogout={handleLogout}
+                />
               )}
 
-              <button
+              {userRole === 'vendor' && (
+                <VendorProfileDropdown
+                  vendor={{
+                    name: 'kiran',
+                    shopName: 'Mauli Shop',
+                    phone: '8975952690'
+                  }}
+                  handleLogout={handleLogout}
+                />
+              )}
+
+              {/* <button
                 onClick={handleLogout}
                 className='flex flex-col items-center font-semibold text-xs'
               >
                 <LogOut size={20} />
                 <span>Logout</span>
-              </button>
+              </button> */}
             </>
           ) : (
             <>
@@ -145,7 +158,7 @@ const Navbar = () => {
               </button>
               <button
                 onClick={() => setShowSignupModal(true)}
-                className='text-sm flex items-center border border-black px-1 py-2 rounded-md bg-white hover:bg-blue-500 transition-colors duration-500 ease-in-out font-semibold'
+                className='hidden text-sm sm:flex items-center border border-black px-1 py-2 rounded-md bg-white hover:bg-blue-500 transition-colors duration-500 ease-in-out font-semibold'
               >
                 <UserPlus className='mr-1 h-4 w-4' /> Sign Up
               </button>

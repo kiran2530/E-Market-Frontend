@@ -208,8 +208,14 @@ const Home = () => {
             >
               Start Shopping
             </Link>
+            <Link
+              to='/about'
+              className='bg-green-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300'
+            >
+              About Us
+            </Link>
             {/* <Link
-              href='/'
+              to='/'
               className='bg-green-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300'
             >
               Become a Vendor

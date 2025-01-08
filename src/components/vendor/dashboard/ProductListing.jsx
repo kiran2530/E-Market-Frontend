@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import VendorProductCard from './VendorProductCard'
-import Loader from '../../common/loader/Loader'
+import ProductSkeleton from '../../common/loader/ProductSkeleton'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 const ProductListing = () => {
@@ -52,7 +52,7 @@ const ProductListing = () => {
   return (
     <>
       {isLoading ? (
-        <Loader />
+        <ProductSkeleton />
       ) : (
         <div className='mx-auto sm:px-2'>
           <h2 className='text-2xl font-bold mb-4'>Your Products</h2>

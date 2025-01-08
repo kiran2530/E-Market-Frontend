@@ -15,7 +15,7 @@ import {
   Tag,
   X
 } from 'lucide-react'
-import Loader from '../../common/loader/Loader'
+import ProductSkeleton from '../../common/loader/ProductSkeleton'
 import alertContext from '../../../context/alert/alertContext'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -125,7 +125,7 @@ const ProductDetailsCard = () => {
   return (
     <>
       {isLoading ? (
-        <Loader />
+        <ProductSkeleton />
       ) : (
         <div className='bg-white shadow-lg rounded-lg overflow-hidden max-w-7xl mx-auto my-8 p-4 sm:p-6 lg:p-8 relative'>
           {/* <button

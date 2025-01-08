@@ -73,23 +73,23 @@ const ProductCard = ({ product }) => {
         </div>
         <div className='flex items-center justify-between'>
           <div>
-            <span className='text-lg font-bold text-gray-800'>
+            <span className='text-sm sm:text-lg font-bold text-gray-800'>
               ₹{' '}
               {product.price % 1 === 0
                 ? product.price
                 : product.price.toFixed(2)}
               /
             </span>
-            <span className='text-sm font-bold text-gray-800'>
+            <span className='text-xs sm:text-sm font-bold text-gray-800'>
               {product.priceCategory}
             </span>
           </div>
-          <div className='text-xs text-gray-500 '>
+          <div className='text-[10px] sm:text-xs text-gray-500 '>
             ₹
-            <span className='text-xs text-gray-500 line-through ml-1'>
+            <span className='text-gray-500 line-through ml-1'>
               {(product.price * 1.2).toFixed(2)}
             </span>
-            <span className='text-green-500 ml-1 text-xs'>20% off</span>
+            <span className='text-green-500 ml-1'>20% off</span>
           </div>
 
           {/* <motion.button

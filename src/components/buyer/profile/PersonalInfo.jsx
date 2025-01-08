@@ -1,283 +1,345 @@
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+'use client'
+
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
+  ShoppingBag,
+  Heart,
+  CreditCard,
+  ChevronRight,
+  Bell,
+  Search,
+  Menu,
   User,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  Edit2,
-  Check,
-  X
+  Settings
 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
-const PersonalInfo = () => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [buyer, setBuyer] = useState(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: ''
-  })
+const BuyerDashboard = ({ buyer }) => {
+  const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState('overview')
 
-  useEffect(() => {
-    const fetchBuyerInfo = async () => {
-      try {
-        setLoading(true)
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/buyer/profile`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              authToken: localStorage.getItem('authToken')
-            }
-          }
-        )
-        const data = await response.json()
-        if (data.success) {
-          setBuyer(data.buyer)
-          setFormData({
-            name: data.buyer.name,
-            email: data.buyer.email,
-            phone: data.buyer.phone,
-            address: data.buyer.address
-          })
-        } else {
-          setError(data.message)
-        }
-      } catch (err) {
-        setBuyer({
-          name: 'Your Name',
-          email: 'name@gmail.com',
-          phone: 'xxxxxxxxxx',
-          address: 'AP-xxxxx'
-        })
-        setFormData({
-          name: 'Your Name',
-          email: 'name@gmail.com',
-          phone: 'xxxxxxxxxx',
-          address: 'AP-xxxxx'
-        })
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
+  const stats = [
+    {
+      title: 'Total Orders',
+      value: buyer.totalOrders,
+      icon: ShoppingBag,
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-100'
+    },
+    {
+      title: 'Wishlist Items',
+      value: buyer.wishlistCount,
+      icon: Heart,
+      color: 'text-pink-600',
+      bgColor: 'bg-pink-100'
+    },
+    {
+      title: 'Total Spent',
+      value: `₹${buyer.totalSpent.toFixed(2)}`,
+      icon: CreditCard,
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-100'
     }
+  ]
 
-    fetchBuyerInfo()
-  }, [])
-
-  const handleSubmit = async e => {
-    e.preventDefault()
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/buyer/update-profile`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            authToken: localStorage.getItem('authToken')
-          },
-          body: JSON.stringify(formData)
-        }
-      )
-      const data = await response.json()
-      if (data.success) {
-        setBuyer({ ...buyer, ...formData })
-        setIsEditing(false)
-      } else {
-        setError(data.message)
-      }
-    } catch (err) {
-      setError('Failed to update profile')
-      console.error(err)
+  const recentOrders = [
+    {
+      id: 'ORD001',
+      product: 'Wireless Earbuds',
+      date: '2023-05-01',
+      status: 'Delivered',
+      amount: '₹2,999'
+    },
+    {
+      id: 'ORD002',
+      product: 'Smart Watch',
+      date: '2023-05-15',
+      status: 'In Transit',
+      amount: '₹5,499'
+    },
+    {
+      id: 'ORD003',
+      product: 'Bluetooth Speaker',
+      date: '2023-05-22',
+      status: 'Processing',
+      amount: '₹1,999'
     }
-  }
+  ]
 
-  if (loading) {
-    return (
-      <div className='flex justify-center items-center min-h-screen'>
-        <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary'></div>
-      </div>
-    )
-  }
+  const notifications = [
+    {
+      id: 1,
+      message: 'Your order ORD001 has been delivered',
+      date: '2023-05-02'
+    },
+    {
+      id: 2,
+      message: 'New items added to your wishlist are on sale!',
+      date: '2023-05-18'
+    },
+    {
+      id: 3,
+      message: 'Limited time offer: 20% off on electronics',
+      date: '2023-05-25'
+    }
+  ]
 
-  if (error) {
-    return (
-      <div className='max-w-2xl mx-auto p-4 text-center text-red-600'>
-        <p>{error}</p>
-      </div>
-    )
-  }
+  return (
+    <div className='min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-6'>
+      <div className='max-w-7xl mx-auto'>
+        {/* Header */}
+        <header className='mb-8'>
+          <div className='flex items-center justify-between'>
+            <div>
+              <h1 className='text-4xl font-bold text-gray-900'>
+                Welcome back, {buyer.name}!
+              </h1>
+              <p className='mt-2 text-lg text-gray-600'>
+                Here's what's happening with your account today.
+              </p>
+            </div>
+          </div>
+        </header>
 
-  const InfoRow = ({ icon: Icon, label, value }) => (
-    <div className='flex items-center space-x-4 p-4 hover:bg-gray-50 rounded-lg transition-colors duration-200'>
-      <Icon className='w-5 h-5 text-gray-500' />
-      <div className='flex-1'>
-        <p className='text-sm text-gray-500'>{label}</p>
-        <p className='font-medium'>{value}</p>
+        {/* Stats */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
+          {stats.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className='bg-white rounded-xl shadow-lg overflow-hidden'
+            >
+              <div className='p-6'>
+                <div className='flex items-center'>
+                  <div className={`${item.bgColor} rounded-full p-3`}>
+                    <item.icon className={`h-8 w-8 ${item.color}`} />
+                  </div>
+                  <div className='ml-5'>
+                    <p className='text-sm font-medium text-gray-500'>
+                      {item.title}
+                    </p>
+                    <p className='mt-1 text-3xl font-semibold text-gray-900'>
+                      {item.value}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className={`${item.bgColor} px-6 py-3`}>
+                <a
+                  href='#'
+                  className={`text-sm font-medium ${item.color} hover:underline`}
+                >
+                  View all
+                </a>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Tabs */}
+        <div className='bg-white rounded-xl shadow-lg overflow-hidden mb-8'>
+          <div className='flex border-b border-gray-200'>
+            {['overview', 'orders', 'notifications'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`${
+                  activeTab === tab
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } flex-1 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm capitalize transition duration-300`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab content */}
+          <div className='p-6'>
+            <AnimatePresence mode='wait'>
+              {activeTab === 'overview' && (
+                <motion.div
+                  key='overview'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h3 className='text-lg font-medium text-gray-900 mb-4'>
+                    Account Information
+                  </h3>
+                  <dl className='grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2'>
+                    <div>
+                      <dt className='text-sm font-medium text-gray-500'>
+                        Full name
+                      </dt>
+                      <dd className='mt-1 text-sm text-gray-900'>
+                        {buyer.name}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className='text-sm font-medium text-gray-500'>
+                        Email address
+                      </dt>
+                      <dd className='mt-1 text-sm text-gray-900'>
+                        {buyer.email}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className='text-sm font-medium text-gray-500'>
+                        Phone number
+                      </dt>
+                      <dd className='mt-1 text-sm text-gray-900'>
+                        {buyer.phone}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className='text-sm font-medium text-gray-500'>
+                        Address
+                      </dt>
+                      <dd className='mt-1 text-sm text-gray-900'>
+                        {`${buyer.address.street}, ${buyer.address.city}, ${buyer.address.state} ${buyer.address.zipCode}, ${buyer.address.country}`}
+                      </dd>
+                    </div>
+                  </dl>
+                </motion.div>
+              )}
+
+              {activeTab === 'orders' && (
+                <motion.div
+                  key='orders'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h3 className='text-lg font-medium text-gray-900 mb-4'>
+                    Recent Orders
+                  </h3>
+                  <ul className='divide-y divide-gray-200'>
+                    {recentOrders.map(order => (
+                      <li key={order.id} className='py-4'>
+                        <div className='flex items-center justify-between'>
+                          <div className='flex items-center'>
+                            <div className='flex-shrink-0'>
+                              <ShoppingBag className='h-6 w-6 text-gray-400' />
+                            </div>
+                            <div className='ml-4'>
+                              <p className='text-sm font-medium text-gray-900'>
+                                {order.product}
+                              </p>
+                              <p className='text-sm text-gray-500'>
+                                {order.id}
+                              </p>
+                            </div>
+                          </div>
+                          <div className='flex items-center'>
+                            <p className='text-sm font-medium text-gray-900 mr-4'>
+                              {order.amount}
+                            </p>
+                            <span
+                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                order.status === 'Delivered'
+                                  ? 'bg-green-100 text-green-800'
+                                  : order.status === 'In Transit'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}
+                            >
+                              {order.status}
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+
+              {activeTab === 'notifications' && (
+                <motion.div
+                  key='notifications'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h3 className='text-lg font-medium text-gray-900 mb-4'>
+                    Notifications
+                  </h3>
+                  <ul className='divide-y divide-gray-200'>
+                    {notifications.map(notification => (
+                      <li key={notification.id} className='py-4'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <Bell className='h-6 w-6 text-indigo-500' />
+                          </div>
+                          <div className='ml-3'>
+                            <p className='text-sm font-medium text-gray-900'>
+                              {notification.message}
+                            </p>
+                            <p className='text-sm text-gray-500'>
+                              {notification.date}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Quick actions */}
+        <div className='mb-8'>
+          <h2 className='text-2xl font-semibold text-gray-900 mb-4'>
+            Quick Actions
+          </h2>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+            {[
+              {
+                title: 'View All Orders',
+                icon: ShoppingBag,
+                color: 'bg-purple-500'
+              },
+              { title: 'Manage Wishlist', icon: Heart, color: 'bg-pink-500' },
+              { title: 'Edit Profile', icon: User, color: 'bg-blue-500' }
+            ].map((action, index) => (
+              <motion.div
+                key={action.title}
+                whileHover={{ scale: 1.05 }}
+                className='bg-white overflow-hidden shadow-lg rounded-xl'
+              >
+                <div className='p-6'>
+                  <div className='flex items-center'>
+                    <div className={`${action.color} rounded-full p-3`}>
+                      <action.icon className='h-6 w-6 text-white' />
+                    </div>
+                    <div className='ml-4'>
+                      <h3 className='text-lg font-medium text-gray-900'>
+                        {action.title}
+                      </h3>
+                      <p className='mt-1 text-sm text-gray-500'>
+                        <a href='#' className='hover:underline'>
+                          Go to {action.title.toLowerCase()}{' '}
+                          <ChevronRight className='inline h-4 w-4' />
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className='max-w-2xl mx-auto p-4'
-    >
-      <div className='bg-white rounded-xl shadow-lg overflow-hidden'>
-        <div className='p-6 bg-primary text-white flex justify-between items-center'>
-          <div>
-            <h1 className='text-2xl font-bold'>Personal Information</h1>
-            <p className='text-primary-foreground/80'>
-              Manage your personal details
-            </p>
-          </div>
-          {!isEditing && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsEditing(true)}
-              className='flex items-center space-x-2 bg-white text-primary px-4 py-2 rounded-lg'
-            >
-              <Edit2 className='w-4 h-4' />
-              <span>Edit</span>
-            </motion.button>
-          )}
-        </div>
-
-        <div className='p-6'>
-          {isEditing ? (
-            <form onSubmit={handleSubmit} className='space-y-4'>
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Name
-                </label>
-                <input
-                  type='text'
-                  value={formData.name}
-                  onChange={e =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none'
-                />
-              </div>
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Email
-                </label>
-                <input
-                  type='email'
-                  value={formData.email}
-                  onChange={e =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none'
-                />
-              </div>
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Phone
-                </label>
-                <input
-                  type='tel'
-                  value={formData.phone}
-                  onChange={e =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                  className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none'
-                />
-              </div>
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Address
-                </label>
-                <textarea
-                  value={formData.address}
-                  onChange={e =>
-                    setFormData({ ...formData, address: e.target.value })
-                  }
-                  rows={3}
-                  className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none'
-                />
-              </div>
-              <div className='flex space-x-4'>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type='submit'
-                  className='flex-1 bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center space-x-2'
-                >
-                  <Check className='w-4 h-4' />
-                  <span>Save Changes</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type='button'
-                  onClick={() => {
-                    setFormData({
-                      name: buyer.name,
-                      email: buyer.email,
-                      phone: buyer.phone,
-                      address: buyer.address
-                    })
-                    setIsEditing(false)
-                  }}
-                  className='flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center space-x-2'
-                >
-                  <X className='w-4 h-4' />
-                  <span>Cancel</span>
-                </motion.button>
-              </div>
-            </form>
-          ) : (
-            <div className='space-y-2'>
-              <InfoRow icon={User} label='Name' value={buyer.name} />
-              <InfoRow icon={Mail} label='Email' value={buyer.email} />
-              <InfoRow icon={Phone} label='Phone' value={buyer.phone} />
-              <InfoRow icon={MapPin} label='Address' value={buyer.address} />
-              <InfoRow
-                icon={Calendar}
-                label='Member Since'
-                value={new Date(buyer.createdAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Order Statistics */}
-      <div className='mt-6 grid grid-cols-2 gap-4'>
-        <motion.div
-          whileHover={{ y: -2 }}
-          className='bg-white p-6 rounded-xl shadow-lg'
-        >
-          <h3 className='text-lg font-semibold mb-2'>Total Orders</h3>
-          <p className='text-3xl font-bold text-primary'>
-            {buyer.orders ? buyer.orders.length : 0}
-          </p>
-        </motion.div>
-        <motion.div
-          whileHover={{ y: -2 }}
-          className='bg-white p-6 rounded-xl shadow-lg'
-        >
-          <h3 className='text-lg font-semibold mb-2'>Cart Items</h3>
-          <p className='text-3xl font-bold text-primary'>
-            {buyer.cart?.items ? buyer.cart.items.length : 0}
-          </p>
-        </motion.div>
-      </div>
-    </motion.div>
-  )
 }
 
-export default PersonalInfo
+export default BuyerDashboard

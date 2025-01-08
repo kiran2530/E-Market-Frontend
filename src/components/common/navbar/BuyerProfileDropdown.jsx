@@ -16,7 +16,7 @@ import {
   ShoppingCart
 } from 'lucide-react'
 
-const ProfileDropdown = ({ user, handleLogout }) => {
+const BuyerProfileDropdown = ({ user, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const menuItems = [
@@ -27,13 +27,16 @@ const ProfileDropdown = ({ user, handleLogout }) => {
     { icon: Edit, label: 'Edit Profile', path: '/profile/edit' }
   ]
 
+  const toggleProfile = () => {
+    setIsOpen(!isOpen)
+  }
+
   return (
-    <div
-      className='relative'
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
-      <button className='text-xs font-semibold flex flex-col items-center'>
+    <div className='relative'>
+      <button
+        className='text-xs font-semibold flex flex-col items-center'
+        onClick={toggleProfile}
+      >
         <User size={20} />
         <span>Profile</span>
       </button>
@@ -46,14 +49,29 @@ const ProfileDropdown = ({ user, handleLogout }) => {
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2 }}
             className='absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50'
-            onClick={() => setIsOpen(false)}
           >
             {/* User Info Section */}
-            <div className='p-4 border-b border-gray-100'>
-              <h3 className='font-medium'>Hello {user?.name || 'Guest'}</h3>
-              {user?.phone && (
-                <p className='text-sm text-gray-500'>{user.phone}</p>
-              )}
+            <div className='p-4 border-b border-gray-100 flex items-center'>
+              <Link
+                to='/profile/info'
+                className='flex items-center justify-between hover:bg-gray-50 transition-colors duration-200'
+                onClick={toggleProfile}
+              >
+                <div>
+                  <img
+                    src='https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734503011/kiranProfile_mgw9sr.png'
+                    alt='profile'
+                    className='w-10 rounded-full'
+                  />
+                </div>
+                <div className='ml-3'>
+                  <h3 className='font-medium'>{user?.name || 'Guest'}</h3>
+
+                  {user?.phone && (
+                    <p className='text-sm text-gray-500'>{user.phone}</p>
+                  )}
+                </div>
+              </Link>
             </div>
 
             {/* Menu Items */}
@@ -63,6 +81,7 @@ const ProfileDropdown = ({ user, handleLogout }) => {
                   key={index}
                   to={item.path}
                   className='flex items-center justify-between px-4 py-2 hover:bg-gray-50 transition-colors duration-200'
+                  onClick={toggleProfile}
                 >
                   <div className='flex items-center space-x-3'>
                     <item.icon className='w-5 h-5 text-gray-500' />
@@ -90,4 +109,4 @@ const ProfileDropdown = ({ user, handleLogout }) => {
   )
 }
 
-export default ProfileDropdown
+export default BuyerProfileDropdown
