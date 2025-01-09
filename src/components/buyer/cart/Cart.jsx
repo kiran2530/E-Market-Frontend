@@ -6,7 +6,13 @@ import { useNavigate } from 'react-router-dom'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-const CartItem = ({ item, updateQuantity, removeItem, isRemoveCard }) => {
+const CartItem = ({
+  item,
+  updateQuantity,
+  removeItem,
+  isRemoveCard,
+  isAddCart
+}) => {
   return (
     <motion.div
       layout
@@ -32,10 +38,18 @@ const CartItem = ({ item, updateQuantity, removeItem, isRemoveCard }) => {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className='p-1 bg-gray-200 rounded-full'
+          className={`p-2 bg-gray-200 rounded-full ${
+            isAddCart ? 'cursor-wait' : ''
+          }`}
           onClick={() =>
-            updateQuantity(item._id, Math.max(1, item.quantity - 1))
+            updateQuantity(
+              item.productId._id,
+              item._id,
+              Math.max(1, item.quantity - 1),
+              item.quantity
+            )
           }
+          disabled={isAddCart}
         >
           <Minus className='h-4 w-4 text-gray-600' />
         </motion.button>
@@ -44,15 +58,30 @@ const CartItem = ({ item, updateQuantity, removeItem, isRemoveCard }) => {
           min='1'
           value={item.quantity}
           onChange={e =>
-            updateQuantity(item._id, parseInt(e.target.value) || 1)
+            updateQuantity(
+              item.productId._id,
+              item._id,
+              parseInt(e.target.value) || 1,
+              item.quantity
+            )
           }
-          className='w-12 text-center border border-gray-300 rounded-md'
+          className='p-1 w-12 text-center border border-gray-300 rounded-md'
         />
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className='p-1 bg-gray-200 rounded-full'
-          onClick={() => updateQuantity(item._id, item.quantity + 1)}
+          className={`p-2 bg-gray-200 rounded-full ${
+            isAddCart ? 'cursor-wait' : ''
+          }`}
+          onClick={() =>
+            updateQuantity(
+              item.productId._id,
+              item._id,
+              item.quantity + 1,
+              item.quantity
+            )
+          }
+          disabled={isAddCart}
         >
           <Plus className='h-4 w-4 text-gray-600' />
         </motion.button>
@@ -60,13 +89,13 @@ const CartItem = ({ item, updateQuantity, removeItem, isRemoveCard }) => {
       <motion.button
         whileHover={{ scale: 1.1, color: '#EF4444' }}
         whileTap={{ scale: 0.9 }}
-        className='p-2 text-gray-500 hover:text-red-500 transition-colors duration-200'
+        className='p-2 bg-gray-100 rounded-full text-red-600 hover:text-red-400 transition-colors'
         onClick={() => removeItem(item._id, item.productId._id)}
         disabled={isRemoveCard}
       >
         {isRemoveCard ? (
           <motion.div
-            className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+            className='w-6 h-6 border-t-2 border-black rounded-full animate-spin'
             animate={{ rotate: 360 }}
             transition={{
               duration: 1,
@@ -86,6 +115,7 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [isRemoveCard, setIsRemoveCard] = useState(false)
+  const [isAddCart, setIsAddCard] = useState(false)
 
   const navigate = useNavigate()
 
@@ -120,7 +150,43 @@ const Cart = () => {
     }
   }
 
-  const updateQuantity = (itemId, newQuantity) => {
+  const handleAddToCart = async (productId, quantity) => {
+    setIsAddCard(true)
+    try {
+      const response = await fetch(`${backendUrl}/api/cart/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({ productId, quantity })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to add item: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+
+      if (data.success) {
+        showAlert(data.message || 'Quantity Updated', 'success')
+      } else {
+        showAlert(data.message || 'Warning', 'warning')
+      }
+    } catch (error) {
+      showAlert(error.message || 'Failed to add item to cart', 'danger')
+    } finally {
+      setIsAddCard(false)
+    }
+  }
+
+  const updateQuantity = async (
+    productId,
+    itemId,
+    newQuantity,
+    oldQuantity
+  ) => {
+    await handleAddToCart(productId, newQuantity - oldQuantity)
     setCartItems(prevItems =>
       prevItems.map(item =>
         item._id === itemId ? { ...item, quantity: newQuantity } : item
@@ -157,7 +223,6 @@ const Cart = () => {
   const removeItem = async (itemId, productId) => {
     const result = await removeFromCart(productId)
     setCartItems(prevItems => prevItems.filter(item => item._id !== itemId))
-    console.log('productId:', productId)
   }
 
   const calculateTotal = () => {
@@ -233,6 +298,7 @@ const Cart = () => {
             updateQuantity={updateQuantity}
             removeItem={removeItem}
             isRemoveCard={isRemoveCard}
+            isAddCart={isAddCart}
           />
         ))}
       </AnimatePresence>

@@ -14,6 +14,7 @@ import Alert from './components/common/alert/Alert'
 import ProductDetailsPage from './components/buyer/shop/ProductDetailsCard'
 import NotFound from './components/NotFound'
 import PersonalInfo from './components/buyer/profile/PersonalInfo'
+import Wishlist from './components/buyer/wishlist/Wishlist'
 
 const App = () => {
   const [buyerData, setBuyerData] = useState({
@@ -51,8 +52,8 @@ const App = () => {
               path='/profile/info'
               element={<PersonalInfo buyer={buyerData} />}
             />
-
             <Route path='/cart' element={<Cart />} />
+            <Route path='/wishlist' element={<Wishlist />} />
             <Route path='/dashboard/*' element={<Dashboard />} />
             <Route path='*' element={<NotFound />} />
           </Routes>

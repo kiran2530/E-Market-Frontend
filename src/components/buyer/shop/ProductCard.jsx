@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({
+  product,
+  handleWishlistToggle,
+  isProductInWishlist
+}) => {
   const navigate = useNavigate()
-
-  const [isAddCart, setIsAddCard] = useState(false)
 
   const handleProductClick = () => {
     window.open(`/product/${product._id}`, '_blank')
@@ -34,9 +36,14 @@ const ProductCard = ({ product }) => {
           onClick={e => {
             e.stopPropagation()
             // Add to wishlist logic here
+            handleWishlistToggle(product._id)
           }}
         >
-          <Heart size={18} />
+          <Heart
+            size={18}
+            color={isProductInWishlist(product._id) ? 'red' : 'gray'}
+            fill={isProductInWishlist(product._id) ? 'red' : 'none'}
+          />
         </motion.button>
         <div className='absolute bottom-2 left-2 bg-white px-2 py-1 rounded-full text-xs font-semibold text-gray-700'>
           {product.category}

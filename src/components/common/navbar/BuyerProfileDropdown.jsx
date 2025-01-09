@@ -27,16 +27,13 @@ const BuyerProfileDropdown = ({ user, handleLogout }) => {
     { icon: Edit, label: 'Edit Profile', path: '/profile/edit' }
   ]
 
-  const toggleProfile = () => {
-    setIsOpen(!isOpen)
-  }
-
   return (
-    <div className='relative'>
-      <button
-        className='text-xs font-semibold flex flex-col items-center'
-        onClick={toggleProfile}
-      >
+    <div
+      className='relative'
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <button className='text-xs font-semibold flex flex-col items-center'>
         <User size={20} />
         <span>Profile</span>
       </button>
@@ -55,7 +52,9 @@ const BuyerProfileDropdown = ({ user, handleLogout }) => {
               <Link
                 to='/profile/info'
                 className='flex items-center justify-between hover:bg-gray-50 transition-colors duration-200'
-                onClick={toggleProfile}
+                onClick={() => {
+                  setIsOpen(false)
+                }}
               >
                 <div>
                   <img
@@ -81,7 +80,9 @@ const BuyerProfileDropdown = ({ user, handleLogout }) => {
                   key={index}
                   to={item.path}
                   className='flex items-center justify-between px-4 py-2 hover:bg-gray-50 transition-colors duration-200'
-                  onClick={toggleProfile}
+                  onClick={() => {
+                    setIsOpen(false)
+                  }}
                 >
                   <div className='flex items-center space-x-3'>
                     <item.icon className='w-5 h-5 text-gray-500' />

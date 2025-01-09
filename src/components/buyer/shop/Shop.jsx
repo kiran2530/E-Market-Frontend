@@ -39,6 +39,9 @@ const Shop = () => {
   // states for product
   const [products, setProducts] = useState([])
 
+  // states for wishlist
+  const [wishlist, setWishlist] = useState([])
+
   // state for loader
   const [isLoading, setLoading] = useState(false)
 
@@ -62,6 +65,7 @@ const Shop = () => {
   useEffect(() => {
     checkLogin()
     fetchProducts()
+    fetchWishlist()
     fetchStates()
   }, [])
 
@@ -81,6 +85,7 @@ const Shop = () => {
   //   }
   // }, [tempState, tempDistrict])
 
+  // Checking Login Functionality and verify user
   const checkLogin = () => {
     if (!localStorage.getItem('authToken')) {
       navigate('/')
@@ -93,6 +98,7 @@ const Shop = () => {
     }
   }
 
+  // fetch products...
   const fetchProducts = async () => {
     try {
       setLoading(true)
@@ -107,6 +113,66 @@ const Shop = () => {
     }
   }
 
+  // fetch wishlist.....
+  const fetchWishlist = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/api/wishlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        }
+      })
+      const data = await response.json()
+      setWishlist(data.data)
+    } catch (error) {
+      console.error('Error fetching wishlist:', error)
+    }
+  }
+
+  // handle wishlist....
+  const handleWishlistToggle = async productId => {
+    try {
+      const isInWishlist = wishlist.some(item => item._id === productId)
+
+      if (isInWishlist) {
+        // Remove from wishlist
+        const result = await fetch(
+          `${backendUrl}/api/wishlist/remove/${productId}`,
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              authToken: localStorage.getItem('authToken')
+            }
+          }
+        )
+      } else {
+        // Add to wishlist
+        const result = await fetch(`${backendUrl}/api/wishlist/add`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authToken: localStorage.getItem('authToken')
+          },
+          body: JSON.stringify({ productId })
+        })
+      }
+
+      // Refresh the wishlist after the toggle
+      fetchWishlist()
+    } catch (error) {
+      console.error('Error toggling wishlist:', error)
+      showAlert('Error toggling wishlist', 'danger')
+    }
+  }
+
+  // check the product is in wishlist or not
+  const isProductInWishlist = productId => {
+    return wishlist.some(item => item._id === productId)
+  }
+
+  // fetch states...
   const fetchStates = async () => {
     try {
       setStates(stateData.states || [])
@@ -116,6 +182,7 @@ const Shop = () => {
     }
   }
 
+  // fetch districts
   const fetchDistricts = state => {
     try {
       const stateDistricts = districtData[state] || []
@@ -126,6 +193,7 @@ const Shop = () => {
     }
   }
 
+  // filtered products by user filter options
   const filteredProducts = products.filter(
     product =>
       (selectedCategory === 'All' || product.category === selectedCategory) &&
@@ -138,6 +206,7 @@ const Shop = () => {
       product.price <= priceRange[1]
   )
 
+  // applying filter on products
   const handleApplyFilters = () => {
     setSelectedCategory(tempCategory)
     setPriceRange(tempPriceRange)
@@ -327,7 +396,12 @@ const Shop = () => {
               transition={{ duration: 0.5 }}
             >
               {filteredProducts.map(product => (
-                <ProductCard key={product._id} product={product} />
+                <ProductCard
+                  key={product._id}
+                  product={product}
+                  handleWishlistToggle={handleWishlistToggle}
+                  isProductInWishlist={isProductInWishlist}
+                />
               ))}
             </motion.div>
             {filteredProducts.length === 0 && !isLoading && (
