@@ -47,6 +47,9 @@ const ProductDetailsCard = () => {
     __v: 0
   })
 
+  // states for wishlist
+  const [wishlist, setWishlist] = useState([])
+
   const { productId } = useParams()
 
   const navigate = useNavigate()
@@ -56,6 +59,7 @@ const ProductDetailsCard = () => {
 
   useEffect(() => {
     fetchProducts()
+    fetchWishlist()
   }, [])
 
   const fetchProducts = async () => {
@@ -120,6 +124,87 @@ const ProductDetailsCard = () => {
   const slideIn = {
     hidden: { x: -20, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.5 } }
+  }
+
+  // fetch wishlist.....
+  const fetchWishlist = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/api/wishlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        }
+      })
+      const data = await response.json()
+      setWishlist(data.data)
+    } catch (error) {
+      console.error('Error fetching wishlist:', error)
+    }
+  }
+
+  // handle wishlist....
+  const handleWishlistToggle = async productId => {
+    try {
+      const isInWishlist = wishlist.some(item => item._id === productId)
+
+      if (isInWishlist) {
+        // Remove from wishlist
+        const result = await fetch(
+          `${backendUrl}/api/wishlist/remove/${productId}`,
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              authToken: localStorage.getItem('authToken')
+            }
+          }
+        )
+      } else {
+        // Add to wishlist
+        const result = await fetch(`${backendUrl}/api/wishlist/add`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authToken: localStorage.getItem('authToken')
+          },
+          body: JSON.stringify({ productId })
+        })
+      }
+
+      // Refresh the wishlist after the toggle
+      fetchWishlist()
+    } catch (error) {
+      console.error('Error toggling wishlist:', error)
+      showAlert('Error toggling wishlist', 'danger')
+    }
+  }
+
+  // check the product is in wishlist or not
+  const isProductInWishlist = productId => {
+    return wishlist.some(item => item._id === productId)
+  }
+
+  // logic for sharing product
+  const shareProduct = async product => {
+    try {
+      const shareData = {
+        text: `Check out this product: ${product.name} ${window.location.href}`
+      }
+
+      if (navigator.share) {
+        // Using the Web Share API if supported
+        await navigator.share(shareData)
+        showAlert('Product shared successfully!', 'success')
+      } else {
+        // Fallback: copying the URL to the clipboard
+        navigator.clipboard.writeText(shareData.url)
+        showAlert('Product link copied to clipboard!', 'success')
+      }
+    } catch (error) {
+      showAlert('Error sharing the product. Please try again!', 'danger')
+    } finally {
+    }
   }
 
   return (
@@ -260,13 +345,27 @@ const ProductDetailsCard = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   className='flex items-center hover:text-red-500 transition duration-200'
+                  onClick={e => {
+                    e.stopPropagation()
+                    handleWishlistToggle(product._id)
+                  }}
                 >
-                  <Heart size={20} className='mr-1' />
-                  Add to Wishlist
+                  <Heart
+                    size={18}
+                    color={isProductInWishlist(product._id) ? 'red' : 'red'}
+                    fill={isProductInWishlist(product._id) ? 'red' : 'none'}
+                    className='mr-1 hover:'
+                  />
+                  {isProductInWishlist(product._id)
+                    ? 'Remove From Wishlist'
+                    : 'Add to Wishlist'}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   className='flex items-center hover:text-blue-500 transition duration-200'
+                  onClick={() => {
+                    shareProduct(product)
+                  }}
                 >
                   <Share2 size={20} className='mr-1' />
                   Share
