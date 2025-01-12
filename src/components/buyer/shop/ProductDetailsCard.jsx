@@ -70,9 +70,17 @@ const ProductDetailsCard = () => {
       )
       const data = await response.json()
       setProduct(data)
+
+      // set title and icon of website dynamically
+      document.title = `Buy ${data.name}`
+      const link =
+        document.querySelector("link[rel*='icon']") ||
+        document.createElement('link')
+      link.rel = 'icon'
+      link.href = `${data.image.imageUrl}`
+      document.head.appendChild(link)
     } catch (error) {
       showAlert('Error fetching product', 'danger')
-      setProduct()
     } finally {
       setLoading(false)
     }
