@@ -51,16 +51,16 @@ const BuyerProfileDropdown = ({ user, handleLogout }) => {
             <div className='p-4 border-b border-gray-100 flex items-center'>
               <Link
                 to='/profile/info'
-                className='flex items-center justify-between hover:bg-gray-50 transition-colors duration-200'
+                className='flex items-center justify-between transition-colors duration-200'
                 onClick={() => {
                   setIsOpen(false)
                 }}
               >
                 <div>
                   <img
-                    src='https://res.cloudinary.com/dtyyhhrtx/image/upload/v1734503011/kiranProfile_mgw9sr.png'
+                    src='/images/defaultProfileImage.png'
                     alt='profile'
-                    className='w-10 rounded-full'
+                    className='w-10 rounded-full border border-black'
                   />
                 </div>
                 <div className='ml-3'>

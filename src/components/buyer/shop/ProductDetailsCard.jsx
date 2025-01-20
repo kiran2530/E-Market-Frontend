@@ -72,7 +72,7 @@ const ProductDetailsCard = () => {
       setProduct(data)
 
       // set title and icon of website dynamically
-      document.title = `Buy ${data.name}`
+      document.title = `Buy ${data.name} E-Market`
       const link =
         document.querySelector("link[rel*='icon']") ||
         document.createElement('link')
@@ -197,7 +197,7 @@ const ProductDetailsCard = () => {
   const shareProduct = async product => {
     try {
       const shareData = {
-        text: `Check out this product: ${product.name} ${window.location.href}`
+        text: ` Check out this product\n\n Name : ${product.name} \n URL : ${window.location.href}\n Location : ${product.city}, ${product.state}, ${product.country} `
       }
 
       if (navigator.share) {

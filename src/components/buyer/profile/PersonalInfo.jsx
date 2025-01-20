@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ShoppingBag,
@@ -15,28 +15,45 @@ import {
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-const BuyerDashboard = ({ buyer }) => {
+import { BuyerContext } from '../../../context/buyer/BuyerContext'
+
+const BuyerDashboard = () => {
+  const { buyer, getBuyerData } = useContext(BuyerContext)
+  console.log(buyer)
+
+  useEffect(() => {
+    getBuyerData()
+  }, [])
+
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('overview')
 
   const stats = [
     {
       title: 'Total Orders',
-      value: buyer.totalOrders,
+      value: buyer?.orders?.length || 0,
       icon: ShoppingBag,
       color: 'text-indigo-600',
       bgColor: 'bg-indigo-100'
     },
     {
       title: 'Wishlist Items',
-      value: buyer.wishlistCount,
+      value: buyer?.wishlist?.length || 0,
       icon: Heart,
-      color: 'text-pink-600',
-      bgColor: 'bg-pink-100'
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-100'
+    },
+    {
+      title: 'Cart Items',
+      value: buyer?.cart?.items.length || 0,
+      icon: ShoppingBag,
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-100'
     },
     {
       title: 'Total Spent',
-      value: `₹${buyer.totalSpent.toFixed(2)}`,
+      value:
+        buyer?.totalSpent != null ? `₹${buyer.totalSpent.toFixed(2)}` : '₹0.00',
       icon: CreditCard,
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-100'
@@ -84,6 +101,23 @@ const BuyerDashboard = ({ buyer }) => {
       date: '2023-05-25'
     }
   ]
+
+  if (!buyer) {
+    // Show a loading state or fallback UI until `buyer` is populated
+    return (
+      <div className='flex items-center justify-center min-h-screen'>
+        <motion.div
+          className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+          animate={{ rotate: 360 }}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            ease: 'linear'
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-6'>
@@ -201,7 +235,7 @@ const BuyerDashboard = ({ buyer }) => {
                         Address
                       </dt>
                       <dd className='mt-1 text-sm text-gray-900'>
-                        {`${buyer.address.street}, ${buyer.address.city}, ${buyer.address.state} ${buyer.address.zipCode}, ${buyer.address.country}`}
+                        {buyer.address}
                       </dd>
                     </div>
                   </dl>

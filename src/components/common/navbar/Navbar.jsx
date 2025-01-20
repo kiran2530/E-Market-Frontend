@@ -13,7 +13,10 @@ import {
 } from 'lucide-react'
 import LoginModal from './LoginModal' // import the LoginModal component
 import SignupModal from './SignupModal' // import the SignupModal component
+
 import alertContext from '../../../context/alert/alertContext'
+import { BuyerContext } from '../../../context/buyer/BuyerContext'
+
 import BuyerProfileDropdown from './BuyerProfileDropdown'
 import VendorProfileDropdown from './VendorProfileDropdown'
 
@@ -25,6 +28,8 @@ const Navbar = () => {
 
   // use alertCotext using useContext hook to show alert message
   const { showAlert } = useContext(alertContext)
+
+  const { buyer, getBuyerData } = useContext(BuyerContext)
 
   let navigate = useNavigate()
   const location = useLocation()
@@ -46,6 +51,7 @@ const Navbar = () => {
     setShowLoginModal(false)
     if (role == 'buyer') navigate('/shop')
     else if (role == 'vendor') navigate('/dashboard')
+    getBuyerData()
   }
 
   const handleSignup = role => {
@@ -124,7 +130,7 @@ const Navbar = () => {
 
               {userRole === 'buyer' && (
                 <BuyerProfileDropdown
-                  user={{ name: 'kiran', phone: '8975952690' }}
+                  user={buyer}
                   handleLogout={handleLogout}
                 />
               )}
