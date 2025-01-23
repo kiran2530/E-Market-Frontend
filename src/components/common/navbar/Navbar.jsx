@@ -49,9 +49,10 @@ const Navbar = () => {
     setIsLoggedIn(true)
     setUserRole(role)
     setShowLoginModal(false)
-    if (role == 'buyer') navigate('/shop')
-    else if (role == 'vendor') navigate('/dashboard')
-    getBuyerData()
+    if (role == 'buyer') {
+      navigate('/shop')
+      getBuyerData()
+    } else if (role == 'vendor') navigate('/dashboard')
   }
 
   const handleSignup = role => {
