@@ -13,7 +13,7 @@ import {
   User,
   Settings
 } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { BuyerContext } from '../../../context/buyer/BuyerContext'
 
@@ -34,21 +34,24 @@ const BuyerDashboard = () => {
       value: buyer?.orders?.length || 0,
       icon: ShoppingBag,
       color: 'text-indigo-600',
-      bgColor: 'bg-indigo-100'
+      bgColor: 'bg-indigo-100',
+      route: '/orders'
     },
     {
       title: 'Wishlist Items',
       value: buyer?.wishlist?.length || 0,
       icon: Heart,
       color: 'text-emerald-600',
-      bgColor: 'bg-emerald-100'
+      bgColor: 'bg-emerald-100',
+      route: '/wishlist'
     },
     {
       title: 'Cart Items',
       value: buyer?.cart?.items.length || 0,
       icon: ShoppingBag,
       color: 'text-indigo-600',
-      bgColor: 'bg-indigo-100'
+      bgColor: 'bg-indigo-100',
+      route: '/cart'
     },
     {
       title: 'Total Spent',
@@ -56,7 +59,8 @@ const BuyerDashboard = () => {
         buyer?.totalSpent != null ? `₹${buyer.totalSpent.toFixed(2)}` : '₹0.00',
       icon: CreditCard,
       color: 'text-emerald-600',
-      bgColor: 'bg-emerald-100'
+      bgColor: 'bg-emerald-100',
+      route: '/totalSpent'
     }
   ]
 
@@ -162,12 +166,12 @@ const BuyerDashboard = () => {
                 </div>
               </div>
               <div className={`${item.bgColor} px-6 py-3`}>
-                <a
-                  href='#'
+                <Link
+                  to={item.route}
                   className={`text-sm font-medium ${item.color} hover:underline`}
                 >
                   View all
-                </a>
+                </Link>
               </div>
             </motion.div>
           ))}
