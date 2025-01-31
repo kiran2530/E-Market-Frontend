@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail,
@@ -10,7 +10,11 @@ import {
   Briefcase
 } from 'lucide-react'
 
-const ForgotPassword = () => {
+import alertContext from '../../../context/alert/alertContext'
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+
+const ForgotPassword = ({ setLoginModel, loginModel }) => {
   const [step, setStep] = useState(1)
   const [userType, setUserType] = useState('')
   const [email, setEmail] = useState('')
@@ -18,38 +22,129 @@ const ForgotPassword = () => {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  // use alertCotext using useContext hook to show alert message
+  const { showAlert } = useContext(alertContext)
 
   const handleUserTypeSelect = type => {
     setUserType(type)
-    setStep(2)
+
+    if (type == 'buyer') setStep(2)
+    else {
+      showAlert(
+        'The service is temporarily unavailable. Please try again later. We apologize for the inconvenience',
+        'warning'
+      )
+    }
   }
 
   const handleEmailSubmit = async e => {
     e.preventDefault()
-    setError('')
     // TODO: Implement API call to send OTP
-    console.log(`Sending OTP to ${userType}:`, email)
-    setStep(3)
+    setIsLoading(true)
+    try {
+      const response = await fetch(`${backendUrl}/api/forgotPass/send-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email
+        })
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        showAlert(result.message, 'success')
+        setStep(3)
+      } else {
+        showAlert(result.message, 'danger')
+      }
+    } catch (err) {
+      showAlert('Internal server error', 'danger')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleOtpSubmit = async e => {
     e.preventDefault()
-    setError('')
     // TODO: Implement API call to verify OTP
-    console.log(`Verifying OTP for ${userType}:`, otp)
-    setStep(4)
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        `${backendUrl}/api/forgotPass/validate-otp`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: email,
+            otp: otp
+          })
+        }
+      )
+
+      const result = await response.json()
+
+      if (result.success) {
+        showAlert(result.message, 'success')
+        setStep(4)
+      } else {
+        showAlert(result.message, 'danger')
+      }
+    } catch (err) {
+      showAlert('Internal server error', 'danger')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handlePasswordReset = async e => {
     e.preventDefault()
-    setError('')
+
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match')
+      showAlert('Passwords do not match', 'danger')
       return
     }
-    // TODO: Implement API call to reset password
-    console.log(`Resetting password for ${userType}:`, email)
-    setStep(5)
+    if (newPassword.length < 6) {
+      showAlert('Password must be at least 6 characters long', 'danger')
+      return
+    }
+    // TODO: Implement API call to verify OTP
+
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        `${backendUrl}/api/forgotPass/resate-buyer-password`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: email,
+            newPassword: newPassword
+          })
+        }
+      )
+
+      const result = await response.json()
+
+      if (result.success) {
+        showAlert(result.message, 'success')
+        setStep(5)
+      } else {
+        showAlert(result.message, 'danger')
+      }
+    } catch (err) {
+      showAlert('Internal server error', 'danger')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const containerVariants = {
@@ -58,7 +153,7 @@ const ForgotPassword = () => {
     exit: { opacity: 0, y: -50, transition: { duration: 0.5 } }
   }
 
-  const renderStep = () => {
+  const renderStep = (setLoginModel, loginModel) => {
     switch (step) {
       case 1:
         return (
@@ -77,7 +172,7 @@ const ForgotPassword = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleUserTypeSelect('buyer')}
-                className='flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md shadow-sm hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                className='flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md shadow-sm hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:bg-gray-200'
               >
                 <User className='h-8 w-8 text-indigo-600 mb-2' />
                 <span className='text-sm font-medium text-gray-900'>Buyer</span>
@@ -86,7 +181,7 @@ const ForgotPassword = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleUserTypeSelect('vendor')}
-                className='flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md shadow-sm hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                className='flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md shadow-sm hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:bg-gray-200'
               >
                 <Briefcase className='h-8 w-8 text-indigo-600 mb-2' />
                 <span className='text-sm font-medium text-gray-900'>
@@ -123,8 +218,8 @@ const ForgotPassword = () => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
-                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md'
-                  placeholder='you@example.com'
+                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md p-2 border mt-2'
+                  placeholder='you@gmail.com'
                 />
               </div>
             </div>
@@ -133,10 +228,24 @@ const ForgotPassword = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type='submit'
-                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-10'
               >
-                Send OTP
-                <ArrowRight className='ml-2 h-5 w-5' />
+                {isLoading ? (
+                  <motion.div
+                    className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: 'linear'
+                    }}
+                  />
+                ) : (
+                  <>
+                    Send OTP
+                    <ArrowRight className='ml-2 h-5 w-5' />
+                  </>
+                )}
               </motion.button>
             </div>
           </motion.form>
@@ -168,7 +277,7 @@ const ForgotPassword = () => {
                   value={otp}
                   onChange={e => setOtp(e.target.value)}
                   required
-                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md'
+                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border p-2'
                   placeholder='Enter 6-digit OTP'
                 />
               </div>
@@ -178,10 +287,24 @@ const ForgotPassword = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type='submit'
-                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-10'
               >
-                Verify OTP
-                <ArrowRight className='ml-2 h-5 w-5' />
+                {isLoading ? (
+                  <motion.div
+                    className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: 'linear'
+                    }}
+                  />
+                ) : (
+                  <>
+                    Verify OTP
+                    <ArrowRight className='ml-2 h-5 w-5' />
+                  </>
+                )}
               </motion.button>
             </div>
           </motion.form>
@@ -213,7 +336,7 @@ const ForgotPassword = () => {
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
                   required
-                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md'
+                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border p-2 mt-2'
                   placeholder='Enter new password'
                 />
               </div>
@@ -235,7 +358,7 @@ const ForgotPassword = () => {
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
                   required
-                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md'
+                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border p-2 mt-2'
                   placeholder='Confirm new password'
                 />
               </div>
@@ -245,10 +368,24 @@ const ForgotPassword = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type='submit'
-                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-10'
               >
-                Reset Password
-                <ArrowRight className='ml-2 h-5 w-5' />
+                {isLoading ? (
+                  <motion.div
+                    className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: 'linear'
+                    }}
+                  />
+                ) : (
+                  <>
+                    Reset Password
+                    <ArrowRight className='ml-2 h-5 w-5' />
+                  </>
+                )}
               </motion.button>
             </div>
           </motion.form>
@@ -283,6 +420,8 @@ const ForgotPassword = () => {
               onClick={() => {
                 // TODO: Implement navigation to login page
                 console.log(`Navigating to ${userType} login page`)
+                setLoginModel(true)
+                console.log(loginModel)
               }}
             >
               Go to Login
@@ -294,29 +433,21 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
+    <div className='min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 flex flex-col py-12 sm:px-6 lg:px-8 px-2'>
       <div className='sm:mx-auto sm:w-full sm:max-w-md'>
-        <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
+        <h2 className='mt-6 text-center text-4xl font-extrabold text-gray-900'>
           Forgot Password
         </h2>
-        <p className='mt-2 text-center text-sm text-gray-600'>
+        <p className='mt-2 text-center text-xs text-gray-600 '>
           Don't worry, we'll help you reset your password.
         </p>
       </div>
 
-      <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
+      <div className='mt-12 sm:mx-auto sm:w-full sm:max-w-md'>
         <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
-          <AnimatePresence mode='wait'>{renderStep()}</AnimatePresence>
-          {error && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='mt-2 text-sm text-red-600'
-              id='error-message'
-            >
-              {error}
-            </motion.p>
-          )}
+          <AnimatePresence mode='wait'>
+            {renderStep(setLoginModel, loginModel)}
+          </AnimatePresence>
         </div>
       </div>
     </div>

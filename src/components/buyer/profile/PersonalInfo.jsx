@@ -19,7 +19,6 @@ import { BuyerContext } from '../../../context/buyer/BuyerContext'
 
 const BuyerDashboard = () => {
   const { buyer, getBuyerData } = useContext(BuyerContext)
-  console.log(buyer)
 
   useEffect(() => {
     getBuyerData()

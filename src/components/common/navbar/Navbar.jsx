@@ -20,7 +20,7 @@ import { BuyerContext } from '../../../context/buyer/BuyerContext'
 import BuyerProfileDropdown from './BuyerProfileDropdown'
 import VendorProfileDropdown from './VendorProfileDropdown'
 
-const Navbar = () => {
+const Navbar = ({ loginModel }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userRole, setUserRole] = useState(null)
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -36,7 +36,8 @@ const Navbar = () => {
 
   useEffect(() => {
     checkLogin()
-  }, [])
+    setShowLoginModal(loginModel)
+  }, [loginModel])
 
   const checkLogin = () => {
     if (localStorage.getItem('authToken')) {

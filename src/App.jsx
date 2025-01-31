@@ -17,10 +17,11 @@ import Wishlist from './components/buyer/wishlist/Wishlist'
 import ForgotPassword from './components/common/navbar/ForgotPassword'
 
 const App = () => {
+  const [loginModel, setLoginModel] = useState(false)
   return (
     <Router>
       <div className='app'>
-        <Navbar />
+        <Navbar loginModel={loginModel} />
         <Alert />
         <Routes>
           <Route exact path='/' element={<Home />} />
@@ -32,7 +33,10 @@ const App = () => {
           <Route path='/cart' element={<Cart />} />
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/dashboard/*' element={<Dashboard />} />
-          <Route path='/forgotPassword' element={<ForgotPassword />} />
+          <Route
+            path='/forgotPassword'
+            element={<ForgotPassword setLoginModel={setLoginModel} loginModel={loginModel} />}
+          />
           <Route path='*' element={<NotFound />} />
         </Routes>
         <Footer />

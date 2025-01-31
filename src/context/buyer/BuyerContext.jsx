@@ -15,8 +15,6 @@ export const BuyerProvider = ({ children }) => {
 
   const getBuyerData = async () => {
     try {
-      console.log('in buyer data')
-
       // fetching buyer data
       const response = await fetch(`${backendUrl}/api/cart/info`, {
         method: 'GET',
@@ -30,7 +28,6 @@ export const BuyerProvider = ({ children }) => {
         throw new Error(`Failed to add item: ${response.statusText}`)
       }
       const data = await response.json()
-      console.log(data)
       setBuyer(data)
     } catch (error) {
       showAlert('Failed to fetch buyer', 'danger')
