@@ -85,8 +85,8 @@ const HowItWorks = () => {
           <h3 className='text-2xl font-semibold text-blue-600 mb-6'>
             For Buyers
           </h3>
-          {steps
-            .filter(step => step.forBuyer)
+          {steps // it is an array of data..
+            .filter(step => step.forBuyer) 
             .map((step, index) => (
               <motion.div
                 key={index}
