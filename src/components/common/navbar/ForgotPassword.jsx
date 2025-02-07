@@ -17,7 +17,7 @@ import alertContext from '../../../context/alert/alertContext'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 const ForgotPassword = ({ setLoginModel, loginModel }) => {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(4)
   const [userType, setUserType] = useState('')
   const [email, setEmail] = useState('')
   const [otp, setOtp] = useState('')
@@ -26,6 +26,8 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isVerifyOtpLoading, setIsVerifyOtpLoading] = useState(false)
   const [resendCountdown, setResendCountdown] = useState(0)
+  const [showPassword, isShowPassword] = useState(false)
+  const [showConfirmPassword, isShowConfirmPassword] = useState(false)
 
   // Countdown Timer for Resend OTP
   useEffect(() => {
@@ -42,13 +44,15 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
   const handleUserTypeSelect = type => {
     setUserType(type)
 
-    if (type == 'buyer') setStep(2)
-    else {
-      showAlert(
-        'The service is temporarily unavailable. Please try again later. We apologize for the inconvenience',
-        'warning'
-      )
-    }
+    // if (type == 'buyer') setStep(2)
+    // else {
+    //   showAlert(
+    //     'The service is temporarily unavailable. Please try again later. We apologize for the inconvenience',
+    //     'warning'
+    //   )
+    // }
+
+    setStep(2)
   }
 
   const handleSendOtp = async e => {
@@ -62,7 +66,8 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email: email
+          email: email,
+          role: userType
         })
       })
 
@@ -70,6 +75,7 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
 
       if (result.success) {
         showAlert(result.message, 'success')
+
         setStep(3)
         setResendCountdown(30)
       } else {
@@ -100,7 +106,8 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
           },
           body: JSON.stringify({
             email: email,
-            otp: otp
+            otp: otp,
+            role: userType
           })
         }
       )
@@ -140,19 +147,23 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
 
     setIsLoading(true)
     try {
-      const response = await fetch(
-        `${backendUrl}/api/forgotPass/resate-buyer-password`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email,
-            newPassword: newPassword
-          })
-        }
-      )
+      let url = ''
+
+      if (userType === 'buyer')
+        url = `${backendUrl}/api/forgotPass/reset-buyer-password`
+      if (userType === 'vendor')
+        url = `${backendUrl}/api/forgotPass/reset-vendor-password`
+
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          newPassword: newPassword
+        })
+      })
 
       const result = await response.json()
 
@@ -390,7 +401,7 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
                   <Lock className='h-5 w-5 text-gray-400' />
                 </div>
                 <input
-                  type='password'
+                  type={showPassword ? 'text' : 'password'}
                   id='newPassword'
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
@@ -398,6 +409,15 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
                   className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border p-2 mt-2'
                   placeholder='Enter new password'
                 />
+              </div>
+              <div className='text-sm flex mt-1 ml-1 items-center'>
+                <input
+                  type='checkBox'
+                  className='mr-1'
+                  checked={showPassword}
+                  onChange={() => isShowPassword(!showPassword)}
+                />{' '}
+                Show Password
               </div>
             </div>
             <div>
@@ -412,7 +432,7 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
                   <Lock className='h-5 w-5 text-gray-400' />
                 </div>
                 <input
-                  type='password'
+                  type={showConfirmPassword ? 'text' : 'password'}
                   id='confirmPassword'
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
@@ -420,6 +440,16 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
                   className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border p-2 mt-2'
                   placeholder='Confirm new password'
                 />
+              </div>
+
+              <div className='text-sm flex mt-1 ml-1 items-center'>
+                <input
+                  type='checkBox'
+                  className='mr-1'
+                  checked={showConfirmPassword}
+                  onChange={() => isShowConfirmPassword(!showConfirmPassword)}
+                />{' '}
+                Show Password
               </div>
             </div>
             <div>
@@ -478,9 +508,7 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
               className='mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
               onClick={() => {
                 // TODO: Implement navigation to login page
-                console.log(`Navigating to ${userType} login page`)
                 setLoginModel(true)
-                console.log(loginModel)
               }}
             >
               Go to Login
@@ -514,16 +542,16 @@ const ForgotPassword = ({ setLoginModel, loginModel }) => {
             animate='visible'
             exit='exit'
             className='flex flex-col items-center'
-            onClick={() => {
-              if (step > 1) {
-                setStep(step - 1)
-              }
-            }}
           >
             <button
               className={`mt-10 flex items-center gap-1 px-2 py-1 border rounded-md hover:bg-gray-100 border-black ${
                 step == 1 || step == 5 ? 'hidden' : ''
               }`}
+              onClick={() => {
+                if (step > 1) {
+                  setStep(step - 1)
+                }
+              }}
             >
               <ArrowLeft className='h-5 w-5' />
               Back

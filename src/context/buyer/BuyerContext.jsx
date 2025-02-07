@@ -36,7 +36,7 @@ export const BuyerProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('authToken')) {
+    if (localStorage.getItem('authToken') === 'buyer') {
       getBuyerData()
     }
   }, [])

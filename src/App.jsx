@@ -1,5 +1,5 @@
 import './index.css'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Navbar from './components/common/navbar/Navbar'
 import Home from './components/common/home/Home'
@@ -35,7 +35,12 @@ const App = () => {
           <Route path='/dashboard/*' element={<Dashboard />} />
           <Route
             path='/forgotPassword'
-            element={<ForgotPassword setLoginModel={setLoginModel} loginModel={loginModel} />}
+            element={
+              <ForgotPassword
+                setLoginModel={setLoginModel}
+                loginModel={loginModel}
+              />
+            }
           />
           <Route path='*' element={<NotFound />} />
         </Routes>

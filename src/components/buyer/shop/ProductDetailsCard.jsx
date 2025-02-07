@@ -17,14 +17,23 @@ import {
 } from 'lucide-react'
 import ProductSkeleton from '../../common/loader/ProductSkeleton'
 import alertContext from '../../../context/alert/alertContext'
+import { BuyerContext } from '../../../context/buyer/BuyerContext'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
+const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY
 
 const ProductDetailsCard = () => {
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState('description')
+
+  const { buyer } = useContext(BuyerContext)
+
+  // states for loading
   const [isLoading, setLoading] = useState(false)
   const [isAddCart, setIsAddCard] = useState(false)
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false)
+
+  // state for product
   const [product, setProduct] = useState({
     _id: { $oid: '676bad3d54ba27a6041673d4' },
     name: 'Sample Product',
@@ -103,7 +112,6 @@ const ProductDetailsCard = () => {
       }
 
       const data = await response.json()
-      console.log(data)
       showAlert(data.message, 'success')
     } catch (error) {
       showAlert(error.message || 'Failed to add item to cart', 'danger')
@@ -212,6 +220,113 @@ const ProductDetailsCard = () => {
     } catch (error) {
       showAlert('Error sharing the product. Please try again!', 'danger')
     } finally {
+    }
+  }
+
+  // load Razorpay Script
+  const loadRazorpayScript = () => {
+    return new Promise(resolve => {
+      if (window.Razorpay) {
+        resolve(true)
+        return
+      }
+      const script = document.createElement('script')
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+      script.async = true
+      script.onload = () => resolve(true)
+      script.onerror = () => resolve(false)
+      document.body.appendChild(script)
+    })
+  }
+
+  // handle buy now
+  const handleBuyNow = async () => {
+    try {
+      setIsPaymentProcessing(true)
+
+      // Load Razorpay script
+      const isRazorpayLoaded = await loadRazorpayScript()
+      if (!isRazorpayLoaded) {
+        alert('Razorpay SDK failed to load. Are you online?')
+        return
+      }
+
+      // Step 1: Create order in backend
+      const orderResponse = await fetch(`${backendUrl}/api/payment/buy-now`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+          buyerId: null,
+          vendorId: product.vendorId,
+          products: [
+            { productId: product._id, quantity: quantity, price: product.price }
+          ],
+          totalAmount: product.price * quantity,
+          shippingAddress: 'Shelewadi'
+        })
+      })
+
+      const orderData = await orderResponse.json()
+      if (!orderResponse.ok)
+        throw new Error(orderData.message || 'Order creation failed!')
+
+      // Step 2: Load Razorpay checkout
+      const options = {
+        key: razorpayKey,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        order_id: orderData.orderId,
+        name: 'E-Market',
+        description: `Purchase ${product.name}`,
+        handler: async response => {
+          try {
+            // Step 3: Verify Payment
+            const verifyResponse = await fetch(
+              `${backendUrl}/api/payment/payment-success`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  authToken: localStorage.getItem('authToken')
+                },
+                body: JSON.stringify({
+                  ...response,
+                  vendorId: product.vendorId,
+                  products: [
+                    { productId: product._id, quantity, price: product.price }
+                  ],
+                  totalAmount: product.price * quantity,
+                  shippingAddress: 'Shelewadi'
+                })
+              }
+            )
+
+            const verifyData = await verifyResponse.json()
+
+            if (!verifyResponse.ok)
+              throw new Error(
+                verifyData.message || 'Payment verification failed!'
+              )
+
+            alert(verifyData.message)
+          } catch (error) {
+            console.error('Payment verification failed:', error)
+            alert('Payment verification failed!')
+          }
+        },
+        theme: { color: '#3399cc' }
+      }
+
+      const razorpay = new window.Razorpay(options)
+      razorpay.open()
+    } catch (error) {
+      console.error('Error in Buy Now:', error)
+      alert(error.message || 'Something went wrong!')
+    } finally {
+      setIsPaymentProcessing(false)
     }
   }
 
@@ -344,6 +459,7 @@ const ProductDetailsCard = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className='flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-full font-semibold flex items-center justify-center transition duration-200'
+                  onClick={handleBuyNow}
                 >
                   Buy Now
                 </motion.button>
