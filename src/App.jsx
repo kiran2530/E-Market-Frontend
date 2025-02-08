@@ -15,6 +15,8 @@ import NotFound from './components/NotFound'
 import PersonalInfo from './components/buyer/profile/PersonalInfo'
 import Wishlist from './components/buyer/wishlist/Wishlist'
 import ForgotPassword from './components/common/navbar/ForgotPassword'
+import ShippingPolicy from './components/common/ShippingPolicy'
+import ContactUs from './components/common/ContactUs'
 
 const App = () => {
   const [loginModel, setLoginModel] = useState(false)
@@ -33,6 +35,8 @@ const App = () => {
           <Route path='/cart' element={<Cart />} />
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/dashboard/*' element={<Dashboard />} />
+          <Route path='/shipping-policy' element={<ShippingPolicy />} />
+          <Route path='/contact' element={<ContactUs />} />
           <Route
             path='/forgotPassword'
             element={

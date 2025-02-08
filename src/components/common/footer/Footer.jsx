@@ -47,16 +47,26 @@ const Footer = () => {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link
+                  to='/shipping-policy'
+                  className='hover:text-white transition duration-300'
+                >
+                  Shipping Policy
+                </Link>
+              </li>
             </ul>
           </div>
           <div className='w-full md:w-1/4 mb-6 md:mb-0'>
             <h3 className='text-xl font-semibold mb-2'>Contact Us</h3>
             <p className='text-gray-400'>
-              123 E-Market Street
+              Gadhinglaj, Kolhapur,
               <br />
-              Cityville, State 12345
+              Maharashtra, India 416502
               <br />
-              contact@emarket.com
+              emarket.solutions24x7@gmail.com
+              <br />
+              +91 8975952690
             </p>
           </div>
           <div className='w-full md:w-1/4'>

@@ -247,7 +247,7 @@ const ProductDetailsCard = () => {
       // Load Razorpay script
       const isRazorpayLoaded = await loadRazorpayScript()
       if (!isRazorpayLoaded) {
-        alert('Razorpay SDK failed to load. Are you online?')
+        showAlert('Razorpay SDK failed to load. Are you online?', 'danger')
         return
       }
 
@@ -310,11 +310,11 @@ const ProductDetailsCard = () => {
               throw new Error(
                 verifyData.message || 'Payment verification failed!'
               )
-
-            alert(verifyData.message)
+            showAlert(verifyData.message, 'success')
           } catch (error) {
             console.error('Payment verification failed:', error)
-            alert('Payment verification failed!')
+
+            showAlert('Payment verification failed!', 'danger')
           }
         },
         theme: { color: '#3399cc' }
@@ -324,7 +324,7 @@ const ProductDetailsCard = () => {
       razorpay.open()
     } catch (error) {
       console.error('Error in Buy Now:', error)
-      alert(error.message || 'Something went wrong!')
+      showAlert(error.message || 'Something went wrong!', 'danger')
     } finally {
       setIsPaymentProcessing(false)
     }
@@ -461,7 +461,19 @@ const ProductDetailsCard = () => {
                   className='flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-full font-semibold flex items-center justify-center transition duration-200'
                   onClick={handleBuyNow}
                 >
-                  Buy Now
+                  {isPaymentProcessing ? (
+                    <motion.div
+                      className='w-6 h-6 border-t-2 border-white rounded-full animate-spin'
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: 'linear'
+                      }}
+                    />
+                  ) : (
+                    <>Buy Now</>
+                  )}
                 </motion.button>
               </div>
 

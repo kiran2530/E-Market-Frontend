@@ -214,6 +214,12 @@ const Home = () => {
             >
               About Us
             </Link>
+            <Link
+              to='/shipping-policy'
+              className='bg-gray-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-700 transition duration-300'
+            >
+              Shipping Policy
+            </Link>
             {/* <Link
               to='/'
               className='bg-green-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300'

@@ -12,6 +12,7 @@ import {
   Leaf,
   DollarSign
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const teamMembers = [
   {
@@ -24,7 +25,8 @@ const teamMembers = [
   {
     name: 'Vaishnavi Desai',
     role: 'Database Engineer',
-    image: '/placeholder.svg?height=200&width=200',
+    image:
+      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1738993672/WhatsApp_Image_2025-02-08_at_11.12.49_AM_burtia.jpg',
     portfolio: 'https://vaishnavidesai.com/'
   },
   {
@@ -124,7 +126,7 @@ export default function About () {
           E-Market
         </motion.h1>
 
-        <motion.section {...fadeInUp} className='mb-16'>
+        <motion.section {...fadeInUp} className='mb-12'>
           <h2 className='text-3xl font-bold text-gray-800 dark:text-white mb-4'>
             Our Story
           </h2>
@@ -134,6 +136,13 @@ export default function About () {
             came together to create a platform that combines cutting-edge
             technology with user-friendly design, making e-commerce accessible
             and enjoyable for everyone.
+            <br/>
+            <Link
+              to='/contact'
+              className='text-blue-700 hover:text-gray-900 transition duration-300'
+            >
+              Contact Us
+            </Link>
           </p>
         </motion.section>
 

@@ -17,7 +17,7 @@ import alertContext from '../../../context/alert/alertContext'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 const ForgotPassword = ({ setLoginModel, loginModel }) => {
-  const [step, setStep] = useState(4)
+  const [step, setStep] = useState(1)
   const [userType, setUserType] = useState('')
   const [email, setEmail] = useState('')
   const [otp, setOtp] = useState('')
