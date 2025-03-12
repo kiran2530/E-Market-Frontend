@@ -55,37 +55,14 @@ const OrderCard = ({ order }) => {
             </span>
           </div>
         </div>
-        <div className='flex items-center text-sm text-gray-600 mb-2'>
-          <Truck className='w-4 h-4 mr-1' />
-          <span>{order.shippingAddress}</span>
-        </div>
-        <div className='flex justify-between items-center'>
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className='text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center'
-          >
-            {isExpanded ? (
-              <>
-                <span className='mr-1'>Less details</span>
-                <ChevronUp className='w-4 h-4' />
-              </>
-            ) : (
-              <>
-                <span className='mr-1'>More details</span>
-                <ChevronDown className='w-4 h-4' />
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-      <AnimatePresence>
-        {isExpanded && (
+
+        <AnimatePresence>
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className='px-4 pb-4'
+            className='mb-2'
           >
             <h4 className='font-semibold mb-2'>Products:</h4>
             <ul className='space-y-2'>
@@ -102,16 +79,22 @@ const OrderCard = ({ order }) => {
                       Quantity: {product.quantity} x ₹{' '}
                       {product.price.toFixed(2)}
                     </p>
-                    <span className='text-sm text-gray-600'>
-                      Vendor: {product.vendorId.name}
-                    </span>
                   </div>
                 </li>
               ))}
             </ul>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+        <div className='flex items-center text-sm text-gray-600 mb-2'>
+          <Truck className='w-4 h-4 mr-1' />
+          <span>{order.shippingAddress}</span>
+        </div>
+        <div className='flex justify-between items-center'>
+          <span className='text-sm text-gray-600'>
+            Buyer: {order.buyerId.name}
+          </span>
+        </div>
+      </div>
     </motion.div>
   )
 }
@@ -126,7 +109,7 @@ const Orders = () => {
       setIsLoading(true)
       try {
         // Replace this with your actual API call
-        const response = await fetch(`${backendUrl}/api/orders/buyer/get`, {
+        const response = await fetch(`${backendUrl}/api/orders/vendor/get`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -135,8 +118,8 @@ const Orders = () => {
         })
 
         const result = await response.json()
-        console.log(result)
-
+        console.log(result);
+        
         setOrders(result)
       } catch (error) {
         console.error('Error fetching orders:', error)

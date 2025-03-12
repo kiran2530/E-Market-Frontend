@@ -19,14 +19,14 @@ const VendorProfileDropdown = ({ vendor, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const menuItems = [
-    { icon: Store, label: 'Shop Info', path: '/vendor/profile/info' },
+    { icon: Store, label: 'Shop Info', path: '/dashboard/profile/info' },
     { icon: Package, label: 'My Products', path: 'dashboard/products' },
     { icon: Plus, label: 'Add Product', path: 'dashboard/add-product' },
-    { icon: ShoppingBag, label: 'Orders', path: '/vendor/orders' },
-    { icon: Truck, label: 'Deliveries', path: '/vendor/deliveries' },
-    { icon: BarChart2, label: 'Analytics', path: '/vendor/analytics' },
-    { icon: DollarSign, label: 'Earnings', path: '/vendor/earnings' },
-    { icon: Settings, label: 'Settings', path: '/vendor/settings' }
+    { icon: ShoppingBag, label: 'Orders', path: '/dashboard/orders' },
+    { icon: Truck, label: 'Deliveries', path: '/dashboard/deliveries' },
+    { icon: BarChart2, label: 'Analytics', path: '/dashboard/analytics' },
+    { icon: DollarSign, label: 'Earnings', path: '/dashboard/earnings' },
+    { icon: Settings, label: 'Settings', path: '/dashboard/settings' }
   ]
 
   return (

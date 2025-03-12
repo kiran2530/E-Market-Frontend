@@ -15,6 +15,7 @@ import ProductListing from './ProductListing'
 import AddProduct from './AddProduct'
 import VendorHome from './VendorHome'
 import Analytics from './Analytics'
+import Orders from './Orders'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -176,6 +177,7 @@ const Dashboard = () => {
               path='customers'
               element={<h2>Customers (Coming Soon)</h2>}
             />
+            <Route path='orders' element={<Orders />} />
             <Route path='settings' element={<h2>Settings (Coming Soon)</h2>} />
           </Routes>
         </div>

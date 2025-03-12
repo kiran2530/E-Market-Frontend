@@ -260,9 +260,13 @@ const ProductDetailsCard = () => {
         },
         body: JSON.stringify({
           buyerId: null,
-          vendorId: product.vendorId,
           products: [
-            { productId: product._id, quantity: quantity, price: product.price }
+            {
+              productId: product._id,
+              quantity: quantity,
+              price: product.price,
+              vendorId: product.vendorId
+            }
           ],
           totalAmount: product.price * quantity,
           shippingAddress: 'Shelewadi'
@@ -294,9 +298,13 @@ const ProductDetailsCard = () => {
                 },
                 body: JSON.stringify({
                   ...response,
-                  vendorId: product.vendorId,
                   products: [
-                    { productId: product._id, quantity, price: product.price }
+                    {
+                      productId: product._id,
+                      quantity,
+                      price: product.price,
+                      vendorId: product.vendorId
+                    }
                   ],
                   totalAmount: product.price * quantity,
                   shippingAddress: 'Shelewadi'
