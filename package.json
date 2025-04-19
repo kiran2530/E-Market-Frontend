@@ -12,14 +12,18 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
+    "@react-three/drei": "^9.80.0",
+    "@react-three/fiber": "^8.13.0",
     "framer-motion": "^11.5.4",
     "lucide-react": "^0.439.0",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
+    "react-intersection-observer": "^9.5.2",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.26.1",
-    "recharts": "^2.15.0"
+    "recharts": "^2.15.0",
+    "three": "^0.159.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -34,6 +38,6 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.45",
     "tailwindcss": "^3.4.10",
-    "vite": "^5.4.8"
+    "vite": "^6.2.2"
   }
 }

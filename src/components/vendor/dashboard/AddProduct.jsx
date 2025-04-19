@@ -133,7 +133,28 @@ export default function AddProductForm () {
                   className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
                 />
               </div>
-
+              {/* price Prediction feild */}
+              <div className='mt-2'>
+                <label className='block text-sm font-medium text-gray-700 mb-1'>
+                  Price Prediction
+                </label>
+                <div className='bg-gray-100 p-4 rounded-md shadow-sm border border-gray-200'>
+                  <div className='flex items-center justify-between mb-2'>
+                    <span className='text-gray-600'>Average Price:</span>
+                    <span className='font-semibold text-blue-600'>
+                      ₹ averagePrice || '--'
+                    </span>
+                  </div>
+                  <div className='flex items-center justify-between'>
+                    <span className='text-gray-600'>
+                      Predicted Future Price:
+                    </span>
+                    <span className='font-semibold text-green-600'>
+                      ₹ futurePrice || '--'
+                    </span>
+                  </div>
+                </div>
+              </div>
               <motion.div className='space-y-2'>
                 <label
                   htmlFor='category'
@@ -205,7 +226,6 @@ export default function AddProductForm () {
                   <option value='notAvailable'>Not Available</option>
                 </select>
               </motion.div>
-
               <motion.div className=' flex gap-2 justify-center items-center'>
                 <div className='flex-[2]'>
                   <label
