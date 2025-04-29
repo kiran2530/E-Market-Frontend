@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
+  Home,
   User,
   ShoppingBag,
   Package,
@@ -19,14 +20,15 @@ const VendorProfileDropdown = ({ vendor, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const menuItems = [
-    { icon: Store, label: 'Shop Info', path: '/dashboard/profile/info' },
+    { icon: Home, label: 'Home', path: '/dashboard/' },
+    // { icon: Store, label: 'Shop Info', path: '/dashboard/profile/info' },
     { icon: Package, label: 'My Products', path: 'dashboard/products' },
     { icon: Plus, label: 'Add Product', path: 'dashboard/add-product' },
-    { icon: ShoppingBag, label: 'Orders', path: '/dashboard/orders' },
-    { icon: Truck, label: 'Deliveries', path: '/dashboard/deliveries' },
-    { icon: BarChart2, label: 'Analytics', path: '/dashboard/analytics' },
-    { icon: DollarSign, label: 'Earnings', path: '/dashboard/earnings' },
-    { icon: Settings, label: 'Settings', path: '/dashboard/settings' }
+    { icon: ShoppingBag, label: 'Orders', path: '/dashboard/orders' }
+    // { icon: Truck, label: 'Deliveries', path: '/dashboard/deliveries' },
+    // { icon: BarChart2, label: 'Analytics', path: '/dashboard/analytics' },
+    // { icon: DollarSign, label: 'Earnings', path: '/dashboard/earnings' },
+    // { icon: Settings, label: 'Settings', path: '/dashboard/settings' }
   ]
 
   return (

@@ -51,16 +51,16 @@ const BuyerDashboard = () => {
       color: 'text-indigo-600',
       bgColor: 'bg-indigo-100',
       route: '/cart'
-    },
-    {
-      title: 'Total Spent',
-      value:
-        buyer?.totalSpent != null ? `₹${buyer.totalSpent.toFixed(2)}` : '₹0.00',
-      icon: CreditCard,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-100',
-      route: '/totalSpent'
     }
+    // {
+    //   title: 'Total Spent',
+    //   value:
+    //     buyer?.totalSpent != null ? `₹${buyer.totalSpent.toFixed(2)}` : '₹0.00',
+    //   icon: CreditCard,
+    //   color: 'text-emerald-600',
+    //   bgColor: 'bg-emerald-100',
+    //   route: '/totalSpent'
+    // }
   ]
 
   const recentOrders = [

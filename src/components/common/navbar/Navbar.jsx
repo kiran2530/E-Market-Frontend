@@ -16,6 +16,7 @@ import SignupModal from './SignupModal' // import the SignupModal component
 
 import alertContext from '../../../context/alert/alertContext'
 import { BuyerContext } from '../../../context/buyer/BuyerContext'
+import { VendorContext } from '../../../context/vendor/VendorContext'
 
 import BuyerProfileDropdown from './BuyerProfileDropdown'
 import VendorProfileDropdown from './VendorProfileDropdown'
@@ -30,6 +31,8 @@ const Navbar = ({ loginModel }) => {
   const { showAlert } = useContext(alertContext)
 
   const { buyer, getBuyerData } = useContext(BuyerContext)
+
+  const { vendor } = useContext(VendorContext)
 
   let navigate = useNavigate()
   const location = useLocation()
@@ -139,11 +142,7 @@ const Navbar = ({ loginModel }) => {
 
               {userRole === 'vendor' && (
                 <VendorProfileDropdown
-                  vendor={{
-                    name: 'kiran',
-                    shopName: 'Mauli Shop',
-                    phone: '8975952690'
-                  }}
+                  vendor={vendor}
                   handleLogout={handleLogout}
                 />
               )}

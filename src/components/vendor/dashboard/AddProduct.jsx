@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import stateData from '../../../data/states.json'
 import cityData from '../../../data/districts.json'
 import alertContext from '../../../context/alert/alertContext'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
+const mlUrl = import.meta.env.VITE_ML_URL
 
 export default function AddProductForm () {
   const [isLoading, setIsLoading] = useState(false)
@@ -27,6 +28,82 @@ export default function AddProductForm () {
 
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedState, setSelectedState] = useState('')
+
+  // states for price prediction or getting average price of product
+  const [productName, setProductName] = useState('')
+  const [averagePriceData, setaveragePriceData] = useState(50)
+  const [futurePriceData, setFuturePriceData] = useState(null)
+  const [pricePredictionMsg, setPricePredictionMsg] = useState('')
+
+  // function for fetching predicted price and average price
+  useEffect(() => {
+    const fetchPricePrediction = async () => {
+      setFuturePriceData(null)
+
+      /*
+      // form 1 month from current date
+      const today = new Date()
+      const oneMonthLater = new Date(today.setMonth(today.getMonth() + 1))
+      const formattedDate = oneMonthLater.toISOString().split('T')[0]
+      */
+
+      // form 10 days from current date
+      const today = new Date()
+      const futureDate = new Date(today.setDate(today.getDate() + 10))
+      const formattedDate = futureDate.toISOString().split('T')[0]
+
+      if (productName.trim().length > 2) {
+        try {
+          const res = await fetch(`${mlUrl}/api/prices/predict`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: productName,
+              futureDate: formattedDate // or any custom date you want
+            })
+          })
+
+          const data = await res.json()
+          console.log(data)
+          if (data.success) {
+            setFuturePriceData(data)
+            setPricePredictionMsg('')
+          } else {
+            setPricePredictionMsg(data.message)
+          }
+        } catch (err) {
+          console.error('Prediction Error:', err)
+        }
+      }
+    }
+
+    const fetchAvaragePrice = async () => {
+      setaveragePriceData(null)
+      if (productName.trim().length > 2) {
+        try {
+          const res = await fetch(
+            `${mlUrl}/api/prices/average?name=${productName}`
+          )
+
+          const data = await res.json()
+          console.log(data)
+          if (data.success) {
+            setaveragePriceData(data)
+            setPricePredictionMsg('')
+          } else {
+            setPricePredictionMsg(data.message)
+          }
+        } catch (err) {
+          console.error('Prediction Error:', err)
+        }
+      }
+    }
+
+    fetchAvaragePrice()
+    fetchPricePrediction()
+  }, [productName])
 
   // use alertCotext using useContext hook to show alert message
   const { showAlert } = useContext(alertContext)
@@ -115,119 +192,107 @@ export default function AddProductForm () {
           Add Product
         </h2>
         <form onSubmit={handleSubmit} className='space-y-6'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+          <div className=''>
             <motion.div className='space-y-3 shadow-xl rounded-lg border border-gray-300 p-4'>
-              <div>
-                <label
-                  htmlFor='name'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Product Name
-                </label>
-                <input
-                  type='text'
-                  id='name'
-                  name='name'
-                  placeholder='Name'
-                  required
-                  className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
-                />
-              </div>
-              {/* price Prediction feild */}
-              <div className='mt-2'>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Price Prediction
-                </label>
-                <div className='bg-gray-100 p-4 rounded-md shadow-sm border border-gray-200'>
-                  <div className='flex items-center justify-between mb-2'>
-                    <span className='text-gray-600'>Average Price:</span>
-                    <span className='font-semibold text-blue-600'>
-                      ₹ averagePrice || '--'
-                    </span>
-                  </div>
-                  <div className='flex items-center justify-between'>
-                    <span className='text-gray-600'>
-                      Predicted Future Price:
-                    </span>
-                    <span className='font-semibold text-green-600'>
-                      ₹ futurePrice || '--'
-                    </span>
-                  </div>
+              <div className='sm:flex justify-center items-center gap-4'>
+                <div className='sm:w-1/2'>
+                  <label
+                    htmlFor='name'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Product Name
+                  </label>
+                  <input
+                    type='text'
+                    id='name'
+                    name='name'
+                    placeholder='Name'
+                    required
+                    value={productName}
+                    onChange={e => {
+                      setProductName(e.target.value)
+                    }}
+                    className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                  />
                 </div>
+
+                <motion.div className='sm:w-1/2 mt-2 sm:mt-0'>
+                  <label
+                    htmlFor='status'
+                    className='block text-sm font-medium text-gray-700 '
+                  >
+                    Status
+                  </label>
+                  <select
+                    id='status'
+                    name='status'
+                    required
+                    className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                  >
+                    <option value='' disabled selected>
+                      Select
+                    </option>
+                    <option value='active'>Active</option>
+                    <option value='inactive'>Inactive</option>
+                    <option value='ready'>Ready</option>
+                    <option value='available'>Available</option>
+                    <option value='notAvailable'>Not Available</option>
+                  </select>
+                </motion.div>
               </div>
-              <motion.div className='space-y-2'>
-                <label
-                  htmlFor='category'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Category
-                </label>
-                <select
-                  id='category'
-                  name='category'
-                  required
-                  className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
-                >
-                  <option value='' disabled selected>
-                    Select category
-                  </option>
-                  <option value='Crops'>Crops</option>
-                  <option value='Fruits'>Fruits</option>
-                  <option value='Flowers'>Flowers</option>
-                  <option value='Vegetables'>Vegetables</option>
-                  <option value='Meat'>Meat</option>
-                  <option value='Grains'>Grains</option>
-                </select>
-              </motion.div>
-              <motion.div className='space-y-2'>
-                <label
-                  htmlFor='subCategory'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  SubCategory
-                </label>
-                <select
-                  id='subCategory'
-                  name='subCategory'
-                  required
-                  className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
-                >
-                  <option value='' disabled selected>
-                    Select subcategory
-                  </option>
-                  <option value='Organic'>Organic</option>
-                  <option value='With Out Chemical'>With Out Chemical</option>
-                  <option value='Accessories'>Accessories</option>
-                  <option value='Fresh'>Fresh</option>
-                  <option value='Fiction'>Fiction</option>
-                  <option value='Non-Fiction'>Non-Fiction</option>
-                </select>
-              </motion.div>
-              <motion.div className='space-y-2'>
-                <label
-                  htmlFor='status'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Status
-                </label>
-                <select
-                  id='status'
-                  name='status'
-                  required
-                  className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
-                >
-                  <option value='' disabled selected>
-                    Select
-                  </option>
-                  <option value='active'>Active</option>
-                  <option value='inactive'>Inactive</option>
-                  <option value='ready'>Ready</option>
-                  <option value='available'>Available</option>
-                  <option value='notAvailable'>Not Available</option>
-                </select>
-              </motion.div>
+
+              <div className='sm:flex justify-center items-center gap-4'>
+                <motion.div className='sm:w-1/2'>
+                  <label
+                    htmlFor='category'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    Category
+                  </label>
+                  <select
+                    id='category'
+                    name='category'
+                    required
+                    className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                  >
+                    <option value='' disabled selected>
+                      Select category
+                    </option>
+                    <option value='Crops'>Crops</option>
+                    <option value='Fruits'>Fruits</option>
+                    <option value='Flowers'>Flowers</option>
+                    <option value='Vegetables'>Vegetables</option>
+                    <option value='Meat'>Meat</option>
+                    <option value='Grains'>Grains</option>
+                  </select>
+                </motion.div>
+                <motion.div className='sm:w-1/2 mt-2 sm:mt-0'>
+                  <label
+                    htmlFor='subCategory'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    SubCategory
+                  </label>
+                  <select
+                    id='subCategory'
+                    name='subCategory'
+                    required
+                    className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
+                  >
+                    <option value='' disabled selected>
+                      Select subcategory
+                    </option>
+                    <option value='Organic'>Organic</option>
+                    <option value='With Out Chemical'>With Out Chemical</option>
+                    <option value='Accessories'>Accessories</option>
+                    <option value='Fresh'>Fresh</option>
+                    <option value='Fiction'>Fiction</option>
+                    <option value='Non-Fiction'>Non-Fiction</option>
+                  </select>
+                </motion.div>
+              </div>
               <motion.div className=' flex gap-2 justify-center items-center'>
-                <div className='flex-[2]'>
+                <div className='w-1/2 '>
                   <label
                     htmlFor='quantity'
                     className='block text-sm font-medium text-gray-700'
@@ -244,7 +309,7 @@ export default function AddProductForm () {
                     className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:ring focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
                   />
                 </div>
-                <div className='flex-[1]'>
+                <div className='w-1/2'>
                   <label
                     htmlFor='quantityCategory'
                     className='block text-sm font-medium text-gray-700'
@@ -271,8 +336,66 @@ export default function AddProductForm () {
               </motion.div>
             </motion.div>
 
-            <motion.div className=' space-y-3 shadow-xl rounded-lg border border-gray-300 p-4'>
-              <div className=' flex gap-2 justify-center items-center'>
+            <motion.div className=' space-y-3 shadow-xl rounded-lg border border-gray-300 p-4 mt-4'>
+              {/* price Prediction feild */}
+              <div className='mt-2'>
+                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  📊 Analysis Data
+                </label>
+                <div className='bg-gray-100 p-4 rounded-lg shadow-sm border border-gray-200'>
+                  {/* Current Average Price */}
+                  <div className='flex items-center justify-between mb-3'>
+                    <span className='text-gray-600'>
+                      Current Average Price:
+                    </span>
+                    <span className='font-semibold text-blue-600'>
+                      ₹ {averagePriceData?.averagePrice || '--'}
+                    </span>
+                  </div>
+
+                  {/* Date Picker */}
+                  {/* <div className='flex flex-col mb-4'>
+                    <label className='font-semibold mb-1'>
+                      📅 Select Date:
+                    </label>
+                    <input
+                      type='date'
+                      className='py-2 px-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400'
+                      onChange={() => {}} // <-- connect to your handler
+                    />
+                  </div> */}
+
+                  {/* Predicted Price */}
+                  {futurePriceData?.predictedPrice &&
+                  futurePriceData?.predictedDate ? (
+                    <div className='bg-green-50 p-3 rounded-md text-green-700 text-sm font-medium'>
+                      On{' '}
+                      <span className='font-semibold'>
+                        {futurePriceData.predictedDate}
+                      </span>
+                      , the predicted price is:
+                      <span className='ml-2 font-bold text-green-800'>
+                        ₹ {futurePriceData.predictedPrice}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className='flex items-center justify-between text-gray-600'>
+                      <span>Predicted Future Price:</span>
+                      <span className='font-semibold text-green-600'>
+                        ₹ {futurePriceData?.predictedPrice || '--'}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Optional Message */}
+                  {pricePredictionMsg && (
+                    <p className='mt-2 text-red-600 font-semibold'>
+                      {pricePredictionMsg}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className='flex gap-2 justify-center items-center'>
                 <div className='flex-[2]'>
                   <label
                     htmlFor='price'
@@ -295,7 +418,7 @@ export default function AddProductForm () {
                     className='mt-1 block w-full rounded-md border border-gray-400 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition duration-150 ease-in-out h-12 px-4'
                   />
                 </div>
-                <div className='flex-[1] '>
+                <div className='flex-[1] mt-1'>
                   <label
                     htmlFor='priceCategory'
                     className='block text-sm font-medium text-gray-700'
@@ -320,7 +443,6 @@ export default function AddProductForm () {
                   </select>
                 </div>
               </div>
-
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 className=' flex gap-2 justify-center items-center'
@@ -348,7 +470,6 @@ export default function AddProductForm () {
                   />
                 </div>
               </motion.div>
-
               {/* prize deduction display */}
               <div className='min-w-full mx-auto px-8 py-2 bg-white shadow-lg rounded-lg border border-gray-200 mt-4'>
                 <h2 className='text-xl font-semibold text-gray-900 text-center mb-4'>

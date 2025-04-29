@@ -91,11 +91,11 @@ const Dashboard = () => {
 
   const sidebarItems = [
     { icon: Home, label: 'Home', route: '/dashboard/' },
-    { icon: Package, label: 'Products', route: '/dashboard/products' },
+    { icon: Package, label: 'My Products', route: '/dashboard/products' },
     { icon: PlusCircle, label: 'Add Product', route: '/dashboard/add-product' },
-    { icon: BarChart2, label: 'Analytics', route: '/dashboard/analytics' },
-    { icon: Users, label: 'Customers', route: '/dashboard/customers' },
-    { icon: Settings, label: 'Settings', route: '/dashboard/settings' }
+    // { icon: BarChart2, label: 'Analytics', route: '/dashboard/analytics' },
+    // { icon: Users, label: 'Customers', route: '/dashboard/customers' },
+    // { icon: Settings, label: 'Settings', route: '/dashboard/settings' }
   ]
 
   const toggleSidebar = () => {
@@ -146,7 +146,7 @@ const Dashboard = () => {
       </aside>
 
       <main className='flex-1 sm:p-6 p-2'>
-        <button
+        {/* <button
           className='mb-4 md:hidden p-2 bg-white rounded shadow'
           onClick={toggleSidebar}
         >
@@ -163,7 +163,7 @@ const Dashboard = () => {
               <ChevronRight className='h-6 w-6' />
             </h1>
           )}
-        </button>
+        </button> */}
         <div className=''>
           <Routes>
             <Route
