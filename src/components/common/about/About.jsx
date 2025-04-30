@@ -26,7 +26,7 @@ const teamMembers = [
     name: 'Vaishnavi Desai',
     role: 'Database Engineer',
     image:
-      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1738993672/WhatsApp_Image_2025-02-08_at_11.12.49_AM_burtia.jpg',
+      'https://res.cloudinary.com/dtyyhhrtx/image/upload/v1745989662/WhatsApp_Image_2025-04-30_at_10.06.28_AM_hpnwvf.jpg',
     portfolio: 'https://vaishnavidesai.com/'
   },
   {
@@ -136,7 +136,7 @@ export default function About () {
             came together to create a platform that combines cutting-edge
             technology with user-friendly design, making e-commerce accessible
             and enjoyable for everyone.
-            <br/>
+            <br />
             <Link
               to='/contact'
               className='text-blue-700 hover:text-gray-900 transition duration-300'
